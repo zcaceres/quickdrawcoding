@@ -16,3 +16,7 @@
 /Users/zachcaceres/Documents/GitHub/Fullstack/Stackathon/QuickDrawJavascript/Temp/bin/Debug/Unity.CecilTools.dll
 /Users/zachcaceres/Documents/GitHub/Fullstack/Stackathon/QuickDrawJavascript/Temp/bin/Debug/Mono.Cecil.Pdb.dll
 /Users/zachcaceres/Documents/GitHub/Fullstack/Stackathon/QuickDrawJavascript/Temp/bin/Debug/Mono.Cecil.Mdb.dll
+/Users/zachcaceres/Documents/GitHub/Fullstack/Stackathon/QuickDrawJavascript/Temp/bin/Debug/Assembly-CSharp.dll.mdb
+/Users/zachcaceres/Documents/GitHub/Fullstack/Stackathon/QuickDrawJavascript/Temp/bin/Debug/Assembly-CSharp.dll
+/Users/zachcaceres/Documents/GitHub/Fullstack/Stackathon/QuickDrawJavascript/obj/Debug/Assembly-CSharp.dll
+/Users/zachcaceres/Documents/GitHub/Fullstack/Stackathon/QuickDrawJavascript/obj/Debug/Assembly-CSharp.dll.mdb

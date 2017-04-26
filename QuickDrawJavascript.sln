@@ -1,14 +1,18 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickDrawJavascript", "Assembly-CSharp.csproj", "{509D38FB-203E-C670-97CF-1B69E844FD9A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-
+		{509D38FB-203E-C670-97CF-1B69E844FD9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{509D38FB-203E-C670-97CF-1B69E844FD9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{509D38FB-203E-C670-97CF-1B69E844FD9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{509D38FB-203E-C670-97CF-1B69E844FD9A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
