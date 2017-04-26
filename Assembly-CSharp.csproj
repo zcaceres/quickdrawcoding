@@ -46,6 +46,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\GameLogic\GameManager.cs" />
      <Compile Include="Assets\ThirdParty\EZ Camera Shake\Demo\Sample Scripts\ShakeByDistance.cs" />
      <Compile Include="Assets\ThirdParty\EZ Camera Shake\Demo\Sample Scripts\ShakeOnKeyPress.cs" />
      <Compile Include="Assets\ThirdParty\EZ Camera Shake\Demo\Sample Scripts\ShakeOnTrigger.cs" />
@@ -62,6 +63,7 @@
      <Compile Include="Assets\ThirdParty\Game Jam Template\Scripts\SetAudioLevels.cs" />
      <Compile Include="Assets\ThirdParty\Game Jam Template\Scripts\ShowPanels.cs" />
      <Compile Include="Assets\ThirdParty\Game Jam Template\Scripts\StartOptions.cs" />
+     <Compile Include="Assets\Utils\ASCIITable.cs" />
      <None Include="Assets\ThirdParty\Game Jam Template\Fonts\OpenSans\License!.txt" />
      <None Include="Assets\ThirdParty\Game Jam Template\GameJamTemplateReadMe.txt" />
  <Reference Include="UnityEngine.UI">
