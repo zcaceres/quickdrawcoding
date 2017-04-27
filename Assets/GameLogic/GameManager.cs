@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour {
 	public GameObject letterPrefab;
 	public GameObject mainCamera;
 	private const int CAMERA_ROTATION_SPEED = 5;
-	private const float PLAYER_MOVEMENT_SPEED = .3f;
+	private const float PLAYER_MOVEMENT_SPEED = .5f;
 	private AudioSource cameraSoundPlayer;
 	public Transform[] galleryTransforms;
 	public List<GameObject> lettersForRound = new List<GameObject>();
@@ -135,7 +135,9 @@ public class GameManager : MonoBehaviour {
 
 	// GameLogic inside round
 	void SetCurrentLetterColor(GameObject letter) {
-		letter.GetComponent<TextMesh>().color = Color.red;
+		var textMesh = letter.GetComponent<TextMesh>();
+		textMesh.color = Color.red;
+		textMesh.characterSize = .13f;
 		// set current letter to lerp up and down a little!
 	}
 
@@ -158,7 +160,7 @@ public class GameManager : MonoBehaviour {
 
 	void PlayShotShakeAnim() {
 		cameraShaker.Shake(EZCameraShake.CameraShakePresets.Bump);
-		// muzzleFlasher.TriggerFlash();
+		// muzzleFlasher.TriggerFlash(); COME BACK TO THIS LATER...
 	}
 
 	void ShotMissed() {
