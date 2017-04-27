@@ -12,7 +12,8 @@ public class GameManager : MonoBehaviour {
 	public int letterPointer = 0;
 	public GameObject letterPrefab;
 	public GameObject mainCamera;
-	private int CAMERA_ROTATION_SPEED = 5;
+	private const int CAMERA_ROTATION_SPEED = 5;
+	private const float PLAYER_MOVEMENT_SPEED = .3f;
 	private AudioSource cameraSoundPlayer;
 	public Transform[] galleryTransforms;
 	public List<GameObject> lettersForRound = new List<GameObject>();
@@ -22,10 +23,15 @@ public class GameManager : MonoBehaviour {
 	public AudioClip[] shotClips;
 	private EZCameraShake.CameraShaker cameraShaker;
 
+	private FiringPositionManager firingPositionManager;
+	private Transform[] firingPositions;
+
 	void Start () {
 		mainCamera = GameObject.FindWithTag("MainCamera");
-		cameraShaker = mainCamera.transform.parent.GetComponent<CameraShaker>();
+		cameraShaker = mainCamera.GetComponent<CameraShaker>();
 		cameraSoundPlayer = mainCamera.GetComponent<AudioSource>();
+		firingPositionManager = GameObject.Find("FiringPositions").GetComponent<FiringPositionManager>();
+		firingPositions = firingPositionManager.firingPositions;
 		codeBlock = "private void SetUpRound(string[] codeBlock) {";
 		RetrieveRandomCodeblock();
 		// get codeBlock from DB
@@ -39,10 +45,19 @@ public class GameManager : MonoBehaviour {
 	void Update () {
 		if (!roundStarted) return;
 
-		snapCameraToNextLetter();
+		SnapCameraToNextLetter();
+		MovePlayer();
 		if(Input.anyKeyDown) {
 			CheckKeyboardInput();
 		}
+	}
+
+	void MovePlayer() {
+		var targetPosition = firingPositionManager.firingPositions[firingPositionManager.currentPositionIndex].position;
+		mainCamera.transform.parent.transform.position =
+			Vector3.Slerp(mainCamera.transform.parent.transform.position,
+				targetPosition,
+				PLAYER_MOVEMENT_SPEED*Time.deltaTime); // Must refer to PARENT of mainCamera for shake to work!!
 	}
 
 	// GALLERY
@@ -139,6 +154,7 @@ public class GameManager : MonoBehaviour {
 	}
 
 	void PlayShotShakeAnim() {
+		Debug.Log("playing shake");
 		cameraShaker.Shake(EZCameraShake.CameraShakePresets.Bump);
 	}
 
@@ -174,11 +190,11 @@ public class GameManager : MonoBehaviour {
 		cameraSoundPlayer.Play();
 	}
 
-	void snapCameraToNextLetter() {
-		mainCamera.transform.rotation =
-			Quaternion.Slerp(mainCamera.transform.rotation,
-				Quaternion.LookRotation(currentLetter.transform.position - mainCamera.transform.position),
-				CAMERA_ROTATION_SPEED*Time.deltaTime);
+	void SnapCameraToNextLetter() {
+		mainCamera.transform.parent.transform.rotation =
+			Quaternion.Slerp(mainCamera.transform.parent.transform.rotation,
+				Quaternion.LookRotation(currentLetter.transform.position - mainCamera.transform.parent.transform.position),
+				CAMERA_ROTATION_SPEED*Time.deltaTime); // Must refer to PARENT of mainCamera for shake to work!!
 	}
 
 	private void incrementPoints() {
