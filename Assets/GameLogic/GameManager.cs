@@ -43,8 +43,14 @@ public class GameManager : MonoBehaviour {
 			lettersForRound.Add(letter);
 		}
 		currentLetter = lettersForRound[0];
+		SetCurrentLetterColor(currentLetter);
 		// set transforms for each letter at gallery starting points
 	}
+
+	void SetCurrentLetterColor(GameObject letter) {
+		letter.GetComponent<TextMesh>().color = Color.red;
+	}
+
 
 
 	private void RetrieveRandomCodeblock() {
@@ -71,13 +77,18 @@ public class GameManager : MonoBehaviour {
 			Debug.Log(Input.inputString);
 			var targetLetter = currentCodeBlock[letterPointer];
 			if (Input.inputString == targetLetter) {
-					ShotHit();
+				ShotHit();
 			} else {
+				ShotMissed();
 				Debug.Log("missed!");
 			}
 		return;
 	}
 
+	void ShotMissed() {
+		// play missed sound
+		// stop streak
+	}
 
 	void ShotHit() {
 		PlayShotSound();
@@ -86,6 +97,7 @@ public class GameManager : MonoBehaviour {
 		lettersForRound.RemoveAt(0);
 		if(lettersForRound.Count() != 0) {
 			currentLetter = lettersForRound.First();
+			SetCurrentLetterColor(currentLetter);
 		} else {
 			EndRound();
 		}
