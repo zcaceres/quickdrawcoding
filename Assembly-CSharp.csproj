@@ -49,6 +49,7 @@
      <Compile Include="Assets\Audio\AudioManager.cs" />
      <Compile Include="Assets\GameLogic\FiringPositionManager.cs" />
      <Compile Include="Assets\GameLogic\GameManager.cs" />
+     <Compile Include="Assets\SFX\MuzzleFlash.cs" />
      <Compile Include="Assets\ThirdParty\EZ Camera Shake\Demo\Sample Scripts\ShakeByDistance.cs" />
      <Compile Include="Assets\ThirdParty\EZ Camera Shake\Demo\Sample Scripts\ShakeOnKeyPress.cs" />
      <Compile Include="Assets\ThirdParty\EZ Camera Shake\Demo\Sample Scripts\ShakeOnTrigger.cs" />

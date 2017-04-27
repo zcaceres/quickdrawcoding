@@ -23,11 +23,14 @@ public class GameManager : MonoBehaviour {
 	public AudioClip[] shotClips;
 	private EZCameraShake.CameraShaker cameraShaker;
 
+	private MuzzleFlash muzzleFlasher;
+
 	private FiringPositionManager firingPositionManager;
 	private Transform[] firingPositions;
 
 	void Start () {
 		mainCamera = GameObject.FindWithTag("MainCamera");
+		muzzleFlasher = mainCamera.GetComponentInChildren<MuzzleFlash>();
 		cameraShaker = mainCamera.GetComponent<CameraShaker>();
 		cameraSoundPlayer = mainCamera.GetComponent<AudioSource>();
 		firingPositionManager = GameObject.Find("FiringPositions").GetComponent<FiringPositionManager>();
@@ -154,14 +157,13 @@ public class GameManager : MonoBehaviour {
 	}
 
 	void PlayShotShakeAnim() {
-		Debug.Log("playing shake");
 		cameraShaker.Shake(EZCameraShake.CameraShakePresets.Bump);
+		// muzzleFlasher.TriggerFlash();
 	}
 
 	void ShotMissed() {
 		PlayShotShakeAnim();
 		PlayShotMissedSound();
-		// play missed sound
 		// lose points
 		// stop streak
 	}

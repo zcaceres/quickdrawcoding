@@ -7,14 +7,12 @@ public class FiringPositionManager : MonoBehaviour {
 	public int currentPositionIndex;
 	public Transform mainCameraTransform;
 
-	// Use this for initialization
 	void Start () {
 		mainCameraTransform = GameObject.FindWithTag("MainCamera").transform.parent.transform;
 		firingPositions = this.GetComponentsInChildren<Transform>();
 		currentPositionIndex = 0;
 	}
 
-	// Update is called once per frame
 	void Update () {
 		if (AtFiringPosition(mainCameraTransform.position, firingPositions[currentPositionIndex].position)) {
 			Debug.Log("Transform is within minimum distance");
