@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using EZCameraShake;
 
 public class GameManager : MonoBehaviour {
 
@@ -19,9 +20,11 @@ public class GameManager : MonoBehaviour {
 	private bool roundStarted;
 	private List<List<string>> allRounds;
 	public AudioClip[] shotClips;
+	private EZCameraShake.CameraShaker cameraShaker;
 
 	void Start () {
 		mainCamera = GameObject.FindWithTag("MainCamera");
+		cameraShaker = mainCamera.transform.parent.GetComponent<CameraShaker>();
 		cameraSoundPlayer = mainCamera.GetComponent<AudioSource>();
 		codeBlock = "private void SetUpRound(string[] codeBlock) {";
 		RetrieveRandomCodeblock();
@@ -135,7 +138,12 @@ public class GameManager : MonoBehaviour {
 		return;
 	}
 
+	void PlayShotShakeAnim() {
+		cameraShaker.Shake(EZCameraShake.CameraShakePresets.Bump);
+	}
+
 	void ShotMissed() {
+		PlayShotShakeAnim();
 		PlayShotMissedSound();
 		// play missed sound
 		// lose points
@@ -143,6 +151,7 @@ public class GameManager : MonoBehaviour {
 	}
 
 	void ShotHit() {
+		PlayShotShakeAnim();
 		PlayShotHitSound();
 		Destroy(currentLetter);
 		letterPointer++;
