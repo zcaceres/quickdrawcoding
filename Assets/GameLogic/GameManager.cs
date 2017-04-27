@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 using EZCameraShake;
 
 public class GameManager : MonoBehaviour {
@@ -23,6 +24,8 @@ public class GameManager : MonoBehaviour {
 	public AudioClip[] shotClips;
 	private EZCameraShake.CameraShaker cameraShaker;
 
+	private Text UICodeDisplay;
+
 	private MuzzleFlash muzzleFlasher;
 
 	private FiringPositionManager firingPositionManager;
@@ -31,11 +34,15 @@ public class GameManager : MonoBehaviour {
 	void Start () {
 		mainCamera = GameObject.FindWithTag("MainCamera");
 		muzzleFlasher = mainCamera.GetComponentInChildren<MuzzleFlash>();
+		galleryTransforms = GameObject.Find("Gallery").GetComponent<GalleryManager>().allGalleryTransforms;
 		cameraShaker = mainCamera.GetComponent<CameraShaker>();
 		cameraSoundPlayer = mainCamera.GetComponent<AudioSource>();
 		firingPositionManager = GameObject.Find("FiringPositions").GetComponent<FiringPositionManager>();
 		firingPositions = firingPositionManager.firingPositions;
-		codeBlock = "private void SetUpRound(string[] codeBlock) {";
+		UICodeDisplay = GameObject.Find("Canvas").GetComponentInChildren<Text>();
+		Debug.Log(UICodeDisplay);
+		codeBlock = "private void SetUpRound(string[] codeBlock) { sdjghawihwae IUVHwepiuhaew ibwaehg hweuifghwuefhg";
+		// GET ALL GALLERY TRANSFORMS HERE
 		RetrieveRandomCodeblock();
 		// get codeBlock from DB
 		currentCodeBlock = SplitCodeblockIntoLetters();
@@ -118,7 +125,7 @@ public class GameManager : MonoBehaviour {
 	public void StartRound() {
 		roundStarted = true;
 		// letters lerp from ground
-		// play starting sound
+		// play starting sound BEGIN!!
 	}
 
 
@@ -138,8 +145,11 @@ public class GameManager : MonoBehaviour {
 		var textMesh = letter.GetComponent<TextMesh>();
 		textMesh.color = Color.red;
 		textMesh.characterSize = .13f;
+		letter.GetComponent<MeshRenderer>().enabled = true;
 		// set current letter to lerp up and down a little!
 	}
+
+
 
 
 	private void RetrieveRandomCodeblock() {
@@ -173,6 +183,7 @@ public class GameManager : MonoBehaviour {
 	void ShotHit() {
 		PlayShotShakeAnim();
 		PlayShotHitSound();
+		AddLetterToUI(currentLetter.GetComponent<TextMesh>().text);
 		Destroy(currentLetter);
 		letterPointer++;
 		lettersForRound.RemoveAt(0);
@@ -182,6 +193,10 @@ public class GameManager : MonoBehaviour {
 		} else {
 			EndRound();
 		}
+	}
+
+	void AddLetterToUI(string letter) {
+		UICodeDisplay.text += letter;
 	}
 
 	void PlayShotHitSound() {
@@ -200,6 +215,8 @@ public class GameManager : MonoBehaviour {
 				Quaternion.LookRotation(currentLetter.transform.position - mainCamera.transform.parent.transform.position),
 				CAMERA_ROTATION_SPEED*Time.deltaTime); // Must refer to PARENT of mainCamera for shake to work!!
 	}
+
+	// Trigger next scene renders next letters
 
 	private void incrementPoints() {
 		// incrementPoints

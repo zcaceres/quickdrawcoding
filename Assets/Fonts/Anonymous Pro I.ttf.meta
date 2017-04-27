@@ -1,0 +1,24 @@
+fileFormatVersion: 2
+guid: 84a7faceedc96421296a4c4794d13896
+timeCreated: 1493326018
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Anonymous Pro
+  fontNames:
+  - Anonymous Pro
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 06d758139807c48c3ae640a4bb0a4c15, type: 3}
+  - {fileID: 12800000, guid: 5c89cf66dad5246ee9505ef578e1ac8a, type: 3}
+  - {fileID: 12800000, guid: 4a3cc8eca6ac240478490e95c8901ec0, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
