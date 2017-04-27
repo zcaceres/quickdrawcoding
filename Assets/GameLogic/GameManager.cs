@@ -1,6 +1,7 @@
 using System;
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour {
@@ -10,11 +11,16 @@ public class GameManager : MonoBehaviour {
 	public int letterPointer = 0;
 	public GameObject letterPrefab;
 	public GameObject mainCamera;
-	public GameObject myTestLetter;
 	private int CAMERA_ROTATION_SPEED = 5;
+	private AudioSource cameraSoundPlayer;
+	public Transform[] galleryTransforms;
+	public List<GameObject> lettersForRound = new List<GameObject>();
+	public GameObject currentLetter;
+	private bool roundStarted;
 
 	void Start () {
 		mainCamera = GameObject.FindWithTag("MainCamera");
+		cameraSoundPlayer = mainCamera.GetComponent<AudioSource>();
 		codeBlock = "app Component";
 		RetrieveRandomCodeblock();
 		// get codeBlock from DB
@@ -24,17 +30,19 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public void StartRound() {
+		roundStarted = true;
 		// letters lerp from ground
 		// play starting sound
-		//
 	}
 
 	private void CreateGalleryOfLetters(string[] codeBlock) {
+		var i = 0;
 		foreach (string s in codeBlock) {
-			var letter = UnityEngine.Object.Instantiate(letterPrefab);
+			var letter = UnityEngine.Object.Instantiate(letterPrefab, galleryTransforms[i++]);
 			letter.GetComponent<TextMesh>().text = s;
+			lettersForRound.Add(letter);
 		}
-		// instantiate a prefab for each letter
+		currentLetter = lettersForRound[0];
 		// set transforms for each letter at gallery starting points
 	}
 
@@ -51,54 +59,60 @@ public class GameManager : MonoBehaviour {
 		return chars;
 	}
 
-
-
-		// Debug.Log("codeLine Length " + codeLine.Length);
-		// codeLine = codeBlock.Split(separator);
-		// for (var i = 0; i < codeBlock.Length; i++) {
-		// 	codeLine[i] = codeBlock[i].ToString();
-		// }
-		// Debug.Log("codeLine " + codeLine);
-		// string manipulation on codeblock to split into array of chars
-		// watch for spaces
-	// }
-
 	private void CheckKeyboardInput () {
 			if (letterPointer >= currentCodeBlock.Length) {
+				// if new string
 				// TODO: Load a new string and keep going
+				// else
+				// EndRound();
 				return;
 			}
 			if (Input.GetKeyDown(KeyCode.RightShift) || Input.GetKeyDown(KeyCode.LeftShift)) { return; }
 			Debug.Log(Input.inputString);
 			var targetLetter = currentCodeBlock[letterPointer];
 			if (Input.inputString == targetLetter) {
-				Debug.Log("Shot hit!");
-				letterPointer++;
+					ShotHit();
 			} else {
 				Debug.Log("missed!");
 			}
 		return;
 	}
 
+
+	void ShotHit() {
+		PlayShotSound();
+		Destroy(currentLetter);
+		letterPointer++;
+		lettersForRound.RemoveAt(0);
+		if(lettersForRound.Count() != 0) {
+			currentLetter = lettersForRound.First();
+		} else {
+			EndRound();
+		}
+	}
+
+	void PlayShotSound() {
+		cameraSoundPlayer.Play();
+	}
+
+	void EndRound() {
+		Debug.Log("Round is over!");
+		roundStarted = false;
+	}
+
 	void snapCameraToNextLetter() {
-		mainCamera.transform.rotation = Quaternion.Slerp(mainCamera.transform.rotation,
-		Quaternion.LookRotation(myTestLetter.transform.position - mainCamera.transform.position),
-		CAMERA_ROTATION_SPEED*Time.deltaTime);
+		mainCamera.transform.rotation =
+			Quaternion.Slerp(mainCamera.transform.rotation,
+				Quaternion.LookRotation(currentLetter.transform.position - mainCamera.transform.position),
+				CAMERA_ROTATION_SPEED*Time.deltaTime);
 	}
 
 	void Update () {
+		if (!roundStarted) return;
+
 		snapCameraToNextLetter();
 		if(Input.anyKeyDown) {
 			CheckKeyboardInput();
-			// if (asciiCodeOfKeyPressed == (int)currentTargetCharCode) {
-				// Debug.Log("shot hit!");
-				// codeLine.pop();
-				// destroyLetter()
-				// incrementPoints()
-				// increment points
-			// } else {
-				// destroyStreak
-			// }
 		}
 	}
 

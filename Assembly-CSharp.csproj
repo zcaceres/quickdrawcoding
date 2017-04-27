@@ -46,6 +46,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Audio\AudioManager.cs" />
      <Compile Include="Assets\GameLogic\GameManager.cs" />
      <Compile Include="Assets\ThirdParty\EZ Camera Shake\Demo\Sample Scripts\ShakeByDistance.cs" />
      <Compile Include="Assets\ThirdParty\EZ Camera Shake\Demo\Sample Scripts\ShakeOnKeyPress.cs" />
