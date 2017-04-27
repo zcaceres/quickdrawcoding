@@ -6,8 +6,10 @@ public class FiringPositionManager : MonoBehaviour {
 	public Transform[] firingPositions;
 	public int currentPositionIndex;
 	public Transform mainCameraTransform;
+	public GameManager gameManager;
 
 	void Start () {
+		gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 		mainCameraTransform = GameObject.FindWithTag("MainCamera").transform.parent.transform;
 		firingPositions = this.GetComponentsInChildren<Transform>();
 		currentPositionIndex = 0;
@@ -15,12 +17,13 @@ public class FiringPositionManager : MonoBehaviour {
 
 	void Update () {
 		if (AtFiringPosition(mainCameraTransform.position, firingPositions[currentPositionIndex].position)) {
-			Debug.Log("Transform is within minimum distance");
-			ToggleNextPosition();
+			// Trigger Start Round
+			// Move toggle next position to GameManager
+			gameManager.StartRound();
 		}
 	}
 
-	private void ToggleNextPosition() {
+	public void ToggleNextPosition() {
 		if (currentPositionIndex < firingPositions.Length) {
 			currentPositionIndex++;
 		} else {

@@ -11,10 +11,11 @@ public class GameManager : MonoBehaviour {
 	public string codeBlock;
 	public string[] currentCodeBlock;
 	public int letterPointer = 0;
+	public int lettersDestroyed = 0;
 	public GameObject letterPrefab;
 	public GameObject mainCamera;
 	private const int CAMERA_ROTATION_SPEED = 5;
-	private const float PLAYER_MOVEMENT_SPEED = .5f;
+	private const float PLAYER_MOVEMENT_SPEED = 2f;
 	private AudioSource cameraSoundPlayer;
 	public Transform[] galleryTransforms;
 	public List<GameObject> lettersForRound = new List<GameObject>();
@@ -41,7 +42,7 @@ public class GameManager : MonoBehaviour {
 		firingPositions = firingPositionManager.firingPositions;
 		UICodeDisplay = GameObject.Find("Canvas").GetComponentInChildren<Text>();
 		Debug.Log(UICodeDisplay);
-		codeBlock = "private void SetUpRound(string[] codeBlock) { sdjghawihwae IUVHwepiuhaew ibwaehg hweuifghwuefhg";
+		codeBlock = "private void SetUpRound(string[] codeBlock) { void void void void void void void void void void void void void void void void void void void void void void void void ";
 		// GET ALL GALLERY TRANSFORMS HERE
 		RetrieveRandomCodeblock();
 		// get codeBlock from DB
@@ -124,6 +125,7 @@ public class GameManager : MonoBehaviour {
 
 	public void StartRound() {
 		roundStarted = true;
+		RenderLetters();
 		// letters lerp from ground
 		// play starting sound BEGIN!!
 	}
@@ -134,7 +136,7 @@ public class GameManager : MonoBehaviour {
 		roundStarted = false;
 		if (allRounds.Count() > 0) {
 			SetUpRound(allRounds);
-			StartRound();
+			// firingPositionManager.ToggleNextPosition(); // Go to next position!
 		} else {
 			EndGallery();
 		}
@@ -145,7 +147,6 @@ public class GameManager : MonoBehaviour {
 		var textMesh = letter.GetComponent<TextMesh>();
 		textMesh.color = Color.red;
 		textMesh.characterSize = .13f;
-		letter.GetComponent<MeshRenderer>().enabled = true;
 		// set current letter to lerp up and down a little!
 	}
 
@@ -163,7 +164,6 @@ public class GameManager : MonoBehaviour {
 				ShotHit();
 			} else {
 				ShotMissed();
-				Debug.Log("missed!");
 			}
 		return;
 	}
@@ -186,12 +186,29 @@ public class GameManager : MonoBehaviour {
 		AddLetterToUI(currentLetter.GetComponent<TextMesh>().text);
 		Destroy(currentLetter);
 		letterPointer++;
+		lettersDestroyed++;
 		lettersForRound.RemoveAt(0);
 		if(lettersForRound.Count() != 0) {
 			currentLetter = lettersForRound.First();
 			SetCurrentLetterColor(currentLetter);
+			if (lettersDestroyed % 14 == 0) {
+				RevealNextWave();
+			}
 		} else {
 			EndRound();
+		}
+	}
+
+	void RevealNextWave() {
+		RenderLetters();
+		Debug.Log("Toggling next position");
+		firingPositionManager.ToggleNextPosition();
+	}
+
+	void RenderLetters() {
+		for (var i = 0; i < 14; i++) {
+			if (lettersForRound.Count() > i)
+				lettersForRound[i].GetComponent<MeshRenderer>().enabled = true;
 		}
 	}
 
