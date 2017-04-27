@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour {
 	public GameObject currentLetter;
 	private bool roundStarted;
 	private List<List<string>> allRounds;
+	public AudioClip[] shotClips;
 
 	void Start () {
 		mainCamera = GameObject.FindWithTag("MainCamera");
@@ -135,13 +136,14 @@ public class GameManager : MonoBehaviour {
 	}
 
 	void ShotMissed() {
+		PlayShotMissedSound();
 		// play missed sound
 		// lose points
 		// stop streak
 	}
 
 	void ShotHit() {
-		PlayShotSound();
+		PlayShotHitSound();
 		Destroy(currentLetter);
 		letterPointer++;
 		lettersForRound.RemoveAt(0);
@@ -153,7 +155,13 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
-	void PlayShotSound() {
+	void PlayShotHitSound() {
+		cameraSoundPlayer.clip = shotClips[UnityEngine.Random.Range(0, shotClips.Length - 1)];
+		cameraSoundPlayer.Play();
+	}
+
+	void PlayShotMissedSound() {
+		cameraSoundPlayer.clip = shotClips[shotClips.Length -1];
 		cameraSoundPlayer.Play();
 	}
 
