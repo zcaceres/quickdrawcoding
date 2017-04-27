@@ -65,7 +65,9 @@
      <Compile Include="Assets\ThirdParty\Game Jam Template\Scripts\ShowPanels.cs" />
      <Compile Include="Assets\ThirdParty\Game Jam Template\Scripts\StartOptions.cs" />
      <Compile Include="Assets\Utils\ASCIITable.cs" />
+     <None Include="Assets\Fonts\READ ME.txt" />
      <None Include="Assets\ThirdParty\Game Jam Template\Fonts\OpenSans\License!.txt" />
+     <None Include="Assets\Fonts\LICENSE-readme-first.txt" />
      <None Include="Assets\ThirdParty\Game Jam Template\GameJamTemplateReadMe.txt" />
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>

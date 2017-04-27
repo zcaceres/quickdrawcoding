@@ -17,46 +17,31 @@ public class GameManager : MonoBehaviour {
 	public List<GameObject> lettersForRound = new List<GameObject>();
 	public GameObject currentLetter;
 	private bool roundStarted;
+	private List<List<string>> allRounds;
 
 	void Start () {
 		mainCamera = GameObject.FindWithTag("MainCamera");
 		cameraSoundPlayer = mainCamera.GetComponent<AudioSource>();
-		codeBlock = "app Component";
+		codeBlock = "private void SetUpRound(string[] codeBlock) {";
 		RetrieveRandomCodeblock();
 		// get codeBlock from DB
 		currentCodeBlock = SplitCodeblockIntoLetters();
-		CreateGalleryOfLetters(currentCodeBlock);
+		allRounds = SetUpGallery(currentCodeBlock);
+		SetUpRound(allRounds);
+		Debug.Log("ROUNDS " + allRounds.Count());
 		StartRound();
 	}
 
-	public void StartRound() {
-		roundStarted = true;
-		// letters lerp from ground
-		// play starting sound
-	}
+	void Update () {
+		if (!roundStarted) return;
 
-	private void CreateGalleryOfLetters(string[] codeBlock) {
-		var i = 0;
-		foreach (string s in codeBlock) {
-			var letter = UnityEngine.Object.Instantiate(letterPrefab, galleryTransforms[i++]);
-			letter.GetComponent<TextMesh>().text = s;
-			lettersForRound.Add(letter);
+		snapCameraToNextLetter();
+		if(Input.anyKeyDown) {
+			CheckKeyboardInput();
 		}
-		currentLetter = lettersForRound[0];
-		SetCurrentLetterColor(currentLetter);
-		// set transforms for each letter at gallery starting points
 	}
 
-	void SetCurrentLetterColor(GameObject letter) {
-		letter.GetComponent<TextMesh>().color = Color.red;
-	}
-
-
-
-	private void RetrieveRandomCodeblock() {
-		// search library of code to retrieve a component
-	}
-
+	// GALLERY
 	private string[] SplitCodeblockIntoLetters() {
 		string[] chars = new string[codeBlock.Length];
 		for (var i = 0; i < codeBlock.Length; i++) {
@@ -65,16 +50,80 @@ public class GameManager : MonoBehaviour {
 		return chars;
 	}
 
-	private void CheckKeyboardInput () {
-			if (letterPointer >= currentCodeBlock.Length) {
-				// if new string
-				// TODO: Load a new string and keep going
-				// else
-				// EndRound();
-				return;
+	private List<List<string>> SetUpGallery(string[] codeBlock) {
+		var rounds = new List<List<string>>();
+		List<string> round = new List<string>();
+		var i = 0;
+		while (i < codeBlock.Length) {
+			if (round.Count() < galleryTransforms.Length) {
+				round.Add(codeBlock[i]);
+			} else {
+				rounds.Add(round);
+				round = new List<string>();
+				round.Add(codeBlock[i]);
 			}
+			i++;
+		}
+		return rounds;
+	}
+
+	private void EndGallery() {
+		Debug.Log("GALLERY OVER! YOU WIN");
+		// display accuracy
+		// display final program
+	}
+
+	// ROUND
+	// create round
+	private void SetUpRound(List<List<string>> rounds) {
+		if(rounds.Count() > 0 && rounds.First() != null) {
+			InstantiateLetters(rounds.First());
+			rounds.RemoveAt(0);
+		}
+	}
+
+	private void InstantiateLetters(List<string> round) {
+		var i = 0;
+		foreach (string s in round) {
+			var letter = UnityEngine.Object.Instantiate(letterPrefab, galleryTransforms[i++]);
+			letter.GetComponent<TextMesh>().text = s;
+			lettersForRound.Add(letter);
+		}
+		currentLetter = lettersForRound[0];
+		SetCurrentLetterColor(currentLetter);
+	}
+
+	public void StartRound() {
+		roundStarted = true;
+		// letters lerp from ground
+		// play starting sound
+	}
+
+
+	void EndRound() {
+		Debug.Log("Round is over!");
+		roundStarted = false;
+		if (allRounds.Count() > 0) {
+			SetUpRound(allRounds);
+			StartRound();
+		} else {
+			EndGallery();
+		}
+	}
+
+	// GameLogic inside round
+	void SetCurrentLetterColor(GameObject letter) {
+		letter.GetComponent<TextMesh>().color = Color.red;
+		// set current letter to lerp up and down a little!
+	}
+
+
+	private void RetrieveRandomCodeblock() {
+		// search library of code to retrieve a component
+	}
+
+	private void CheckKeyboardInput () {
 			if (Input.GetKeyDown(KeyCode.RightShift) || Input.GetKeyDown(KeyCode.LeftShift)) { return; }
-			Debug.Log(Input.inputString);
 			var targetLetter = currentCodeBlock[letterPointer];
 			if (Input.inputString == targetLetter) {
 				ShotHit();
@@ -87,6 +136,7 @@ public class GameManager : MonoBehaviour {
 
 	void ShotMissed() {
 		// play missed sound
+		// lose points
 		// stop streak
 	}
 
@@ -107,11 +157,6 @@ public class GameManager : MonoBehaviour {
 		cameraSoundPlayer.Play();
 	}
 
-	void EndRound() {
-		Debug.Log("Round is over!");
-		roundStarted = false;
-	}
-
 	void snapCameraToNextLetter() {
 		mainCamera.transform.rotation =
 			Quaternion.Slerp(mainCamera.transform.rotation,
@@ -119,16 +164,8 @@ public class GameManager : MonoBehaviour {
 				CAMERA_ROTATION_SPEED*Time.deltaTime);
 	}
 
-	void Update () {
-		if (!roundStarted) return;
-
-		snapCameraToNextLetter();
-		if(Input.anyKeyDown) {
-			CheckKeyboardInput();
-		}
-	}
-
 	private void incrementPoints() {
 		// incrementPoints
 	}
+
 }

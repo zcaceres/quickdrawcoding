@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: d773205e41d3f40f58e46ca358079cf0
+timeCreated: 1493309363
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Cowboy Movie
+  fontNames:
+  - Cowboy Movie
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
