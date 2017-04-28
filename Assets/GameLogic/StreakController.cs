@@ -17,10 +17,24 @@ public class StreakController : MonoBehaviour {
 		StartCoroutine(FlashMessage());
 	}
 
-	// Coroutine to handle timing of display text
+	public void DisplayTextOnTopOfScreen(string text, int duration) {
+		StartCoroutine(FlashMessage(text, duration));
+	}
+
+	/*
+	 Coroutine to handle timing of display text. Overloaded
+	 for custom text at top of UI.
+	*/
 	IEnumerator FlashMessage() {
 		streakText.enabled = true;
 		yield return new WaitForSecondsRealtime(2);
+		HideStreakText();
+	}
+
+	IEnumerator FlashMessage(string text, int duration) {
+		streakText.text = text;
+		streakText.enabled = true;
+		yield return new WaitForSecondsRealtime(duration);
 		HideStreakText();
 	}
 

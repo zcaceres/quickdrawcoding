@@ -49,8 +49,9 @@ public class GameManager : MonoBehaviour {
 		currentCodeBlock = SplitCodeblockIntoLetters();
 		allRounds = SetUpGallery(currentCodeBlock);
 		SetUpRound(allRounds);
-		Debug.Log("ROUNDS " + allRounds.Count() + " for codeblock " + codeBlock);
+		Debug.Log("Created Gallery of " + allRounds.Count() + " rounds. From codeblock of lengeth " + codeBlock.Length);
 		StartRound();
+		streakNotifier.DisplayTextOnTopOfScreen("TEST TEXT", 3);
 	}
 
 	void Update () {

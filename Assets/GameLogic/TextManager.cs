@@ -10,7 +10,6 @@ public class TextManager : MonoBehaviour {
 	}
 
 	private string SelectCodeFileAsText() {
-		Debug.Log(" length of code file " + codeFiles[0].text.Length);
 		return codeFiles[0].text;
 	}
 
