@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviour {
 
 	void Start () {
 		SetUpComponents();
-		codeBlock = "private void SetUpRound(string[] codeBlock) { void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void ";
+		codeBlock = "private void SetUpRound(string[] codeBlock) { void void";
 		// GET ALL GALLERY TRANSFORMS HERE
 		// get codeBlock from DB
 		RetrieveRandomCodeblock();
@@ -181,6 +181,7 @@ public class GameManager : MonoBehaviour {
 	void ShotMissed() {
 		PlayShotShakeAnim();
 		PlayShotMissedSound();
+		currentLetter.GetComponent<GenerateHitOrMiss>().GenerateMissPrefab();
 		// lose points
 		// stop streak
 	}
@@ -188,6 +189,7 @@ public class GameManager : MonoBehaviour {
 	void ShotHit() {
 		PlayShotShakeAnim();
 		PlayShotHitSound();
+		currentLetter.GetComponent<GenerateHitOrMiss>().GenerateHitPrefab();
 		AddLetterToUI(currentLetter.GetComponent<TextMesh>().text);
 		if (reloadNotifier.isDisplayed()) reloadNotifier.HideReload(); // Makes sure Reload is toggled off after hitting a space
 		Destroy(currentLetter);
@@ -222,6 +224,8 @@ public class GameManager : MonoBehaviour {
 		UICodeDisplay.text += letter;
 	}
 
+
+
 	void PlayShotHitSound() {
 		cameraSoundPlayer.clip = shotClips[UnityEngine.Random.Range(0, shotClips.Length - 1)];
 		cameraSoundPlayer.Play();
@@ -253,7 +257,7 @@ public class GameManager : MonoBehaviour {
 	}
 
 	private void PlayLose() {
-		
+
 	}
 
 	void SetUpComponents() {

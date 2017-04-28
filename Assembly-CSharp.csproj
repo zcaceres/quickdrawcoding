@@ -52,7 +52,9 @@
      <Compile Include="Assets\GameLogic\GalleryManager.cs" />
      <Compile Include="Assets\GameLogic\GameManager.cs" />
      <Compile Include="Assets\GameLogic\SetGalleryAsParent.cs" />
-     <Compile Include="Assets\ReloadController.cs" />
+     <Compile Include="Assets\Prefabs\ReloadController.cs" />
+     <Compile Include="Assets\SFX\FlyOffAnimation.cs" />
+     <Compile Include="Assets\SFX\GenerateHitOrMiss.cs" />
      <Compile Include="Assets\SFX\MuzzleFlash.cs" />
      <Compile Include="Assets\ThirdParty\EZ Camera Shake\Demo\Sample Scripts\ShakeByDistance.cs" />
      <Compile Include="Assets\ThirdParty\EZ Camera Shake\Demo\Sample Scripts\ShakeOnKeyPress.cs" />
