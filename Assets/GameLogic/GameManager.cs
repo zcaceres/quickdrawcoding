@@ -24,13 +24,14 @@ public class GameManager : MonoBehaviour {
 	public GameObject currentLetter;
 	public bool roundStarted;
 	private List<List<string>> allRounds;
-	public AudioClip[] shotClips;
 
 	// UI
 	private Text UICodeDisplay;
 	private TimerController timerController;
 
 	// SFX
+	public AudioClip[] shotClips;
+	public AudioClip reloadClip;
 	private EZCameraShake.CameraShaker cameraShaker;
 	private AnnouncementManager announcer;
 	private ReloadController reloadNotifier;
@@ -43,15 +44,32 @@ public class GameManager : MonoBehaviour {
 
 	void Start () {
 		SetUpComponents();
-		// Gets codeBlock from DB...
-		codeBlock = textManager.GetCleanCodeFileAsString();  // "private void void void void void void void void void void void void void void void void void void void void void ";
+		codeBlock =  "private void void void void void void void void void void void void void void void void void void void void void voi";
 		RetrieveRandomCodeblock();
 		currentCodeBlock = SplitCodeblockIntoLetters();
 		allRounds = SetUpGallery(currentCodeBlock);
-		SetUpRound(allRounds);
+		StartCoroutine(GetReady());
 		Debug.Log("Created Gallery of " + allRounds.Count() + " rounds. From codeblock of lengeth " + codeBlock.Length);
+	}
+
+	IEnumerator GetReady() {
+		SetUpRound(allRounds);
+		streakNotifier.DisplayTextOnTopOfScreen((allRounds.Count() > 1 ? (allRounds.Count() + 1) + " Rounds" : "1 Round"), 3);
+		yield return new WaitForSecondsRealtime(2);
+		streakNotifier.DisplayTextOnTopOfScreen(codeBlock.Length + " Chars", 3);
+		yield return new WaitForSecondsRealtime(2);
+		announcer.PlayGetReadySound();
+		streakNotifier.DisplayTextOnTopOfScreen("Get Ready", 2);
+		yield return new WaitForSecondsRealtime(1);
+		streakNotifier.DisplayTextOnTopOfScreen("3", 1);
+		yield return new WaitForSecondsRealtime(1);
+		streakNotifier.DisplayTextOnTopOfScreen("2", 1);
+		yield return new WaitForSecondsRealtime(1);
+		streakNotifier.DisplayTextOnTopOfScreen("1", 1);
+		yield return new WaitForSecondsRealtime(1);
+		announcer.PlayBeginSound();
+		streakNotifier.DisplayTextOnTopOfScreen("BEGIN", 1);
 		StartRound();
-		streakNotifier.DisplayTextOnTopOfScreen("TEST TEXT", 3);
 	}
 
 	void Update () {
@@ -109,9 +127,11 @@ public class GameManager : MonoBehaviour {
 		return rounds;
 	}
 
-	private void EndGallery() {
+	private IEnumerator EndGallery() {
 		// roundStarted = false;
 		announcer.PlayWinSound();
+		streakNotifier.DisplayTextOnTopOfScreen("NPM RUN WIN", 10);
+		yield return new WaitForSecondsRealtime(10);
 		// display accuracy
 		// display final program
 	}
@@ -151,7 +171,7 @@ public class GameManager : MonoBehaviour {
 			StartRound();
 			firingPositionManager.ToggleNextPosition(); // Go to next position!
 		} else {
-			EndGallery();
+			StartCoroutine(EndGallery());
 		}
 	}
 
@@ -164,7 +184,6 @@ public class GameManager : MonoBehaviour {
 			textMesh.text = "SPACE";
 		}
 		else if (textMesh.text == "\n") {
-			// Press Enter to Reload () ""
 			reloadNotifier.DisplayReload();
 		}
 		// set current letter to lerp up and down a little!
@@ -178,11 +197,23 @@ public class GameManager : MonoBehaviour {
 			if (Input.GetKeyDown(KeyCode.RightShift) || Input.GetKeyDown(KeyCode.LeftShift)) { return; }
 			var targetLetter = currentCodeBlock[letterPointer];
 			if (Input.inputString == targetLetter) {
-				ShotHit();
+				if (Input.inputString == "\n") {
+					PlayReloadSound();
+					ShotHit();
+				} else {
+					PlayShotShakeAnim();
+					PlayShotHitSound();
+					ShotHit();
+				}
 			} else {
 				ShotMissed();
 			}
 		return;
+	}
+
+	void PlayReloadSound () {
+		cameraSoundPlayer.clip = reloadClip;
+		cameraSoundPlayer.Play();
 	}
 
 	void PlayShotShakeAnim() {
@@ -199,8 +230,6 @@ public class GameManager : MonoBehaviour {
 	}
 
 	void ShotHit() {
-		PlayShotShakeAnim();
-		PlayShotHitSound();
 		scoreController.AddPoint();
 		currentLetter.GetComponent<GenerateHitOrMiss>().GenerateHitPrefab();
 		AddLetterToUI(currentLetter.GetComponent<TextMesh>().text);
