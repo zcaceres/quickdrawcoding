@@ -36,14 +36,13 @@ public class GameManager : MonoBehaviour {
 
 	void Start () {
 		SetUpComponents();
-		codeBlock = "private void SetUpRound(string[] codeBlock) { void void";
-		// GET ALL GALLERY TRANSFORMS HERE
+		codeBlock = "private void void void void void void void void void void void void void void void void void void void void void ";
 		// get codeBlock from DB
 		RetrieveRandomCodeblock();
 		currentCodeBlock = SplitCodeblockIntoLetters();
 		allRounds = SetUpGallery(currentCodeBlock);
 		SetUpRound(allRounds);
-		Debug.Log("ROUNDS " + allRounds.Count());
+		Debug.Log("ROUNDS " + allRounds.Count() + " for codeblock " + codeBlock);
 		StartRound();
 	}
 
@@ -52,6 +51,7 @@ public class GameManager : MonoBehaviour {
 
 		SnapCameraToNextLetter();
 		MovePlayer();
+
 		if(Input.anyKeyDown) {
 			CheckKeyboardInput();
 		}
@@ -79,7 +79,6 @@ public class GameManager : MonoBehaviour {
 		List<string> round = new List<string>();
 		var i = 0;
 		var totalLettersProcessed = 0;
-		Debug.Log("round count" + rounds.Count() + " " + round.Count());
 		while (i < codeBlock.Length) {
 			if (round.Count() < galleryTransforms.Length) {
 				round.Add(codeBlock[i]);
@@ -102,7 +101,7 @@ public class GameManager : MonoBehaviour {
 	}
 
 	private void EndGallery() {
-		Debug.Log("GALLERY OVER! YOU WIN");
+		// roundStarted = false;
 		announcer.PlayWinSound();
 		// display accuracy
 		// display final program
@@ -136,7 +135,6 @@ public class GameManager : MonoBehaviour {
 
 
 	void EndRound() {
-		Debug.Log("Round is over!");
 		roundStarted = false;
 		if (allRounds.Count() > 0) {
 			SetUpRound(allRounds);
@@ -224,8 +222,6 @@ public class GameManager : MonoBehaviour {
 		UICodeDisplay.text += letter;
 	}
 
-
-
 	void PlayShotHitSound() {
 		cameraSoundPlayer.clip = shotClips[UnityEngine.Random.Range(0, shotClips.Length - 1)];
 		cameraSoundPlayer.Play();
@@ -237,6 +233,7 @@ public class GameManager : MonoBehaviour {
 	}
 
 	void SnapCameraToNextLetter() {
+		if (currentLetter == null) return; // protects against snapping to null letter after galery is over
 		mainCamera.transform.parent.transform.rotation =
 			Quaternion.Slerp(mainCamera.transform.parent.transform.rotation,
 				Quaternion.LookRotation(currentLetter.transform.position - mainCamera.transform.parent.transform.position),
