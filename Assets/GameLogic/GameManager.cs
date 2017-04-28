@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour {
 	private TextManager textManager;
 	public int letterPointer = 0;
 	public int lettersDestroyed = 0;
+	private float accuracy;
 	public GameObject letterPrefab;
 	public GameObject mainCamera;
 	private const int CAMERA_ROTATION_SPEED = 5;
@@ -44,7 +45,7 @@ public class GameManager : MonoBehaviour {
 
 	void Start () {
 		SetUpComponents();
-		codeBlock =  "private void void void void void void void void void void void void void void void void void void void void void voi";
+		codeBlock =  "private void void void ";
 		RetrieveRandomCodeblock();
 		currentCodeBlock = SplitCodeblockIntoLetters();
 		allRounds = SetUpGallery(currentCodeBlock);
@@ -128,12 +129,18 @@ public class GameManager : MonoBehaviour {
 	}
 
 	private IEnumerator EndGallery() {
-		// roundStarted = false;
+		timerController.StopTime();
 		announcer.PlayWinSound();
-		streakNotifier.DisplayTextOnTopOfScreen("NPM RUN WIN", 10);
-		yield return new WaitForSecondsRealtime(10);
-		// display accuracy
-		// display final program
+
+		streakNotifier.DisplayTextOnTopOfScreen("NPM RUN WIN", 4);
+		yield return new WaitForSecondsRealtime(4);
+		streakNotifier.DisplayTextOnTopOfScreen("Points: " + scoreController.GetPoints(), 4);
+		yield return new WaitForSecondsRealtime(4);
+		accuracy = (float)scoreController.GetPoints() / codeBlock.Length;
+		// INTEGER DIVISION BEWARE!
+		streakNotifier.DisplayTextOnTopOfScreen("Accuracy: " + (((float)scoreController.GetPoints() / codeBlock.Length) * 100) + '%', 5);
+
+		// Send back to menu
 	}
 
 	// ROUND

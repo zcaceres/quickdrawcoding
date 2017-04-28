@@ -27,8 +27,13 @@ public class ScoreController : MonoBehaviour {
 		RenderScore();
 	}
 
+	public int GetPoints() {
+		return score;
+	}
+
 	void RenderScore() {
 		scoreDisplay.text = score.ToString();
 	}
+
 
 }
