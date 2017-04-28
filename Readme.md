@@ -9,3 +9,4 @@ Type the letters as they appear. Go as fast as you can. Each time you miss, you 
 - Reload on newlines ('\n') by pressing ENTER!
 
 > Created by Zachary Caceres for Stackathon, 2017
+Read more about my stuff [here]().
