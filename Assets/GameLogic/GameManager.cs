@@ -20,10 +20,11 @@ public class GameManager : MonoBehaviour {
 	public Transform[] galleryTransforms;
 	public List<GameObject> lettersForRound = new List<GameObject>();
 	public GameObject currentLetter;
-	private bool roundStarted;
+	public bool roundStarted;
 	private List<List<string>> allRounds;
 	public AudioClip[] shotClips;
 	private EZCameraShake.CameraShaker cameraShaker;
+	private AnnouncementManager announcer;
 
 	private Text UICodeDisplay;
 
@@ -35,6 +36,7 @@ public class GameManager : MonoBehaviour {
 	void Start () {
 		mainCamera = GameObject.FindWithTag("MainCamera");
 		muzzleFlasher = mainCamera.GetComponentInChildren<MuzzleFlash>();
+		announcer = mainCamera.GetComponentInChildren<AnnouncementManager>();
 		galleryTransforms = GameObject.Find("Gallery").GetComponent<GalleryManager>().allGalleryTransforms;
 		cameraShaker = mainCamera.GetComponent<CameraShaker>();
 		cameraSoundPlayer = mainCamera.GetComponent<AudioSource>();
@@ -42,7 +44,7 @@ public class GameManager : MonoBehaviour {
 		firingPositions = firingPositionManager.firingPositions;
 		UICodeDisplay = GameObject.Find("Canvas").GetComponentInChildren<Text>();
 		Debug.Log(UICodeDisplay);
-		codeBlock = "private void SetUpRound(string[] codeBlock) { void void void void void void void void void void void void void void void void void void void void void void void void ";
+		codeBlock = "private void SetUpRound(string[] codeBlock) { void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void ";
 		// GET ALL GALLERY TRANSFORMS HERE
 		RetrieveRandomCodeblock();
 		// get codeBlock from DB
@@ -99,6 +101,7 @@ public class GameManager : MonoBehaviour {
 
 	private void EndGallery() {
 		Debug.Log("GALLERY OVER! YOU WIN");
+		announcer.PlayWinSound();
 		// display accuracy
 		// display final program
 	}
@@ -201,6 +204,7 @@ public class GameManager : MonoBehaviour {
 
 	void RevealNextWave() {
 		RenderLetters();
+		announcer.PlayStreakSound();
 		Debug.Log("Toggling next position");
 		firingPositionManager.ToggleNextPosition();
 	}

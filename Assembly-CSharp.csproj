@@ -46,6 +46,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Audio\AnnouncementManager.cs" />
      <Compile Include="Assets\Audio\AudioManager.cs" />
      <Compile Include="Assets\GameLogic\FiringPositionManager.cs" />
      <Compile Include="Assets\GameLogic\GalleryManager.cs" />
@@ -68,8 +69,6 @@
      <Compile Include="Assets\ThirdParty\Game Jam Template\Scripts\SetAudioLevels.cs" />
      <Compile Include="Assets\ThirdParty\Game Jam Template\Scripts\ShowPanels.cs" />
      <Compile Include="Assets\ThirdParty\Game Jam Template\Scripts\StartOptions.cs" />
-     <Compile Include="Assets\Utils\ASCIITable.cs" />
-     <Compile Include="Assets\Utils\DeparentChildren.cs" />
      <Compile Include="Assets\Utils\SnapRotationToPlayer.cs" />
      <None Include="Assets\Fonts\READ ME.txt" />
      <None Include="Assets\ThirdParty\Game Jam Template\Fonts\OpenSans\License!.txt" />

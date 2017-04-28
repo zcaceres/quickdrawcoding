@@ -19,7 +19,8 @@ public class FiringPositionManager : MonoBehaviour {
 		if (AtFiringPosition(mainCameraTransform.position, firingPositions[currentPositionIndex].position)) {
 			// Trigger Start Round
 			// Move toggle next position to GameManager
-			gameManager.StartRound();
+			if (!gameManager.roundStarted)
+				gameManager.StartRound();
 		}
 	}
 
