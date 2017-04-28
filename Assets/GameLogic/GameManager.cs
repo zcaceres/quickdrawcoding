@@ -244,14 +244,17 @@ public class GameManager : MonoBehaviour {
 		// incrementPoints
 	}
 
-	// PlayStreak() // play sound and play text animation
+	private void PlayStreak() {
+		// play sound and play text animation
+	}
 
-	// PlayWin() // play sound and play text animation
+	private void PlayWin() {
+		// play sound and play text animation
+	}
 
-	// PlayLose() // play sound and play text animation
-
-	// PlayReload()
-
+	private void PlayLose() {
+		
+	}
 
 	void SetUpComponents() {
 		mainCamera = GameObject.FindWithTag("MainCamera");
