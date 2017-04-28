@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour {
 
 	// UI
 	private Text UICodeDisplay;
+	private TimerController timerController;
 
 	// SFX
 	private EZCameraShake.CameraShaker cameraShaker;
@@ -42,8 +43,8 @@ public class GameManager : MonoBehaviour {
 
 	void Start () {
 		SetUpComponents();
+		// Gets codeBlock from DB...
 		codeBlock = textManager.GetCleanCodeFileAsString();  // "private void void void void void void void void void void void void void void void void void void void void void ";
-		// get codeBlock from DB
 		RetrieveRandomCodeblock();
 		currentCodeBlock = SplitCodeblockIntoLetters();
 		allRounds = SetUpGallery(currentCodeBlock);
@@ -135,6 +136,7 @@ public class GameManager : MonoBehaviour {
 
 	public void StartRound() {
 		roundStarted = true;
+		timerController.ResetTimerAndStart(5);
 		RenderLetters();
 		// letters lerp from ground
 		// play starting sound BEGIN!!
@@ -160,10 +162,8 @@ public class GameManager : MonoBehaviour {
 		if (textMesh.text == " ") {
 			textMesh.text = "SPACE";
 		}
-		if (textMesh.text == "\n") {
-
+		else if (textMesh.text == "\n") {
 			// Press Enter to Reload () ""
-			//
 			reloadNotifier.DisplayReload();
 		}
 		// set current letter to lerp up and down a little!
@@ -194,7 +194,6 @@ public class GameManager : MonoBehaviour {
 		PlayShotMissedSound();
 		scoreController.RemovePoint();
 		currentLetter.GetComponent<GenerateHitOrMiss>().GenerateMissPrefab();
-		// lose points
 		// stop streak
 	}
 
@@ -211,7 +210,6 @@ public class GameManager : MonoBehaviour {
 		lettersForRound.RemoveAt(0);
 		if(lettersForRound.Count() != 0) {
 			currentLetter = lettersForRound.First();
-			Debug.Log(currentLetter.GetComponent<TextMesh>().text.ToString());
 			SetCurrentLetterColor(currentLetter);
 			if (lettersDestroyed % 14 == 0) {
 				RevealNextWave();
@@ -224,6 +222,7 @@ public class GameManager : MonoBehaviour {
 	void RevealNextWave() {
 		RenderLetters();
 		PlayStreak();
+		timerController.ResetTimerAndStart(5); // Resets timer for new 'streak'
 		firingPositionManager.ToggleNextPosition();
 	}
 
@@ -235,7 +234,11 @@ public class GameManager : MonoBehaviour {
 	}
 
 	void AddLetterToUI(string letter) {
-		UICodeDisplay.text += letter;
+		if(letter == "SPACE") { // Prevents SPACE from appearing in top code block UI
+			UICodeDisplay.text += " ";
+		} else {
+			UICodeDisplay.text += letter;
+		}
 	}
 
 	void PlayShotHitSound() {
@@ -287,6 +290,7 @@ public class GameManager : MonoBehaviour {
 		reloadNotifier = GameObject.Find("Canvas/BottomNotification").GetComponentInChildren<ReloadController>();
 		streakNotifier = GameObject.Find("Canvas/TopNotification/StartingPoint").GetComponent<StreakController>();
 		scoreController = GameObject.Find("Canvas/ScoreTracker").GetComponent<ScoreController>();
+		timerController = GameObject.Find("Canvas/Timer").GetComponent<TimerController>();
 	}
 
 }
