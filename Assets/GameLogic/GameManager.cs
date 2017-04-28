@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour {
 	private AnnouncementManager announcer;
 
 	private Text UICodeDisplay;
+	private ReloadController reloadNotifier;
 
 	private MuzzleFlash muzzleFlasher;
 
@@ -151,6 +152,9 @@ public class GameManager : MonoBehaviour {
 		var textMesh = letter.GetComponent<TextMesh>();
 		textMesh.color = Color.red;
 		textMesh.characterSize = .13f;
+		if (textMesh.text == " ") {
+			reloadNotifier.DisplayReload();
+		}
 		// set current letter to lerp up and down a little!
 	}
 
@@ -185,6 +189,7 @@ public class GameManager : MonoBehaviour {
 		PlayShotShakeAnim();
 		PlayShotHitSound();
 		AddLetterToUI(currentLetter.GetComponent<TextMesh>().text);
+		if (reloadNotifier.isDisplayed()) reloadNotifier.HideReload(); // Makes sure Reload is toggled off after hitting a space
 		Destroy(currentLetter);
 		letterPointer++;
 		lettersDestroyed++;
@@ -203,7 +208,6 @@ public class GameManager : MonoBehaviour {
 	void RevealNextWave() {
 		RenderLetters();
 		announcer.PlayStreakSound();
-		// Debug.Log("Toggling next position");
 		firingPositionManager.ToggleNextPosition();
 	}
 
@@ -235,7 +239,6 @@ public class GameManager : MonoBehaviour {
 				CAMERA_ROTATION_SPEED*Time.deltaTime); // Must refer to PARENT of mainCamera for shake to work!!
 	}
 
-	// Trigger next scene renders next letters
 
 	private void incrementPoints() {
 		// incrementPoints
@@ -259,7 +262,8 @@ public class GameManager : MonoBehaviour {
 		cameraSoundPlayer = mainCamera.GetComponent<AudioSource>();
 		firingPositionManager = GameObject.Find("FiringPositions").GetComponent<FiringPositionManager>();
 		firingPositions = firingPositionManager.firingPositions;
-		UICodeDisplay = GameObject.Find("Canvas").GetComponentInChildren<Text>();
+		UICodeDisplay = GameObject.Find("Canvas/LiveCodeSnippet").GetComponentInChildren<Text>();
+		reloadNotifier = GameObject.Find("Canvas/BottomNotification").GetComponentInChildren<ReloadController>();
 	}
 
 }
