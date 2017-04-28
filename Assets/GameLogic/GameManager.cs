@@ -29,6 +29,7 @@ public class GameManager : MonoBehaviour {
 	private Text UICodeDisplay;
 	private ReloadController reloadNotifier;
 	private StreakController streakNotifier;
+	private ScoreController scoreController;
 
 	private MuzzleFlash muzzleFlasher;
 
@@ -76,6 +77,7 @@ public class GameManager : MonoBehaviour {
 	}
 
 	private List<List<string>> SetUpGallery(string[] codeBlock) {
+		scoreController.ClearPoints();
 		var rounds = new List<List<string>>();
 		List<string> round = new List<string>();
 		var i = 0;
@@ -180,6 +182,7 @@ public class GameManager : MonoBehaviour {
 	void ShotMissed() {
 		PlayShotShakeAnim();
 		PlayShotMissedSound();
+		scoreController.RemovePoint();
 		currentLetter.GetComponent<GenerateHitOrMiss>().GenerateMissPrefab();
 		// lose points
 		// stop streak
@@ -188,6 +191,7 @@ public class GameManager : MonoBehaviour {
 	void ShotHit() {
 		PlayShotShakeAnim();
 		PlayShotHitSound();
+		scoreController.AddPoint();
 		currentLetter.GetComponent<GenerateHitOrMiss>().GenerateHitPrefab();
 		AddLetterToUI(currentLetter.GetComponent<TextMesh>().text);
 		if (reloadNotifier.isDisplayed()) reloadNotifier.HideReload(); // Makes sure Reload is toggled off after hitting a space
@@ -270,6 +274,7 @@ public class GameManager : MonoBehaviour {
 		UICodeDisplay = GameObject.Find("Canvas/LiveCodeSnippet").GetComponentInChildren<Text>();
 		reloadNotifier = GameObject.Find("Canvas/BottomNotification").GetComponentInChildren<ReloadController>();
 		streakNotifier = GameObject.Find("Canvas/TopNotification/StartingPoint").GetComponent<StreakController>();
+		scoreController = GameObject.Find("Canvas/ScoreTracker").GetComponent<ScoreController>();
 	}
 
 }
