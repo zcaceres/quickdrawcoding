@@ -52,16 +52,13 @@
      <Compile Include="Assets\GameLogic\GalleryManager.cs" />
      <Compile Include="Assets\GameLogic\GameManager.cs" />
      <Compile Include="Assets\GameLogic\SetGalleryAsParent.cs" />
+     <Compile Include="Assets\GameLogic\StreakController.cs" />
+     <Compile Include="Assets\GameLogic\TextManager.cs" />
      <Compile Include="Assets\Prefabs\ReloadController.cs" />
      <Compile Include="Assets\SFX\FlyOffAnimation.cs" />
      <Compile Include="Assets\SFX\GenerateHitOrMiss.cs" />
      <Compile Include="Assets\SFX\MuzzleFlash.cs" />
-     <Compile Include="Assets\ScoreController.cs" />
-     <Compile Include="Assets\StreakController.cs" />
-     <Compile Include="Assets\ThirdParty\EZ Camera Shake\Demo\Sample Scripts\ShakeByDistance.cs" />
-     <Compile Include="Assets\ThirdParty\EZ Camera Shake\Demo\Sample Scripts\ShakeOnKeyPress.cs" />
-     <Compile Include="Assets\ThirdParty\EZ Camera Shake\Demo\Sample Scripts\ShakeOnTrigger.cs" />
-     <Compile Include="Assets\ThirdParty\EZ Camera Shake\Demo\ShakeDemo.cs" />
+     <Compile Include="Assets\SFX\ScoreController.cs" />
      <Compile Include="Assets\ThirdParty\EZ Camera Shake\Scripts\CameraShakeInstance.cs" />
      <Compile Include="Assets\ThirdParty\EZ Camera Shake\Scripts\CameraShakePresets.cs" />
      <Compile Include="Assets\ThirdParty\EZ Camera Shake\Scripts\CameraShaker.cs" />
@@ -75,9 +72,13 @@
      <Compile Include="Assets\ThirdParty\Game Jam Template\Scripts\ShowPanels.cs" />
      <Compile Include="Assets\ThirdParty\Game Jam Template\Scripts\StartOptions.cs" />
      <Compile Include="Assets\Utils\SnapRotationToPlayer.cs" />
+     <None Include="Assets\TextFiles\seedThree.txt" />
      <None Include="Assets\Fonts\READ ME.txt" />
+     <None Include="Assets\TextFiles\seedOne.txt" />
+     <None Include="Assets\TextFiles\seedTwo.txt" />
      <None Include="Assets\ThirdParty\Game Jam Template\Fonts\OpenSans\License!.txt" />
      <None Include="Assets\Fonts\LICENSE-readme-first.txt" />
+     <None Include="Assets\TextFiles\seedFour.txt" />
      <None Include="Assets\ThirdParty\Game Jam Template\GameJamTemplateReadMe.txt" />
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>

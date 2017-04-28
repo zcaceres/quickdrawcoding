@@ -8,8 +8,10 @@ using EZCameraShake;
 
 public class GameManager : MonoBehaviour {
 
+	// CodeBlock
 	public string codeBlock;
 	public string[] currentCodeBlock;
+	private TextManager textManager;
 	public int letterPointer = 0;
 	public int lettersDestroyed = 0;
 	public GameObject letterPrefab;
@@ -23,14 +25,16 @@ public class GameManager : MonoBehaviour {
 	public bool roundStarted;
 	private List<List<string>> allRounds;
 	public AudioClip[] shotClips;
+
+	// UI
+	private Text UICodeDisplay;
+
+	// SFX
 	private EZCameraShake.CameraShaker cameraShaker;
 	private AnnouncementManager announcer;
-
-	private Text UICodeDisplay;
 	private ReloadController reloadNotifier;
 	private StreakController streakNotifier;
 	private ScoreController scoreController;
-
 	private MuzzleFlash muzzleFlasher;
 
 	private FiringPositionManager firingPositionManager;
@@ -38,7 +42,7 @@ public class GameManager : MonoBehaviour {
 
 	void Start () {
 		SetUpComponents();
-		codeBlock = "private void void void void void void void void void void void void void void void void void void void void void ";
+		codeBlock = textManager.GetCleanCodeFileAsString();  // "private void void void void void void void void void void void void void void void void void void void void void ";
 		// get codeBlock from DB
 		RetrieveRandomCodeblock();
 		currentCodeBlock = SplitCodeblockIntoLetters();
@@ -154,6 +158,12 @@ public class GameManager : MonoBehaviour {
 		textMesh.color = Color.red;
 		textMesh.characterSize = .13f;
 		if (textMesh.text == " ") {
+			textMesh.text = "SPACE";
+		}
+		if (textMesh.text == "\n") {
+
+			// Press Enter to Reload () ""
+			//
 			reloadNotifier.DisplayReload();
 		}
 		// set current letter to lerp up and down a little!
@@ -201,6 +211,7 @@ public class GameManager : MonoBehaviour {
 		lettersForRound.RemoveAt(0);
 		if(lettersForRound.Count() != 0) {
 			currentLetter = lettersForRound.First();
+			Debug.Log(currentLetter.GetComponent<TextMesh>().text.ToString());
 			SetCurrentLetterColor(currentLetter);
 			if (lettersDestroyed % 14 == 0) {
 				RevealNextWave();
@@ -265,6 +276,7 @@ public class GameManager : MonoBehaviour {
 	void SetUpComponents() {
 		mainCamera = GameObject.FindWithTag("MainCamera");
 		muzzleFlasher = mainCamera.GetComponentInChildren<MuzzleFlash>();
+		textManager = gameObject.GetComponent<TextManager>();
 		announcer = mainCamera.GetComponentInChildren<AnnouncementManager>();
 		galleryTransforms = GameObject.Find("Gallery").GetComponent<GalleryManager>().allGalleryTransforms;
 		cameraShaker = mainCamera.GetComponent<CameraShaker>();

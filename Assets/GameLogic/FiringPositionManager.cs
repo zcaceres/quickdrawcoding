@@ -16,16 +16,14 @@ public class FiringPositionManager : MonoBehaviour {
 	}
 
 	void Update () {
+		// If we arrive at our destination, load next round!
 		if (AtFiringPosition(mainCameraTransform.position, firingPositions[currentPositionIndex].position)) {
-			// Trigger Start Round
-			// Move toggle next position to GameManager
 			if (!gameManager.roundStarted && gameManager.currentLetter != null) // Protects again resetting the round after gallery has ended
 				gameManager.StartRound();
 		}
 	}
 
 	public void ToggleNextPosition() {
-		Debug.Log("next position " + currentPositionIndex + " " + firingPositions.Length);
 		if (currentPositionIndex < firingPositions.Length - 1) {
 			currentPositionIndex++;
 		} else {

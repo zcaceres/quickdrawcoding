@@ -34,7 +34,6 @@ public class StreakController : MonoBehaviour {
 
 	private string SelectStreakText(int randomSelector) {
 		PlayStreakSound(randomSelector);
-		Debug.Log(randomSelector);
 		switch(randomSelector) {
 			case 0:
 				return "MODULAR!";
