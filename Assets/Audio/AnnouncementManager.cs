@@ -24,8 +24,8 @@ public class AnnouncementManager : MonoBehaviour {
 		PlaySound();
 	}
 
-	public void PlayStreakSound() {
-		announcer.clip = streakSounds[Random.Range(0, streakSounds.Length)];
+	public void PlayStreakSound(int index) {
+		announcer.clip = streakSounds[index];
 		PlaySound();
 	}
 

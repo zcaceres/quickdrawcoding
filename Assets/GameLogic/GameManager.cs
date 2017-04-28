@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour {
 
 	private Text UICodeDisplay;
 	private ReloadController reloadNotifier;
+	private StreakController streakNotifier;
 
 	private MuzzleFlash muzzleFlasher;
 
@@ -207,7 +208,7 @@ public class GameManager : MonoBehaviour {
 
 	void RevealNextWave() {
 		RenderLetters();
-		announcer.PlayStreakSound();
+		PlayStreak();
 		firingPositionManager.ToggleNextPosition();
 	}
 
@@ -246,7 +247,7 @@ public class GameManager : MonoBehaviour {
 	}
 
 	private void PlayStreak() {
-		// play sound and play text animation
+		streakNotifier.DisplayStreakText();
 	}
 
 	private void PlayWin() {
@@ -268,6 +269,7 @@ public class GameManager : MonoBehaviour {
 		firingPositions = firingPositionManager.firingPositions;
 		UICodeDisplay = GameObject.Find("Canvas/LiveCodeSnippet").GetComponentInChildren<Text>();
 		reloadNotifier = GameObject.Find("Canvas/BottomNotification").GetComponentInChildren<ReloadController>();
+		streakNotifier = GameObject.Find("Canvas/TopNotification/StartingPoint").GetComponent<StreakController>();
 	}
 
 }

@@ -56,6 +56,7 @@
      <Compile Include="Assets\SFX\FlyOffAnimation.cs" />
      <Compile Include="Assets\SFX\GenerateHitOrMiss.cs" />
      <Compile Include="Assets\SFX\MuzzleFlash.cs" />
+     <Compile Include="Assets\StreakController.cs" />
      <Compile Include="Assets\ThirdParty\EZ Camera Shake\Demo\Sample Scripts\ShakeByDistance.cs" />
      <Compile Include="Assets\ThirdParty\EZ Camera Shake\Demo\Sample Scripts\ShakeOnKeyPress.cs" />
      <Compile Include="Assets\ThirdParty\EZ Camera Shake\Demo\Sample Scripts\ShakeOnTrigger.cs" />
