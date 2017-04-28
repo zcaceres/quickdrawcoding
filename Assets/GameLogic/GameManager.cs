@@ -36,7 +36,9 @@ public class GameManager : MonoBehaviour {
 	private TimerController timerController;
 
 	// SFX
-	private AudioSource cameraSoundPlayer;
+	private AudioSource reloadSoundPlayer;
+	public AudioSource hitGunshotSoundPlayer;
+	public AudioSource missGunshotSoundPlayer;
 	public AudioClip[] shotClips;
 	public AudioClip reloadClip;
 	private EZCameraShake.CameraShaker cameraShaker;
@@ -49,7 +51,7 @@ public class GameManager : MonoBehaviour {
 
 	void Start () {
 		SetUpComponents();
-		codeBlock =  "private void void void ";
+		codeBlock = textManager.GetCleanCodeFileAsString(); // "private void void void ";
 		RetrieveRandomCodeblock();
 		currentCodeBlock = SplitCodeblockIntoLetters();
 		allRounds = SetUpGallery(currentCodeBlock);
@@ -66,6 +68,7 @@ public class GameManager : MonoBehaviour {
 		announcer.PlayGetReadySound();
 		streakNotifier.DisplayTextOnTopOfScreen("Get Ready", 2);
 		yield return new WaitForSecondsRealtime(1);
+		PlayReloadSound();
 		streakNotifier.DisplayTextOnTopOfScreen("3", 1);
 		yield return new WaitForSecondsRealtime(1);
 		streakNotifier.DisplayTextOnTopOfScreen("2", 1);
@@ -236,8 +239,8 @@ public class GameManager : MonoBehaviour {
 	}
 
 	void PlayReloadSound () {
-		cameraSoundPlayer.clip = reloadClip;
-		cameraSoundPlayer.Play();
+		// reloadSoundPlayer.clip = reloadClip;
+		reloadSoundPlayer.Play();
 	}
 
 	void PlayShotShakeAnim() {
@@ -282,13 +285,13 @@ public class GameManager : MonoBehaviour {
 	}
 
 	void PlayShotHitSound() {
-		cameraSoundPlayer.clip = shotClips[UnityEngine.Random.Range(0, shotClips.Length - 1)];
-		cameraSoundPlayer.Play();
+		hitGunshotSoundPlayer.clip = shotClips[UnityEngine.Random.Range(0, shotClips.Length - 1)];
+		hitGunshotSoundPlayer.Play();
 	}
 
 	void PlayShotMissedSound() {
-		cameraSoundPlayer.clip = shotClips[shotClips.Length -1];
-		cameraSoundPlayer.Play();
+		missGunshotSoundPlayer.clip = shotClips[shotClips.Length -1];
+		missGunshotSoundPlayer.Play();
 	}
 
 	void SnapCameraToNextLetter() {
@@ -311,7 +314,7 @@ public class GameManager : MonoBehaviour {
 		announcer = mainCamera.GetComponentInChildren<AnnouncementManager>();
 		galleryTransforms = GameObject.Find("Gallery").GetComponent<GalleryManager>().allGalleryTransforms;
 		cameraShaker = mainCamera.GetComponent<CameraShaker>();
-		cameraSoundPlayer = mainCamera.GetComponent<AudioSource>();
+		reloadSoundPlayer = mainCamera.GetComponent<AudioSource>();
 		firingPositionManager = GameObject.Find("FiringPositions").GetComponent<FiringPositionManager>();
 		firingPositions = firingPositionManager.firingPositions;
 		UICodeDisplay = GameObject.Find("Canvas/LiveCodeSnippet").GetComponentInChildren<Text>();
