@@ -7,30 +7,36 @@ using UnityEngine.UI;
 using EZCameraShake;
 
 public class GameManager : MonoBehaviour {
-
-	// CodeBlock
-	public string codeBlock;
-	public string[] currentCodeBlock;
-	private TextManager textManager;
 	public int letterPointer = 0;
 	public int lettersDestroyed = 0;
 	private float accuracy;
-	public GameObject letterPrefab;
-	public GameObject mainCamera;
 	private const int CAMERA_ROTATION_SPEED = 5;
 	private const float PLAYER_MOVEMENT_SPEED = 2f;
-	private AudioSource cameraSoundPlayer;
+
+	// CODEBLOCK
+	public string codeBlock;
+	public string[] currentCodeBlock;
+	private TextManager textManager;
+	public GameObject currentLetter;
+
+	// GALLERY
 	public Transform[] galleryTransforms;
 	public List<GameObject> lettersForRound = new List<GameObject>();
-	public GameObject currentLetter;
-	public bool roundStarted;
+
+	// ROUNDS
 	private List<List<string>> allRounds;
+	public bool roundStarted;
+	private FiringPositionManager firingPositionManager;
+	private Transform[] firingPositions;
 
 	// UI
+	public GameObject letterPrefab;
+	public GameObject mainCamera;
 	private Text UICodeDisplay;
 	private TimerController timerController;
 
 	// SFX
+	private AudioSource cameraSoundPlayer;
 	public AudioClip[] shotClips;
 	public AudioClip reloadClip;
 	private EZCameraShake.CameraShaker cameraShaker;
@@ -40,8 +46,6 @@ public class GameManager : MonoBehaviour {
 	private ScoreController scoreController;
 	private MuzzleFlash muzzleFlasher;
 
-	private FiringPositionManager firingPositionManager;
-	private Transform[] firingPositions;
 
 	void Start () {
 		SetUpComponents();
@@ -50,7 +54,7 @@ public class GameManager : MonoBehaviour {
 		currentCodeBlock = SplitCodeblockIntoLetters();
 		allRounds = SetUpGallery(currentCodeBlock);
 		StartCoroutine(GetReady());
-		Debug.Log("Created Gallery of " + allRounds.Count() + " rounds. From codeblock of lengeth " + codeBlock.Length);
+		Debug.Log("Created Gallery of " + allRounds.Count() + " rounds. From codeblock of length " + codeBlock.Length);
 	}
 
 	IEnumerator GetReady() {
@@ -75,10 +79,8 @@ public class GameManager : MonoBehaviour {
 
 	void Update () {
 		if (!roundStarted) return;
-
 		SnapCameraToNextLetter();
 		MovePlayer();
-
 		if(Input.anyKeyDown) {
 			CheckKeyboardInput();
 		}
@@ -92,7 +94,13 @@ public class GameManager : MonoBehaviour {
 				PLAYER_MOVEMENT_SPEED*Time.deltaTime); // Must refer to PARENT of mainCamera for shake to work!!
 	}
 
-	// GALLERY
+
+	/* GALLERY GALLERY GALLERY GALLERY GALLERY GALLERY GALLERY GALLERY GALLERY GALLERY  */
+
+	private void RetrieveRandomCodeblock() {
+		// search library of code to retrieve a component
+	}
+
 	private string[] SplitCodeblockIntoLetters() {
 		string[] chars = new string[codeBlock.Length];
 		for (var i = 0; i < codeBlock.Length; i++) {
@@ -139,11 +147,11 @@ public class GameManager : MonoBehaviour {
 		accuracy = (float)scoreController.GetPoints() / codeBlock.Length;
 		// INTEGER DIVISION BEWARE!
 		streakNotifier.DisplayTextOnTopOfScreen("Accuracy: " + (((float)scoreController.GetPoints() / codeBlock.Length) * 100) + '%', 5);
-
-		// Send back to menu
+		// Send back to main menu
 	}
 
-	// ROUND
+
+	/*  ROUND ROUND ROUND ROUND ROUND ROUND ROUND ROUND ROUND ROUND  */
 	private void SetUpRound(List<List<string>> rounds) {
 		if(rounds.Count() > 0 && rounds.First() != null) {
 			InstantiateLetters(rounds.First());
@@ -170,7 +178,6 @@ public class GameManager : MonoBehaviour {
 		// play starting sound BEGIN!!
 	}
 
-
 	void EndRound() {
 		roundStarted = false;
 		if (allRounds.Count() > 0) {
@@ -182,7 +189,6 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
-	// GameLogic inside round
 	void SetCurrentLetterColor(GameObject letter) {
 		var textMesh = letter.GetComponent<TextMesh>();
 		textMesh.color = Color.red;
@@ -196,10 +202,21 @@ public class GameManager : MonoBehaviour {
 		// set current letter to lerp up and down a little!
 	}
 
-	private void RetrieveRandomCodeblock() {
-		// search library of code to retrieve a component
+	void RevealNextWave() {
+		RenderLetters();
+		PlayStreak();
+		timerController.ResetTimerAndStart(5); // Resets timer for new 'streak'
+		firingPositionManager.ToggleNextPosition();
 	}
 
+	void RenderLetters() {
+		for (var i = 0; i < 14; i++) {
+			if (lettersForRound.Count() > i)
+				lettersForRound[i].GetComponent<MeshRenderer>().enabled = true;
+		}
+	}
+
+  /* INPUT INPUT INPUT INPUT INPUT INPUT INPUT INPUT INPUT INPUT INPUT INPUT */
 	private void CheckKeyboardInput () {
 			if (Input.GetKeyDown(KeyCode.RightShift) || Input.GetKeyDown(KeyCode.LeftShift)) { return; }
 			var targetLetter = currentCodeBlock[letterPointer];
@@ -256,20 +273,6 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
-	void RevealNextWave() {
-		RenderLetters();
-		PlayStreak();
-		timerController.ResetTimerAndStart(5); // Resets timer for new 'streak'
-		firingPositionManager.ToggleNextPosition();
-	}
-
-	void RenderLetters() {
-		for (var i = 0; i < 14; i++) {
-			if (lettersForRound.Count() > i)
-				lettersForRound[i].GetComponent<MeshRenderer>().enabled = true;
-		}
-	}
-
 	void AddLetterToUI(string letter) {
 		if(letter == "SPACE") { // Prevents SPACE from appearing in top code block UI
 			UICodeDisplay.text += " ";
@@ -296,23 +299,11 @@ public class GameManager : MonoBehaviour {
 				CAMERA_ROTATION_SPEED*Time.deltaTime); // Must refer to PARENT of mainCamera for shake to work!!
 	}
 
-
-	private void incrementPoints() {
-		// incrementPoints
-	}
-
 	private void PlayStreak() {
 		streakNotifier.DisplayStreakText();
 	}
 
-	private void PlayWin() {
-		// play sound and play text animation
-	}
-
-	private void PlayLose() {
-
-	}
-
+	/* SET UP SET UP SET UP SET UP SET UP SET UP SET UP SET UP SET UP SET UP SET UP SET UP */
 	void SetUpComponents() {
 		mainCamera = GameObject.FindWithTag("MainCamera");
 		muzzleFlasher = mainCamera.GetComponentInChildren<MuzzleFlash>();

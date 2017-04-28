@@ -21,6 +21,9 @@ ExportedObj/
 *.svd
 
 *.aup
+*.au
+*.au.meta
+
 
 # Unity3D generated meta files
 *.pidb.meta
