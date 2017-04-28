@@ -25,7 +25,8 @@ public class FiringPositionManager : MonoBehaviour {
 	}
 
 	public void ToggleNextPosition() {
-		if (currentPositionIndex < firingPositions.Length) {
+		Debug.Log("next position " + currentPositionIndex + " " + firingPositions.Length);
+		if (currentPositionIndex < firingPositions.Length - 1) {
 			currentPositionIndex++;
 		} else {
 			currentPositionIndex = 0;

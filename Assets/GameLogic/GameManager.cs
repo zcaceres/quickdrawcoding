@@ -34,20 +34,11 @@ public class GameManager : MonoBehaviour {
 	private Transform[] firingPositions;
 
 	void Start () {
-		mainCamera = GameObject.FindWithTag("MainCamera");
-		muzzleFlasher = mainCamera.GetComponentInChildren<MuzzleFlash>();
-		announcer = mainCamera.GetComponentInChildren<AnnouncementManager>();
-		galleryTransforms = GameObject.Find("Gallery").GetComponent<GalleryManager>().allGalleryTransforms;
-		cameraShaker = mainCamera.GetComponent<CameraShaker>();
-		cameraSoundPlayer = mainCamera.GetComponent<AudioSource>();
-		firingPositionManager = GameObject.Find("FiringPositions").GetComponent<FiringPositionManager>();
-		firingPositions = firingPositionManager.firingPositions;
-		UICodeDisplay = GameObject.Find("Canvas").GetComponentInChildren<Text>();
-		Debug.Log(UICodeDisplay);
-		codeBlock = "private void SetUpRound(string[] codeBlock) { void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void ";
+		SetUpComponents();
+		codeBlock = "private void SetUpRound(string[] codeBlock) { void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void void ";
 		// GET ALL GALLERY TRANSFORMS HERE
-		RetrieveRandomCodeblock();
 		// get codeBlock from DB
+		RetrieveRandomCodeblock();
 		currentCodeBlock = SplitCodeblockIntoLetters();
 		allRounds = SetUpGallery(currentCodeBlock);
 		SetUpRound(allRounds);
@@ -86,6 +77,8 @@ public class GameManager : MonoBehaviour {
 		var rounds = new List<List<string>>();
 		List<string> round = new List<string>();
 		var i = 0;
+		var totalLettersProcessed = 0;
+		Debug.Log("round count" + rounds.Count() + " " + round.Count());
 		while (i < codeBlock.Length) {
 			if (round.Count() < galleryTransforms.Length) {
 				round.Add(codeBlock[i]);
@@ -95,6 +88,14 @@ public class GameManager : MonoBehaviour {
 				round.Add(codeBlock[i]);
 			}
 			i++;
+			totalLettersProcessed++;
+		}
+		/*
+			Handles edge case where codeblock string is smaller than a single round
+			through all transforms in the gallery.
+		*/
+		if (totalLettersProcessed < galleryTransforms.Length) {
+			rounds.Add(round);
 		}
 		return rounds;
 	}
@@ -107,7 +108,6 @@ public class GameManager : MonoBehaviour {
 	}
 
 	// ROUND
-	// create round
 	private void SetUpRound(List<List<string>> rounds) {
 		if(rounds.Count() > 0 && rounds.First() != null) {
 			InstantiateLetters(rounds.First());
@@ -139,7 +139,8 @@ public class GameManager : MonoBehaviour {
 		roundStarted = false;
 		if (allRounds.Count() > 0) {
 			SetUpRound(allRounds);
-			// firingPositionManager.ToggleNextPosition(); // Go to next position!
+			StartRound();
+			firingPositionManager.ToggleNextPosition(); // Go to next position!
 		} else {
 			EndGallery();
 		}
@@ -152,9 +153,6 @@ public class GameManager : MonoBehaviour {
 		textMesh.characterSize = .13f;
 		// set current letter to lerp up and down a little!
 	}
-
-
-
 
 	private void RetrieveRandomCodeblock() {
 		// search library of code to retrieve a component
@@ -205,7 +203,7 @@ public class GameManager : MonoBehaviour {
 	void RevealNextWave() {
 		RenderLetters();
 		announcer.PlayStreakSound();
-		Debug.Log("Toggling next position");
+		// Debug.Log("Toggling next position");
 		firingPositionManager.ToggleNextPosition();
 	}
 
@@ -241,6 +239,27 @@ public class GameManager : MonoBehaviour {
 
 	private void incrementPoints() {
 		// incrementPoints
+	}
+
+	// PlayStreak() // play sound and play text animation
+
+	// PlayWin() // play sound and play text animation
+
+	// PlayLose() // play sound and play text animation
+
+	// PlayReload()
+
+
+	void SetUpComponents() {
+		mainCamera = GameObject.FindWithTag("MainCamera");
+		muzzleFlasher = mainCamera.GetComponentInChildren<MuzzleFlash>();
+		announcer = mainCamera.GetComponentInChildren<AnnouncementManager>();
+		galleryTransforms = GameObject.Find("Gallery").GetComponent<GalleryManager>().allGalleryTransforms;
+		cameraShaker = mainCamera.GetComponent<CameraShaker>();
+		cameraSoundPlayer = mainCamera.GetComponent<AudioSource>();
+		firingPositionManager = GameObject.Find("FiringPositions").GetComponent<FiringPositionManager>();
+		firingPositions = firingPositionManager.firingPositions;
+		UICodeDisplay = GameObject.Find("Canvas").GetComponentInChildren<Text>();
 	}
 
 }
