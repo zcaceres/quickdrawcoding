@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using EZCameraShake;
 
 public class GameManager : MonoBehaviour {
@@ -81,6 +82,9 @@ public class GameManager : MonoBehaviour {
 	}
 
 	void Update () {
+		if (Input.GetKey(KeyCode.Escape)) {
+			SceneManager.LoadSceneAsync(0);
+		}
 		if (!roundStarted) return;
 		SnapCameraToNextLetter();
 		MovePlayer();
