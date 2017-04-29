@@ -15,6 +15,7 @@ public class DuelGameManager : MonoBehaviour {
   private List<List<string>> allRounds;
   public GameObject letterPrefab;
 
+
   // CODEBLOCK
   public string codeBlock;
   private TextManager textManager;
@@ -41,10 +42,6 @@ public class DuelGameManager : MonoBehaviour {
     currentCodeBlock = SplitCodeblockIntoLetters();
     allRounds = SetUpDuel(currentCodeBlock);
     SetUpRound(allRounds);
-
-
-    // Announce Typer Text at top of Typer's UI
-    // Announce Firerer Text at top of Firer's UI
   }
 
   private string[] SplitCodeblockIntoLetters() {
@@ -92,6 +89,26 @@ public class DuelGameManager : MonoBehaviour {
     }
   }
 
+  void EndRound() {
+    // roundStarted = false;
+    if (allRounds.Count() > 0) {
+      SetUpRound(allRounds);
+      // StartRound();
+      SwitchTurns();
+      // firingPositionManager.ToggleNextPosition(); // Go to next position!
+    } else {
+      // StartCoroutine(EndGame()); // END GAME HERE
+    }
+  }
+
+  void SwitchTurns() {
+    Debug.Log("SWITCHING TURNS");
+    currentTyperPlayerId = currentTyperPlayerId == 0 ? 1 : 0;
+    DisplayCodeOnTyperUI(currentTyperPlayerId);
+    // Announce Typer Text at top of Typer's UI
+    // Announce Firerer Text at top of Firer's UI
+  }
+
   private void InstantiateLetters(List<string> round) {
     var i = 0;
     foreach (string s in round) {
@@ -120,21 +137,12 @@ public class DuelGameManager : MonoBehaviour {
 
 
 
-
-
-
-
-
-
-
-
-
   void DisplayCodeOnTyperUI(int playerId) {
     var panelToDisplayCode = playerUIPanels[playerId];
-    UITextBlock.transform.SetParent(panelToDisplayCode.transform);
+    UITextBlock.transform.SetParent(panelToDisplayCode.transform, false);
+    panelToDisplayCode.GetComponent<Image>().enabled = true;
     DisableFirerPanel();
-    // find Player's Livecode Transform
-    // re-parent currentText block to their transform
+    // Move Current Letters to other player after delay
   }
 
   void DisableFirerPanel() {
@@ -190,11 +198,29 @@ public class DuelGameManager : MonoBehaviour {
     if(lettersForRound.Count() != 0) {
       currentLetter = lettersForRound.First();
       SetCurrentLetterColor(currentLetter);
-      if (lettersDestroyed % 14 == 0) {
-        // RevealNextWave();
-      }
+      // if (lettersDestroyed % 7 == 0) {
+      //   Debug.Log("revealing next wave");
+      //   // RevealNextWave();
+      // }
     } else {
-      // EndRound();
+      // START HERE -- we never get into this block. must figure out what to do with player turns and stuff here
+      EndRound();
+    }
+  }
+
+
+
+  void RevealNextWave() {
+    RenderLetters();
+    // PlayStreak();
+    // timerController.ResetTimerAndStart(8); // Resets timer for new 'streak'
+    // firingPositionManager.ToggleNextPosition();
+  }
+
+  void RenderLetters() {
+    for (var i = 0; i < 7; i++) {
+      if (lettersForRound.Count() > i)
+        lettersForRound[i].GetComponent<MeshRenderer>().enabled = true;
     }
   }
 
