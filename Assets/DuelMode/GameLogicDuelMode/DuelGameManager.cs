@@ -23,11 +23,13 @@ public class DuelGameManager : MonoBehaviour {
   public string[] currentCodeBlock;
   public GameObject UITextBlock;
 
-  // TYPER DISPLAY
+  // UI & TYPER DISPLAY
   private TyperDisplayController typerDisplayController;
   private TyperCurrentLettersController typerCurrentLettersController;
   public Transform[] typerTransforms;
   public List<GameObject> lettersForRound = new List<GameObject>();
+  public FireIndicatorController[] fireIndicatorControllers;
+
 
 
   void Awake() {
@@ -103,7 +105,7 @@ public class DuelGameManager : MonoBehaviour {
   private IEnumerator SwitchTurns() {
     SetCurrentTyperPlayerId();
     // DISPLAY PLAYER ROLES
-    yield return new WaitForSecondsRealtime(1);
+    yield return new WaitForSeconds(.01f); // REMOVE THIS
     DisplayCodeOnTyperUI(currentTyperPlayerId);
     // StartRound();
   }
@@ -205,38 +207,47 @@ public class DuelGameManager : MonoBehaviour {
     if(lettersForRound.Count() != 0) {
       currentLetter = lettersForRound.First();
       SetCurrentLetterColor(currentLetter);
-      // if (lettersDestroyed % 7 == 0) {
-      //   Debug.Log("revealing next wave");
-      //   // RevealNextWave();
-      // }
     } else {
-      // START HERE -- we never get into this block. must figure out what to do with player turns and stuff here
       EndRound();
     }
   }
 
 
+  // void RevealNextWave() {
+  //   RenderLetters();
+  //   // PlayStreak();
+  //   // timerController.ResetTimerAndStart(8); // Resets timer for new 'streak'
+  // }
 
-  void RevealNextWave() {
-    RenderLetters();
-    // PlayStreak();
-    // timerController.ResetTimerAndStart(8); // Resets timer for new 'streak'
-    // firingPositionManager.ToggleNextPosition();
-  }
-
-  void RenderLetters() {
-    for (var i = 0; i < 7; i++) {
-      if (lettersForRound.Count() > i)
-        lettersForRound[i].GetComponent<MeshRenderer>().enabled = true;
-    }
-  }
+  // void RenderLetters() {
+  //   for (var i = 0; i < 7; i++) {
+  //     if (lettersForRound.Count() > i)
+  //       lettersForRound[i].GetComponent<MeshRenderer>().enabled = true;
+  //   }
+  // }
 
   void AddCurrentLetterToTyperDisplayBlock(string letter) {
     typerDisplayController.SetTyperTextContent(letter);
   }
 
   void IncorrectLetter() {
-    Debug.Log("WRONG LETTER");
+    var firerID = currentTyperPlayerId == 0 ? 1 : 0;
+    StartCoroutine("DisplayOpportunityToFire", firerID);
+  }
+
+  void OpportunityToFire() {
+    // Display FIRE on proper side of screen
+    // create tiny window
+  }
+
+  IEnumerator DisplayOpportunityToFire(int firerID) {
+    DisplayFireText(firerID, true);
+    yield return new WaitForSeconds(.3f);
+    DisplayFireText(firerID, false);
+  }
+
+  void DisplayFireText(int playerId, bool toDisplay) {
+    fireIndicatorControllers[playerId].DisplayFireText(toDisplay);
   }
 
 

@@ -52,6 +52,7 @@
      <Compile Include="Assets\DuelMode\GameLogicDuelMode\DuelTextManager.cs" />
      <Compile Include="Assets\DuelMode\TyperCurrentLettersController.cs" />
      <Compile Include="Assets\DuelMode\TyperDisplayController.cs" />
+     <Compile Include="Assets\FireIndicatorController.cs" />
      <Compile Include="Assets\GameLogic\FiringPositionManager.cs" />
      <Compile Include="Assets\GameLogic\GalleryManager.cs" />
      <Compile Include="Assets\GameLogic\GameManager.cs" />
