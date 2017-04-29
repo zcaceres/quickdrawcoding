@@ -9,9 +9,11 @@ using EZCameraShake;
 
 public class DuelGameManager : MonoBehaviour {
   public int letterPointer = 0;
+	public int lettersDestroyed = 0;
   private int currentTyperPlayerId = 0;
   public GameObject[] playerUIPanels;
   private List<List<string>> allRounds;
+  public GameObject letterPrefab;
 
   // CODEBLOCK
   public string codeBlock;
@@ -23,6 +25,7 @@ public class DuelGameManager : MonoBehaviour {
   // TYPER DISPLAY
   private TyperDisplayController typerDisplayController;
   public Transform[] typerTransforms;
+  public List<GameObject> lettersForRound = new List<GameObject>();
 
 
   void Awake() {
@@ -34,12 +37,12 @@ public class DuelGameManager : MonoBehaviour {
 
   void Start() {
     // GetCodeBlockFromFile();
-    codeBlock = "private void void void "; // textManager.GetCleanCodeFileAsString();
-    DisplayCodeOnTyperUI(currentTyperPlayerId);
+    codeBlock = "private void void void void void void void void void void void void void void void void void void "; // textManager.GetCleanCodeFileAsString();
     currentCodeBlock = SplitCodeblockIntoLetters();
-    Debug.Log(currentCodeBlock.Length);
     allRounds = SetUpDuel(currentCodeBlock);
-    Debug.Log("all rounds" + allRounds.Count());
+    SetUpRound(allRounds);
+
+
     // Announce Typer Text at top of Typer's UI
     // Announce Firerer Text at top of Firer's UI
   }
@@ -81,10 +84,50 @@ public class DuelGameManager : MonoBehaviour {
     return rounds;
   }
 
-
-  void AddCurrentLetterToTyperDisplayBlock(string codeBlock) {
-    typerDisplayController.SetTyperTextContent(codeBlock);
+  /*  ROUND ROUND ROUND ROUND ROUND ROUND ROUND ROUND ROUND ROUND  */
+  private void SetUpRound(List<List<string>> rounds) {
+    if(rounds.Count() > 0 && rounds.First() != null) {
+      InstantiateLetters(rounds.First());
+      rounds.RemoveAt(0);
+    }
   }
+
+  private void InstantiateLetters(List<string> round) {
+    var i = 0;
+    foreach (string s in round) {
+      var letter = UnityEngine.Object.Instantiate(letterPrefab, typerTransforms[i++]);
+      letter.GetComponent<Text>().text = s;
+      lettersForRound.Add(letter);
+    }
+    currentLetter = lettersForRound[0];
+    SetCurrentLetterColor(currentLetter);
+  }
+
+  void SetCurrentLetterColor(GameObject letter) {
+    var textComponent = letter.GetComponent<Text>();
+    textComponent.color = Color.red;
+    textComponent.fontSize = 38;
+    if (textComponent.text == " ") {
+      textComponent.text = "SPACE";
+    }
+    else if (textComponent.text == "\n") {
+      Debug.Log("NEWLINE CHAR!");
+      // reloadNotifier.DisplayReload();
+    }
+    // set current letter to lerp up and down a little!
+  }
+
+
+
+
+
+
+
+
+
+
+
+
 
   void DisplayCodeOnTyperUI(int playerId) {
     var panelToDisplayCode = playerUIPanels[playerId];
@@ -107,7 +150,60 @@ public class DuelGameManager : MonoBehaviour {
 
   void Update() {
     // Exit KeyCode check here
+    if(Input.anyKeyDown) {
+      CheckKeyboardInput();
+    }
 
+  }
+
+  /* INPUT INPUT INPUT INPUT INPUT INPUT INPUT INPUT INPUT INPUT INPUT INPUT */
+  private void CheckKeyboardInput () {
+    	if (Input.GetKeyDown(KeyCode.RightShift) || Input.GetKeyDown(KeyCode.LeftShift)) { return; }
+    	var targetLetter = currentCodeBlock[letterPointer];
+    	if (Input.inputString == targetLetter) {
+    		// if (Input.inputString == "\n") {
+    		// 	PlayReloadSound();
+    		// 	ShotHit();
+    		// } else {
+    		// 	PlayShotShakeAnim();
+    		// 	PlayShotHitSound();
+    			CorrectLetter();
+    		// }
+    	} else {
+    		IncorrectLetter();
+    	}
+    return;
+  }
+
+
+  //If out of time, let other player execute typer :)
+
+  void CorrectLetter() {
+    // scoreController.AddPoint();
+    // currentLetter.GetComponent<GenerateHitOrMiss>().GenerateHitPrefab();
+    AddCurrentLetterToTyperDisplayBlock(currentLetter.GetComponent<Text>().text);
+    // if (reloadNotifier.isDisplayed()) reloadNotifier.HideReload(); // Makes sure Reload is toggled off after hitting a space
+    Destroy(currentLetter);
+    letterPointer++;
+    lettersDestroyed++;
+    lettersForRound.RemoveAt(0);
+    if(lettersForRound.Count() != 0) {
+      currentLetter = lettersForRound.First();
+      SetCurrentLetterColor(currentLetter);
+      if (lettersDestroyed % 14 == 0) {
+        // RevealNextWave();
+      }
+    } else {
+      // EndRound();
+    }
+  }
+
+  void AddCurrentLetterToTyperDisplayBlock(string letter) {
+    typerDisplayController.SetTyperTextContent(letter);
+  }
+
+  void IncorrectLetter() {
+    Debug.Log("WRONG LETTER");
   }
 
 
