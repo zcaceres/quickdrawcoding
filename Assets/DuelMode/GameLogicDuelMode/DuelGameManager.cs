@@ -16,7 +16,8 @@ public class DuelGameManager : MonoBehaviour {
   public GameObject letterPrefab;
   private bool isFiringOpportunityForFirer;
   private bool isFiringOpportunityForTyper;
-
+  private bool roundStarted;
+  private bool gameOver;
 
   // CODEBLOCK
   public string codeBlock;
@@ -31,7 +32,7 @@ public class DuelGameManager : MonoBehaviour {
   public Transform[] typerTransforms;
   public List<GameObject> lettersForRound = new List<GameObject>();
   public FireIndicatorController[] fireIndicatorControllers;
-
+  public RoleIndicatorController[] roleIndicatorControllers;
 
 
   void Awake() {
@@ -42,11 +43,24 @@ public class DuelGameManager : MonoBehaviour {
   }
 
   void Start() {
+    roundStarted = false;
     // GetCodeBlockFromFile();
     codeBlock = "private void void void void void void void void void void void void void void void void void void "; // textManager.GetCleanCodeFileAsString();
     currentCodeBlock = SplitCodeblockIntoLetters();
     allRounds = SetUpDuel(currentCodeBlock);
+    StartCoroutine(GetReady());
+  }
+
+  IEnumerator GetReady() {
+    roleIndicatorControllers[currentTyperPlayerId].ShowPrepareToType();
+    roleIndicatorControllers[GetFirerPlayerId()].ShowPrepareToFire();
+    yield return new WaitForSeconds(2); // REMOVE THIS
+    roleIndicatorControllers[currentTyperPlayerId].HideRoleText();
+    roleIndicatorControllers[GetFirerPlayerId()].HideRoleText();
+    yield return new WaitForSeconds(1);
+    DisplayCodeOnTyperUI(currentTyperPlayerId);
     SetUpRound(allRounds);
+    StartRound();
   }
 
   private string[] SplitCodeblockIntoLetters() {
@@ -94,8 +108,12 @@ public class DuelGameManager : MonoBehaviour {
     }
   }
 
+  void StartRound() {
+    roundStarted = true;
+  }
+
   void EndRound() {
-    // roundStarted = false;
+    roundStarted = false;
     if (allRounds.Count() > 0) {
       SetUpRound(allRounds);
       StartCoroutine("SwitchTurns");
@@ -105,19 +123,27 @@ public class DuelGameManager : MonoBehaviour {
   }
 
   private IEnumerator SwitchTurns() {
+    HideCodeOnTyperUI(currentTyperPlayerId);
     SetCurrentTyperPlayerId();
-    // DISPLAY PLAYER ROLES
-    yield return new WaitForSeconds(.01f); // REMOVE THIS
+    roleIndicatorControllers[currentTyperPlayerId].ShowPrepareToType();
+    roleIndicatorControllers[GetFirerPlayerId()].ShowPrepareToFire();
+    yield return new WaitForSeconds(3);
+    roleIndicatorControllers[currentTyperPlayerId].HideRoleText();
+    roleIndicatorControllers[GetFirerPlayerId()].HideRoleText();
     DisplayCodeOnTyperUI(currentTyperPlayerId);
-    // StartRound();
+    StartRound();
   }
 
 
-  void SetCurrentTyperPlayerId() {
+  private void SetCurrentTyperPlayerId() {
     currentTyperPlayerId = currentTyperPlayerId == 0 ? 1 : 0;
   }
 
-  void DisplayPlayerRoles() {
+  private int GetFirerPlayerId() {
+    return currentTyperPlayerId == 0 ? 1 : 0;
+  }
+
+  private void DisplayPlayerRoles() {
     // Announce Typer Text at top of Typer's UI
     // Announce Firerer Text at top of Firer's UI
   }
@@ -151,23 +177,27 @@ public class DuelGameManager : MonoBehaviour {
   void DisplayCodeOnTyperUI(int playerId) {
     var panelToDisplayCode = playerUIPanels[playerId];
     UITextBlock.transform.SetParent(panelToDisplayCode.transform, false);
+    panelToDisplayCode.SetActive(true);
     panelToDisplayCode.GetComponent<Image>().enabled = true;
     typerCurrentLettersController.transform.SetParent(panelToDisplayCode.transform, false);
-    DisableFirerPanel();
+    typerCurrentLettersController.gameObject.SetActive(true);
   }
 
-  void DisableFirerPanel() {
-    var panelToDisableIndex = (currentTyperPlayerId == 0 ? 1 : 0);
-    playerUIPanels[panelToDisableIndex].GetComponent<Image>().enabled = false;
+  void HideCodeOnTyperUI(int playerId) {
+    var panelToDisplayCode = playerUIPanels[playerId];
+    typerCurrentLettersController.gameObject.SetActive(false);
+    panelToDisplayCode.GetComponent<Image>().enabled = false;
+    panelToDisplayCode.SetActive(false);
   }
 
   void EndGame() {
-    //
+    // Draw();
     // if code block is complete, trigger DRAW
-
   }
 
   void Update() {
+    if(gameOver) return;//GAMEOVER CHECK TOO
+    if(!roundStarted) return;
     // Exit KeyCode check here
     if(Input.anyKeyDown) {
       CheckMouseInput();
@@ -189,7 +219,7 @@ public class DuelGameManager : MonoBehaviour {
   /* INPUT INPUT INPUT INPUT INPUT INPUT INPUT INPUT INPUT INPUT INPUT INPUT */
   private void CheckKeyboardInput () {
     	if (Input.GetKeyDown(KeyCode.Mouse0) || Input.GetKeyDown(KeyCode.RightShift) || Input.GetKeyDown(KeyCode.LeftShift)) { return; }
-      if (Input.GetKeyDown(Key Code.Space) && isFiringOpportunityForTyper) {
+      if (Input.GetKeyDown(KeyCode.Space) && isFiringOpportunityForTyper) {
         KillFirer();
       }
     	var targetLetter = currentCodeBlock[letterPointer];
@@ -208,8 +238,9 @@ public class DuelGameManager : MonoBehaviour {
     return;
   }
 
-
   //If out of time, let other player execute typer :)
+  // SHOW FAIL
+  // trigger fire opportunity for Firer
 
   void CorrectLetter() {
     // scoreController.AddPoint();
@@ -250,16 +281,24 @@ public class DuelGameManager : MonoBehaviour {
   }
 
   IEnumerator DisplayOpportunityToFire(int playerId) {
+    CheckWhoFired(playerId);
+    DisplayFireText(playerId, true);
+    yield return new WaitForSeconds(.2f); // TODO: optimize display time here
+    ResetFiringOpportunities();
+    DisplayFireText(playerId, false);
+  }
+
+  void CheckWhoFired(int playerId) {
     if (playerId != currentTyperPlayerId) {
       isFiringOpportunityForFirer = true;
     } else {
       isFiringOpportunityForTyper = true;
     }
-    DisplayFireText(playerId, true);
-    yield return new WaitForSeconds(.3f);
+  }
+
+  void ResetFiringOpportunities() {
     isFiringOpportunityForFirer = false;
     isFiringOpportunityForTyper = false;
-    DisplayFireText(playerId, false);
   }
 
   void DisplayFireText(int playerId, bool toDisplay) {

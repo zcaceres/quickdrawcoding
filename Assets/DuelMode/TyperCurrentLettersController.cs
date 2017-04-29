@@ -5,7 +5,7 @@ using UnityEngine;
 public class TyperCurrentLettersController : MonoBehaviour {
 	public Transform[] roundLetterTransforms;
 
-	void Awake () {
+	void Awake() {
 		Transform[] childTransforms = gameObject.GetComponentsInChildren<Transform>();
 		roundLetterTransforms = new Transform[childTransforms.Length - 1];
 		for (var i = 0; i < childTransforms.Length - 1; i++) {

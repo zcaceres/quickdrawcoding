@@ -59,6 +59,7 @@
      <Compile Include="Assets\GameLogic\SetGalleryAsParent.cs" />
      <Compile Include="Assets\GameLogic\StreakController.cs" />
      <Compile Include="Assets\GameLogic\TextManager.cs" />
+     <Compile Include="Assets\RoleIndicatorController.cs" />
      <Compile Include="Assets\SFX\CameraLerpController.cs" />
      <Compile Include="Assets\SFX\FlyOffAnimation.cs" />
      <Compile Include="Assets\SFX\GenerateHitOrMiss.cs" />
