@@ -48,17 +48,21 @@
   <ItemGroup>
      <Compile Include="Assets\Audio\AnnouncementManager.cs" />
      <Compile Include="Assets\Audio\AudioManager.cs" />
+     <Compile Include="Assets\DuelMode\GameLogicDuelMode\DuelGameManager.cs" />
+     <Compile Include="Assets\DuelMode\GameLogicDuelMode\DuelTextManager.cs" />
+     <Compile Include="Assets\DuelMode\TyperCurrentLettersController.cs" />
+     <Compile Include="Assets\DuelMode\TyperDisplayController.cs" />
      <Compile Include="Assets\GameLogic\FiringPositionManager.cs" />
      <Compile Include="Assets\GameLogic\GalleryManager.cs" />
      <Compile Include="Assets\GameLogic\GameManager.cs" />
      <Compile Include="Assets\GameLogic\SetGalleryAsParent.cs" />
      <Compile Include="Assets\GameLogic\StreakController.cs" />
      <Compile Include="Assets\GameLogic\TextManager.cs" />
-     <Compile Include="Assets\Prefabs\ReloadController.cs" />
      <Compile Include="Assets\SFX\CameraLerpController.cs" />
      <Compile Include="Assets\SFX\FlyOffAnimation.cs" />
      <Compile Include="Assets\SFX\GenerateHitOrMiss.cs" />
      <Compile Include="Assets\SFX\MuzzleFlash.cs" />
+     <Compile Include="Assets\SFX\ReloadController.cs" />
      <Compile Include="Assets\SFX\ScoreController.cs" />
      <Compile Include="Assets\ThirdParty\EZ Camera Shake\Scripts\CameraShakeInstance.cs" />
      <Compile Include="Assets\ThirdParty\EZ Camera Shake\Scripts\CameraShakePresets.cs" />
@@ -80,6 +84,7 @@
      <None Include="Assets\TextFiles\seedTwo.txt" />
      <None Include="Assets\ThirdParty\Game Jam Template\Fonts\OpenSans\License!.txt" />
      <None Include="Assets\Fonts\LICENSE-readme-first.txt" />
+     <None Include="Assets\Plugins\RavingBots.MultiInput.xml" />
      <None Include="Assets\TextFiles\seedFour.txt" />
      <None Include="Assets\ThirdParty\Game Jam Template\GameJamTemplateReadMe.txt" />
  <Reference Include="UnityEngine.UI">
@@ -102,6 +107,12 @@
  </Reference>
  <Reference Include="UnityEngine.VR">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UnityVR/RuntimeEditor/UnityEngine.VR.dll</HintPath>
+ </Reference>
+ <Reference Include="RavingBots.MultiInput">
+ <HintPath>/Users/zachcaceres/Documents/GitHub/Fullstack/Stackathon/QuickDrawJavascript/Assets/Plugins/RavingBots.MultiInput.dll</HintPath>
+ </Reference>
+ <Reference Include="RavingBots.MultiInput.Editor">
+ <HintPath>/Users/zachcaceres/Documents/GitHub/Fullstack/Stackathon/QuickDrawJavascript/Assets/Plugins/RavingBots.MultiInput.Editor.dll</HintPath>
  </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
