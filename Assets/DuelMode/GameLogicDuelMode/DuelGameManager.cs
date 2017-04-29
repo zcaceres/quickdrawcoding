@@ -94,18 +94,26 @@ public class DuelGameManager : MonoBehaviour {
     // roundStarted = false;
     if (allRounds.Count() > 0) {
       SetUpRound(allRounds);
-      // StartRound();
-      SwitchTurns();
-      // firingPositionManager.ToggleNextPosition(); // Go to next position!
+      StartCoroutine("SwitchTurns");
     } else {
       // StartCoroutine(EndGame()); // END GAME HERE
     }
   }
 
-  void SwitchTurns() {
-    Debug.Log("SWITCHING TURNS");
-    currentTyperPlayerId = currentTyperPlayerId == 0 ? 1 : 0;
+  private IEnumerator SwitchTurns() {
+    SetCurrentTyperPlayerId();
+    // DISPLAY PLAYER ROLES
+    yield return new WaitForSecondsRealtime(1);
     DisplayCodeOnTyperUI(currentTyperPlayerId);
+    // StartRound();
+  }
+
+
+  void SetCurrentTyperPlayerId() {
+    currentTyperPlayerId = currentTyperPlayerId == 0 ? 1 : 0;
+  }
+
+  void DisplayPlayerRoles() {
     // Announce Typer Text at top of Typer's UI
     // Announce Firerer Text at top of Firer's UI
   }
@@ -126,7 +134,7 @@ public class DuelGameManager : MonoBehaviour {
     textComponent.color = Color.red;
     textComponent.fontSize = 38;
     if (textComponent.text == " ") {
-      textComponent.text = "SPACE";
+      textComponent.text = " "; // TODO: Change to a better character
     }
     else if (textComponent.text == "\n") {
       Debug.Log("NEWLINE CHAR!");
@@ -136,15 +144,12 @@ public class DuelGameManager : MonoBehaviour {
   }
 
 
-
-
   void DisplayCodeOnTyperUI(int playerId) {
     var panelToDisplayCode = playerUIPanels[playerId];
     UITextBlock.transform.SetParent(panelToDisplayCode.transform, false);
     panelToDisplayCode.GetComponent<Image>().enabled = true;
     typerCurrentLettersController.transform.SetParent(panelToDisplayCode.transform, false);
     DisableFirerPanel();
-    // Move Current Letters to other player after delay
   }
 
   void DisableFirerPanel() {
