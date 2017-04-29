@@ -14,6 +14,8 @@ public class DuelGameManager : MonoBehaviour {
   public GameObject[] playerUIPanels;
   private List<List<string>> allRounds;
   public GameObject letterPrefab;
+  private bool isFiringOpportunityForFirer;
+  private bool isFiringOpportunityForTyper;
 
 
   // CODEBLOCK
@@ -168,14 +170,28 @@ public class DuelGameManager : MonoBehaviour {
   void Update() {
     // Exit KeyCode check here
     if(Input.anyKeyDown) {
+      CheckMouseInput();
       CheckKeyboardInput();
     }
 
   }
 
+  private void CheckMouseInput() {
+    if(Input.GetKeyDown(KeyCode.Mouse0)) {
+      if(isFiringOpportunityForFirer) {
+        KillTyper();
+      } else {
+        IncorrectClick();
+      }
+    }
+  }
+
   /* INPUT INPUT INPUT INPUT INPUT INPUT INPUT INPUT INPUT INPUT INPUT INPUT */
   private void CheckKeyboardInput () {
-    	if (Input.GetKeyDown(KeyCode.RightShift) || Input.GetKeyDown(KeyCode.LeftShift)) { return; }
+    	if (Input.GetKeyDown(KeyCode.Mouse0) || Input.GetKeyDown(KeyCode.RightShift) || Input.GetKeyDown(KeyCode.LeftShift)) { return; }
+      if (Input.GetKeyDown(Key Code.Space) && isFiringOpportunityForTyper) {
+        KillFirer();
+      }
     	var targetLetter = currentCodeBlock[letterPointer];
     	if (Input.inputString == targetLetter) {
     		// if (Input.inputString == "\n") {
@@ -212,19 +228,13 @@ public class DuelGameManager : MonoBehaviour {
     }
   }
 
+  private void KillTyper() {
+    Debug.Log("killed typer!");
+  }
 
-  // void RevealNextWave() {
-  //   RenderLetters();
-  //   // PlayStreak();
-  //   // timerController.ResetTimerAndStart(8); // Resets timer for new 'streak'
-  // }
-
-  // void RenderLetters() {
-  //   for (var i = 0; i < 7; i++) {
-  //     if (lettersForRound.Count() > i)
-  //       lettersForRound[i].GetComponent<MeshRenderer>().enabled = true;
-  //   }
-  // }
+  private void KillFirer() {
+    Debug.Log("Killed firer");
+  }
 
   void AddCurrentLetterToTyperDisplayBlock(string letter) {
     typerDisplayController.SetTyperTextContent(letter);
@@ -235,15 +245,21 @@ public class DuelGameManager : MonoBehaviour {
     StartCoroutine("DisplayOpportunityToFire", firerID);
   }
 
-  void OpportunityToFire() {
-    // Display FIRE on proper side of screen
-    // create tiny window
+  void IncorrectClick() {
+    StartCoroutine("DisplayOpportunityToFire", currentTyperPlayerId);
   }
 
-  IEnumerator DisplayOpportunityToFire(int firerID) {
-    DisplayFireText(firerID, true);
+  IEnumerator DisplayOpportunityToFire(int playerId) {
+    if (playerId != currentTyperPlayerId) {
+      isFiringOpportunityForFirer = true;
+    } else {
+      isFiringOpportunityForTyper = true;
+    }
+    DisplayFireText(playerId, true);
     yield return new WaitForSeconds(.3f);
-    DisplayFireText(firerID, false);
+    isFiringOpportunityForFirer = false;
+    isFiringOpportunityForTyper = false;
+    DisplayFireText(playerId, false);
   }
 
   void DisplayFireText(int playerId, bool toDisplay) {
