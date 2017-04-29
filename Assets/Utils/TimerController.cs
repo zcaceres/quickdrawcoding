@@ -5,17 +5,24 @@ using UnityEngine.UI;
 
 public class TimerController : MonoBehaviour {
 	Text timerText;
+	public int timeRemaining;
+
+	void Awake() {
+		timeRemaining = 10;
+	}
 
 	void Start () {
 		timerText = transform.Find("Time").GetComponent<Text>();
 	}
 
 	public void StartTime(int duration) {
-		StartCoroutine(Countdown(duration));
+		// Must use named coroutine so StopCoroutine() invokes on correct IEnumerator instance below!
+		StartCoroutine("Countdown", duration);
 	}
 
 	public void ResetTimerAndStart(int duration) {
 		ClearTime();
+		timeRemaining = duration;
 		StartTime(duration);
 	}
 
@@ -26,6 +33,7 @@ public class TimerController : MonoBehaviour {
 	}
 
 	public void StopTime() {
+		timeRemaining = 1; // Prevents defeat from playing on a win!
 		StopCoroutine("Countdown");
 	}
 
@@ -35,6 +43,7 @@ public class TimerController : MonoBehaviour {
 			if (i <= 2) {
 				timerText.color = Color.red;
 			}
+			timeRemaining = i;
 			yield return new WaitForSecondsRealtime(1);
 		}
 	}

@@ -23,7 +23,7 @@ MonoBehaviour:
   m_MinSize: {x: 683, y: 495}
   m_MaxSize: {x: 14004, y: 14045}
   vertical: 0
-  controlID: 5151
+  controlID: 7160
 --- !u!114 &2
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -123,7 +123,7 @@ MonoBehaviour:
   m_MinSize: {x: 406, y: 495}
   m_MaxSize: {x: 10002, y: 14045}
   vertical: 1
-  controlID: 5152
+  controlID: 7161
 --- !u!114 &4
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -147,7 +147,7 @@ MonoBehaviour:
   m_MinSize: {x: 406, y: 224}
   m_MaxSize: {x: 8006, y: 4024}
   vertical: 0
-  controlID: 5153
+  controlID: 7162
 --- !u!114 &5
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -166,8 +166,8 @@ MonoBehaviour:
     y: 0
     width: 315
     height: 708
-  m_MinSize: {x: 200, y: 200}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 202, y: 224}
+  m_MaxSize: {x: 4002, y: 4024}
   m_ActualView: {fileID: 6}
   m_Panes:
   - {fileID: 6}
@@ -200,24 +200,24 @@ MonoBehaviour:
     width: 313
     height: 687
   m_TreeViewState:
-    scrollPos: {x: 0, y: 1602}
-    m_SelectedIDs: 
-    m_LastClickedID: 0
-    m_ExpandedIDs: 08c9feffd6fbffff00000000be5e00000c6000005e600000c2600000
+    scrollPos: {x: 0, y: 0}
+    m_SelectedIDs: 38610000
+    m_LastClickedID: 24888
+    m_ExpandedIDs: 08c9feffd6fbffff00000000be5e00000c6000005e600000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
-      m_Name: Position
-      m_OriginalName: Position
+      m_Name: 
+      m_OriginalName: 
       m_EditFieldRect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 0
         height: 0
-      m_UserData: 24922
+      m_UserData: 0
       m_IsWaitingForDelay: 0
       m_IsRenaming: 0
-      m_OriginalEventType: 4
+      m_OriginalEventType: 11
       m_IsRenamingFilename: 0
       m_ClientGUIView: {fileID: 5}
     m_SearchString: 
@@ -311,7 +311,7 @@ MonoBehaviour:
   m_Rotation:
     m_Target: {x: -0.22032057, y: -0.51727337, z: 0.13982369, w: -0.8150683}
     speed: 2
-    m_Value: {x: -0.22032058, y: -0.5172734, z: 0.1398237, w: -0.81506836}
+    m_Value: {x: 0.22032057, y: 0.5172734, z: -0.13982369, w: 0.8150683}
   m_Size:
     m_Target: 22
     speed: 2
@@ -415,18 +415,18 @@ MonoBehaviour:
     m_ShowAllHits: 0
     m_SearchArea: 0
     m_Folders:
-    - Assets/Audio/AudioFiles
+    - Assets/Audio/AudioFiles/Duel
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Audio/AudioFiles
+  - Assets/Audio/AudioFiles/Duel
   m_LastFoldersGridSize: -1
   m_LastProjectPath: /Users/zachcaceres/Documents/GitHub/Fullstack/Stackathon/QuickDrawJavascript
   m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 52.000427}
-    m_SelectedIDs: 10270000
-    m_LastClickedID: 10000
+    m_SelectedIDs: 24070100
+    m_LastClickedID: 67364
     m_ExpandedIDs: 00000000722500001027000096270000d42800009c290000662f000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -480,8 +480,8 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: 
-    m_LastClickedInstanceID: 0
+    m_SelectedInstanceIDs: 38610000
+    m_LastClickedInstanceID: 24888
     m_HadKeyboardFocusLastEvent: 0
     m_ExpandedInstanceIDs: e62a00009a2500000c250000a6250000aa2500009e2500008825000000000000
     m_RenameOverlay:
@@ -554,8 +554,8 @@ MonoBehaviour:
     y: 0
     width: 537
     height: 1030
-  m_MinSize: {x: 275, y: 50}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 277, y: 74}
+  m_MaxSize: {x: 4002, y: 4024}
   m_ActualView: {fileID: 14}
   m_Panes:
   - {fileID: 14}

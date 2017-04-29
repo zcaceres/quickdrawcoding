@@ -40,6 +40,7 @@ public class GameManager : MonoBehaviour {
 	private AudioSource reloadSoundPlayer;
 	public AudioSource hitGunshotSoundPlayer;
 	public AudioSource missGunshotSoundPlayer;
+	public AudioSource bellTollSoundPlayer;
 	public AudioClip[] shotClips;
 	public AudioClip reloadClip;
 	private EZCameraShake.CameraShaker cameraShaker;
@@ -48,6 +49,7 @@ public class GameManager : MonoBehaviour {
 	private StreakController streakNotifier;
 	private ScoreController scoreController;
 	private MuzzleFlash muzzleFlasher;
+	private bool gameOver = false;
 
 
 	void Start () {
@@ -82,8 +84,15 @@ public class GameManager : MonoBehaviour {
 	}
 
 	void Update () {
-		if (Input.GetKey(KeyCode.Escape)) {
+		if (Input.GetKeyDown(KeyCode.Escape)) {
 			SceneManager.LoadSceneAsync(0);
+		}
+		if (gameOver) return;
+		Debug.Log(timerController.timeRemaining + " time remaining");
+		if (timerController.timeRemaining == 0) {
+			Debug.Log("inside timercontroller block");
+			gameOver = true;
+			StartCoroutine(Defeat());
 		}
 		if (!roundStarted) return;
 		SnapCameraToNextLetter();
@@ -144,6 +153,15 @@ public class GameManager : MonoBehaviour {
 		return rounds;
 	}
 
+	private IEnumerator Defeat() {
+		timerController.StopTime();
+		PlayBellToll();
+		streakNotifier.DisplayTextOnTopOfScreen("DEFEAT", 5);
+		yield return new WaitForSecondsRealtime(4);
+		streakNotifier.DisplayTextOnTopOfScreen("Press Escape to Try Again", 5);
+		yield return new WaitForSecondsRealtime(5);
+	}
+
 	private IEnumerator EndGallery() {
 		timerController.StopTime();
 		announcer.PlayWinSound();
@@ -182,10 +200,8 @@ public class GameManager : MonoBehaviour {
 
 	public void StartRound() {
 		roundStarted = true;
-		timerController.ResetTimerAndStart(10);
+		timerController.ResetTimerAndStart(8);
 		RenderLetters();
-		// letters lerp from ground
-		// play starting sound BEGIN!!
 	}
 
 	void EndRound() {
@@ -215,7 +231,7 @@ public class GameManager : MonoBehaviour {
 	void RevealNextWave() {
 		RenderLetters();
 		PlayStreak();
-		timerController.ResetTimerAndStart(10); // Resets timer for new 'streak'
+		timerController.ResetTimerAndStart(8); // Resets timer for new 'streak'
 		firingPositionManager.ToggleNextPosition();
 	}
 
@@ -245,9 +261,12 @@ public class GameManager : MonoBehaviour {
 		return;
 	}
 
-	void PlayReloadSound () {
-		// reloadSoundPlayer.clip = reloadClip;
+	void PlayReloadSound() {
 		reloadSoundPlayer.Play();
+	}
+
+	void PlayBellToll() {
+		bellTollSoundPlayer.Play();
 	}
 
 	void PlayShotShakeAnim() {
