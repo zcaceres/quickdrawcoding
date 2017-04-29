@@ -25,14 +25,15 @@ public class DuelGameManager : MonoBehaviour {
 
   // TYPER DISPLAY
   private TyperDisplayController typerDisplayController;
+  private TyperCurrentLettersController typerCurrentLettersController;
   public Transform[] typerTransforms;
   public List<GameObject> lettersForRound = new List<GameObject>();
 
 
   void Awake() {
     typerDisplayController = UITextBlock.GetComponent<TyperDisplayController>();
-    typerTransforms = GameObject.Find("CurrentLettersDisplay")
-      .GetComponent<TyperCurrentLettersController>().roundLetterTransforms;
+    typerCurrentLettersController = GameObject.Find("CurrentLettersDisplay").GetComponent<TyperCurrentLettersController>();
+    typerTransforms = typerCurrentLettersController.roundLetterTransforms;
 
   }
 
@@ -141,6 +142,7 @@ public class DuelGameManager : MonoBehaviour {
     var panelToDisplayCode = playerUIPanels[playerId];
     UITextBlock.transform.SetParent(panelToDisplayCode.transform, false);
     panelToDisplayCode.GetComponent<Image>().enabled = true;
+    typerCurrentLettersController.transform.SetParent(panelToDisplayCode.transform, false);
     DisableFirerPanel();
     // Move Current Letters to other player after delay
   }
