@@ -51,7 +51,7 @@ public class GameManager : MonoBehaviour {
 
 	void Start () {
 		SetUpComponents();
-		codeBlock = textManager.GetCleanCodeFileAsString(); // "private void void void ";
+		codeBlock = textManager.GetCleanCodeFileAsString(); //"private void void void ";
 		RetrieveRandomCodeblock();
 		currentCodeBlock = SplitCodeblockIntoLetters();
 		allRounds = SetUpGallery(currentCodeBlock);
@@ -105,6 +105,7 @@ public class GameManager : MonoBehaviour {
 	}
 
 	private string[] SplitCodeblockIntoLetters() {
+		Debug.Log("inside split code block into letters");
 		string[] chars = new string[codeBlock.Length];
 		for (var i = 0; i < codeBlock.Length; i++) {
 			chars[i] = codeBlock[i].ToString();
