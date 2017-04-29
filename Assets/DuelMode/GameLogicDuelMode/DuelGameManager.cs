@@ -26,8 +26,9 @@ public class DuelGameManager : MonoBehaviour {
   public string[] currentCodeBlock;
   public GameObject UITextBlock;
 
-  // Audio
+  // AUDIO
   public DuelAudioManager duelAudioManager;
+  public AudioSource ambientMusic;
 
   // UI & TYPER DISPLAY
   private TyperDisplayController typerDisplayController;
@@ -37,18 +38,25 @@ public class DuelGameManager : MonoBehaviour {
   public FireIndicatorController[] fireIndicatorControllers;
   public RoleIndicatorController[] roleIndicatorControllers;
   public DeathIndicatorController[] deathIndicatorControllers;
+  public WinIndicatorController[] winIndicatorControllers;
+  private ReloadController reloadNotifier;
+
+  // TIMER
+  private TimerController timerController;
 
 
   void Awake() {
     typerDisplayController = UITextBlock.GetComponent<TyperDisplayController>();
     typerCurrentLettersController = GameObject.Find("CurrentLettersDisplay").GetComponent<TyperCurrentLettersController>();
     typerTransforms = typerCurrentLettersController.roundLetterTransforms;
-
+    reloadNotifier = GameObject.Find("Canvas/BottomNotification").GetComponentInChildren<ReloadController>();
+    timerController = GameObject.Find("Canvas/Timer").GetComponent<TimerController>();
   }
 
   void Start() {
     roundStarted = false;
     // GetCodeBlockFromFile();
+    // Get large sample without newlines for demo!
     codeBlock = "private void void void void void void void void void void void void void void void void void void "; // textManager.GetCleanCodeFileAsString();
     currentCodeBlock = SplitCodeblockIntoLetters();
     allRounds = SetUpDuel(currentCodeBlock);
@@ -56,12 +64,13 @@ public class DuelGameManager : MonoBehaviour {
   }
 
   IEnumerator GetReady() {
+    ambientMusic.Play();
     roleIndicatorControllers[currentTyperPlayerId].ShowPrepareToType();
     roleIndicatorControllers[GetFirerPlayerId()].ShowPrepareToFire();
-    yield return new WaitForSeconds(2); // REMOVE THIS
+    yield return new WaitForSeconds(4);
     roleIndicatorControllers[currentTyperPlayerId].HideRoleText();
     roleIndicatorControllers[GetFirerPlayerId()].HideRoleText();
-    yield return new WaitForSeconds(1);
+    yield return new WaitForSeconds(2);
     DisplayCodeOnTyperUI(currentTyperPlayerId);
     SetUpRound(allRounds);
     StartRound();
@@ -114,10 +123,12 @@ public class DuelGameManager : MonoBehaviour {
 
   void StartRound() {
     roundStarted = true;
+    timerController.ResetTimerAndStart(8);
   }
 
   void EndRound() {
     roundStarted = false;
+    timerController.StopTime();
     if (allRounds.Count() > 0) {
       SetUpRound(allRounds);
       StartCoroutine("SwitchTurns");
@@ -172,7 +183,7 @@ public class DuelGameManager : MonoBehaviour {
     }
     else if (textComponent.text == "\n") {
       Debug.Log("NEWLINE CHAR!");
-      // reloadNotifier.DisplayReload();
+      reloadNotifier.DisplayReload();
     }
     // set current letter to lerp up and down a little!
   }
@@ -196,15 +207,25 @@ public class DuelGameManager : MonoBehaviour {
 
   void EndGame() {
     gameOver = true;
+    timerController.StopTime();
     Debug.Log("GAME OVER " + gameOver);
     // Draw();
     // if code block is complete, trigger DRAW
   }
 
   void Update() {
-    if(gameOver) return;//GAMEOVER CHECK TOO
+    if(gameOver) return;
     if(!roundStarted) return;
-    // Exit KeyCode check here
+
+    if(timerController.timeRemaining == 0) {
+      gameOver = true;
+      KillTyper(); // Make execution sequence here
+    }
+
+    // if (Input.GetKeyDown(KeyCode.Escape)) {
+    //   SceneManager.LoadSceneAsync(0);
+    // }
+
     if(Input.anyKeyDown) {
       CheckMouseInput();
       CheckKeyboardInput();
@@ -228,16 +249,18 @@ public class DuelGameManager : MonoBehaviour {
       if (Input.GetKeyDown(KeyCode.Space) && isFiringOpportunityForTyper) {
         KillFirer();
       }
+      duelAudioManager.PlayTypewriter();
     	var targetLetter = currentCodeBlock[letterPointer];
     	if (Input.inputString == targetLetter) {
-    		// if (Input.inputString == "\n") {
+    		if (Input.inputString == "\n") {
     		// 	PlayReloadSound();
     		// 	ShotHit();
-    		// } else {
+          CorrectLetter();
+    		} else {
     		// 	PlayShotShakeAnim();
     		// 	PlayShotHitSound();
     			CorrectLetter();
-    		// }
+    		}
     	} else {
     		IncorrectLetter();
     	}
@@ -252,7 +275,7 @@ public class DuelGameManager : MonoBehaviour {
     // scoreController.AddPoint();
     // currentLetter.GetComponent<GenerateHitOrMiss>().GenerateHitPrefab();
     AddCurrentLetterToTyperDisplayBlock(currentLetter.GetComponent<Text>().text);
-    // if (reloadNotifier.isDisplayed()) reloadNotifier.HideReload(); // Makes sure Reload is toggled off after hitting a space
+    if (reloadNotifier.isDisplayed()) reloadNotifier.HideReload(); // Makes sure Reload is toggled off after hitting a space
     Destroy(currentLetter);
     letterPointer++;
     lettersDestroyed++;
@@ -280,6 +303,9 @@ public class DuelGameManager : MonoBehaviour {
     yield return new WaitForSeconds(.2f);
     duelAudioManager.PlayBell();
     deathIndicatorControllers[playerId].ShowDeathScreen();
+    var otherPlayer = playerId == 0 ? 1 : 0;
+    winIndicatorControllers[otherPlayer].ShowWinText();
+    EndGame();
   }
 
   void AddCurrentLetterToTyperDisplayBlock(string letter) {

@@ -52,7 +52,6 @@ public class GameManager : MonoBehaviour {
 	private MuzzleFlash muzzleFlasher;
 	private bool gameOver = false;
 
-
 	void Start () {
 		SetUpComponents();
 		codeBlock = textManager.GetCleanCodeFileAsString(); //"private void void void ";

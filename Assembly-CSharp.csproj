@@ -48,19 +48,20 @@
   <ItemGroup>
      <Compile Include="Assets\Audio\AnnouncementManager.cs" />
      <Compile Include="Assets\Audio\DuelAudioManager.cs" />
-     <Compile Include="Assets\DeathIndicatorController.cs" />
+     <Compile Include="Assets\DuelMode\DeathIndicatorController.cs" />
+     <Compile Include="Assets\DuelMode\FireIndicatorController.cs" />
      <Compile Include="Assets\DuelMode\GameLogicDuelMode\DuelGameManager.cs" />
      <Compile Include="Assets\DuelMode\GameLogicDuelMode\DuelTextManager.cs" />
+     <Compile Include="Assets\DuelMode\RoleIndicatorController.cs" />
      <Compile Include="Assets\DuelMode\TyperCurrentLettersController.cs" />
      <Compile Include="Assets\DuelMode\TyperDisplayController.cs" />
-     <Compile Include="Assets\FireIndicatorController.cs" />
+     <Compile Include="Assets\DuelMode\WinIndicatorController.cs" />
      <Compile Include="Assets\GameLogic\FiringPositionManager.cs" />
      <Compile Include="Assets\GameLogic\GalleryManager.cs" />
      <Compile Include="Assets\GameLogic\GameManager.cs" />
      <Compile Include="Assets\GameLogic\SetGalleryAsParent.cs" />
      <Compile Include="Assets\GameLogic\StreakController.cs" />
      <Compile Include="Assets\GameLogic\TextManager.cs" />
-     <Compile Include="Assets\RoleIndicatorController.cs" />
      <Compile Include="Assets\SFX\CameraLerpController.cs" />
      <Compile Include="Assets\SFX\FlyOffAnimation.cs" />
      <Compile Include="Assets\SFX\GenerateHitOrMiss.cs" />
@@ -79,6 +80,7 @@
      <Compile Include="Assets\ThirdParty\Game Jam Template\Scripts\SetAudioLevels.cs" />
      <Compile Include="Assets\ThirdParty\Game Jam Template\Scripts\ShowPanels.cs" />
      <Compile Include="Assets\ThirdParty\Game Jam Template\Scripts\StartOptions.cs" />
+     <Compile Include="Assets\TypewriterSoundController.cs" />
      <Compile Include="Assets\Utils\SnapRotationToPlayer.cs" />
      <Compile Include="Assets\Utils\TimerController.cs" />
      <None Include="Assets\TextFiles\seedThree.txt" />
