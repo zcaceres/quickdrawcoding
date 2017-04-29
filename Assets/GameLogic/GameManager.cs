@@ -150,12 +150,14 @@ public class GameManager : MonoBehaviour {
 
 		streakNotifier.DisplayTextOnTopOfScreen("NPM RUN WIN", 4);
 		yield return new WaitForSecondsRealtime(4);
-		streakNotifier.DisplayTextOnTopOfScreen("Points: " + scoreController.GetPoints(), 4);
+		streakNotifier.DisplayTextOnTopOfScreen("Points: " + scoreController.GetPoints() + "/" + codeBlock.Length, 4);
 		yield return new WaitForSecondsRealtime(4);
 		accuracy = (float)scoreController.GetPoints() / codeBlock.Length;
 		// INTEGER DIVISION BEWARE!
 		streakNotifier.DisplayTextOnTopOfScreen("Accuracy: " + (((float)scoreController.GetPoints() / codeBlock.Length) * 100) + '%', 5);
-		// Send back to main menu
+		yield return new WaitForSecondsRealtime(4);
+		streakNotifier.DisplayTextOnTopOfScreen("Press Escape to Play Again", 5);
+		yield return new WaitForSecondsRealtime(5);
 	}
 
 
