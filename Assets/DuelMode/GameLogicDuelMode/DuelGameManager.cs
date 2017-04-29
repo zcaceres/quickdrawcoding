@@ -26,6 +26,9 @@ public class DuelGameManager : MonoBehaviour {
   public string[] currentCodeBlock;
   public GameObject UITextBlock;
 
+  // Audio
+  public DuelAudioManager duelAudioManager;
+
   // UI & TYPER DISPLAY
   private TyperDisplayController typerDisplayController;
   private TyperCurrentLettersController typerCurrentLettersController;
@@ -33,6 +36,7 @@ public class DuelGameManager : MonoBehaviour {
   public List<GameObject> lettersForRound = new List<GameObject>();
   public FireIndicatorController[] fireIndicatorControllers;
   public RoleIndicatorController[] roleIndicatorControllers;
+  public DeathIndicatorController[] deathIndicatorControllers;
 
 
   void Awake() {
@@ -191,6 +195,8 @@ public class DuelGameManager : MonoBehaviour {
   }
 
   void EndGame() {
+    gameOver = true;
+    Debug.Log("GAME OVER " + gameOver);
     // Draw();
     // if code block is complete, trigger DRAW
   }
@@ -260,11 +266,20 @@ public class DuelGameManager : MonoBehaviour {
   }
 
   private void KillTyper() {
+    StartCoroutine("PlayDeathSequence", currentTyperPlayerId);
     Debug.Log("killed typer!");
   }
 
   private void KillFirer() {
+    StartCoroutine("PlayDeathSequence", GetFirerPlayerId());
     Debug.Log("Killed firer");
+  }
+
+  IEnumerator PlayDeathSequence(int playerId) {
+    duelAudioManager.PlayGunshot();
+    yield return new WaitForSeconds(.2f);
+    duelAudioManager.PlayBell();
+    deathIndicatorControllers[playerId].ShowDeathScreen();
   }
 
   void AddCurrentLetterToTyperDisplayBlock(string letter) {
