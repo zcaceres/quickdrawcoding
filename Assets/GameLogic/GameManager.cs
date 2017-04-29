@@ -182,7 +182,7 @@ public class GameManager : MonoBehaviour {
 
 	public void StartRound() {
 		roundStarted = true;
-		timerController.ResetTimerAndStart(5);
+		timerController.ResetTimerAndStart(10);
 		RenderLetters();
 		// letters lerp from ground
 		// play starting sound BEGIN!!
@@ -215,7 +215,7 @@ public class GameManager : MonoBehaviour {
 	void RevealNextWave() {
 		RenderLetters();
 		PlayStreak();
-		timerController.ResetTimerAndStart(5); // Resets timer for new 'streak'
+		timerController.ResetTimerAndStart(10); // Resets timer for new 'streak'
 		firingPositionManager.ToggleNextPosition();
 	}
 
