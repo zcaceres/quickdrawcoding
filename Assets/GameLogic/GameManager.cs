@@ -41,6 +41,7 @@ public class GameManager : MonoBehaviour {
 	public AudioSource hitGunshotSoundPlayer;
 	public AudioSource missGunshotSoundPlayer;
 	public AudioSource bellTollSoundPlayer;
+	public AudioSource ambientMusicPlayer;
 	public AudioClip[] shotClips;
 	public AudioClip reloadClip;
 	private EZCameraShake.CameraShaker cameraShaker;
@@ -64,6 +65,7 @@ public class GameManager : MonoBehaviour {
 
 	IEnumerator GetReady() {
 		SetUpRound(allRounds);
+		PlayMusic();
 		streakNotifier.DisplayTextOnTopOfScreen((allRounds.Count() > 1 ? (allRounds.Count() + 1) + " Rounds" : "1 Round"), 3);
 		yield return new WaitForSecondsRealtime(2);
 		streakNotifier.DisplayTextOnTopOfScreen(codeBlock.Length + " Chars", 3);
@@ -88,9 +90,7 @@ public class GameManager : MonoBehaviour {
 			SceneManager.LoadSceneAsync(0);
 		}
 		if (gameOver) return;
-		Debug.Log(timerController.timeRemaining + " time remaining");
 		if (timerController.timeRemaining == 0) {
-			Debug.Log("inside timercontroller block");
 			gameOver = true;
 			StartCoroutine(Defeat());
 		}
@@ -154,6 +154,7 @@ public class GameManager : MonoBehaviour {
 	}
 
 	private IEnumerator Defeat() {
+		StopMusic();
 		timerController.StopTime();
 		PlayBellToll();
 		streakNotifier.DisplayTextOnTopOfScreen("DEFEAT", 5);
@@ -259,6 +260,14 @@ public class GameManager : MonoBehaviour {
 				ShotMissed();
 			}
 		return;
+	}
+
+	void PlayMusic() {
+		ambientMusicPlayer.Play();
+	}
+
+	void StopMusic() {
+		ambientMusicPlayer.Stop();
 	}
 
 	void PlayReloadSound() {
