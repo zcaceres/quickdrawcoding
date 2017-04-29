@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class StreakController : MonoBehaviour {
 	private Text streakText;
 	private AnnouncementManager announcer;
+	private int currentStreakAudioIndex = 0;
 
 	public void Start () {
 		streakText = gameObject.GetComponentInChildren<Text>();
@@ -13,12 +14,21 @@ public class StreakController : MonoBehaviour {
 	}
 
 	public void DisplayStreakText() {
-		streakText.text = SelectStreakText(Random.Range(0, 7));
+		streakText.text = SelectStreakText(GetValidAudioIndex());
+		Debug.Log("selected streak audio " + GetValidAudioIndex());
+		currentStreakAudioIndex++;
 		StartCoroutine(FlashMessage());
 	}
 
 	public void DisplayTextOnTopOfScreen(string text, int duration) {
 		StartCoroutine(FlashMessage(text, duration));
+	}
+
+	int GetValidAudioIndex() {
+		if(currentStreakAudioIndex >= 7) {
+			currentStreakAudioIndex = 0;
+		}
+		return currentStreakAudioIndex;
 	}
 
 	/*
@@ -46,9 +56,9 @@ public class StreakController : MonoBehaviour {
 		return streakText.enabled;
 	}
 
-	private string SelectStreakText(int randomSelector) {
-		PlayStreakSound(randomSelector);
-		switch(randomSelector) {
+	private string SelectStreakText(int index) {
+		PlayStreakSound(index);
+		switch(index) {
 			case 0:
 				return "MODULAR!";
 			case 1:

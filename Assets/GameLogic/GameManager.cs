@@ -68,12 +68,12 @@ public class GameManager : MonoBehaviour {
 		announcer.PlayGetReadySound();
 		streakNotifier.DisplayTextOnTopOfScreen("Get Ready", 2);
 		yield return new WaitForSecondsRealtime(1);
-		PlayReloadSound();
 		streakNotifier.DisplayTextOnTopOfScreen("3", 1);
 		yield return new WaitForSecondsRealtime(1);
 		streakNotifier.DisplayTextOnTopOfScreen("2", 1);
 		yield return new WaitForSecondsRealtime(1);
 		streakNotifier.DisplayTextOnTopOfScreen("1", 1);
+		PlayReloadSound();
 		yield return new WaitForSecondsRealtime(1);
 		announcer.PlayBeginSound();
 		streakNotifier.DisplayTextOnTopOfScreen("BEGIN", 1);
