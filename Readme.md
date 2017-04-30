@@ -11,7 +11,7 @@ Type letters as fast and as accurately as possible!
 - Spaces will prompt you when they appear.
 - Reload on newlines ('\n') by pressing ENTER!
 
-#### Duel
+### Duel
 Multiplayer, played on the same computer. One player types the code that appears. The other player controls the mouse.
 
 When the typing player makes a mistake, a small opportunity will appear for the mouse-controlling player to click and FIRE! If the mouse-controlling player clicks outside of that window, the typing player can press the spacebar to FIRE!
