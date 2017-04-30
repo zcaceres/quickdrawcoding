@@ -9,7 +9,7 @@ using EZCameraShake;
 
 public class DuelGameManager : MonoBehaviour {
   private const float PROBABILITY_OF_FIRE_OPPORTUNITY = 0.6f;
-  private const int DURATION_OF_TURN = 6;
+  private const int DURATION_OF_TURN = 10;
   public int letterPointer = 0;
 	public int lettersDestroyed = 0;
   private int currentTyperPlayerId = 0;
@@ -189,7 +189,7 @@ public class DuelGameManager : MonoBehaviour {
     var panelToDisplayCode = playerUIPanels[playerId];
     UITextBlock.transform.SetParent(panelToDisplayCode.transform, false);
     panelToDisplayCode.SetActive(true);
-    panelToDisplayCode.GetComponent<Image>().enabled = true;
+    panelToDisplayCode.GetComponentInChildren<Image>().enabled = true;
     typerCurrentLettersController.transform.SetParent(panelToDisplayCode.transform, false);
     typerCurrentLettersController.gameObject.SetActive(true);
   }
@@ -197,7 +197,7 @@ public class DuelGameManager : MonoBehaviour {
   void HideCodeOnTyperUI(int playerId) {
     var panelToDisplayCode = playerUIPanels[playerId];
     typerCurrentLettersController.gameObject.SetActive(false);
-    panelToDisplayCode.GetComponent<Image>().enabled = false;
+    panelToDisplayCode.GetComponentInChildren<Image>().enabled = false;
     panelToDisplayCode.SetActive(false);
   }
 
