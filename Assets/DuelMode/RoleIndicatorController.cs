@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class RoleIndicatorController : MonoBehaviour {
 	private Text displayText;
-	
+
 	void Awake () {
 		displayText = GetComponent<Text>();
 	}
@@ -16,7 +16,7 @@ public class RoleIndicatorController : MonoBehaviour {
 	}
 
 	public void ShowPrepareToFire() {
-		displayText.text = "Prepare to Fire";
+		displayText.text = "Click during mistakes";
 		displayText.enabled = true;
 	}
 

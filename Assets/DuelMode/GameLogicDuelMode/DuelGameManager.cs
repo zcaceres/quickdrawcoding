@@ -9,7 +9,7 @@ using EZCameraShake;
 
 public class DuelGameManager : MonoBehaviour {
   private const float PROBABILITY_OF_FIRE_OPPORTUNITY = 0.6f;
-  private const int DURATION_OF_TURN = 10;
+  private const int DURATION_OF_TURN = 8;
   public int letterPointer = 0;
 	public int lettersDestroyed = 0;
   private int currentTyperPlayerId = 0;
@@ -18,8 +18,9 @@ public class DuelGameManager : MonoBehaviour {
   public GameObject letterPrefab;
   private bool isFiringOpportunityForFirer;
   private bool isFiringOpportunityForTyper;
-  private bool roundStarted;
+  public bool roundStarted;
   private bool gameOver;
+  private bool listenForGameOverInput;
 
   // CODEBLOCK
   public string codeBlock;
@@ -63,6 +64,8 @@ public class DuelGameManager : MonoBehaviour {
     allRounds = SetUpDuel(currentCodeBlock);
     StartCoroutine(GetReady());
   }
+
+
 
   IEnumerator GetReady() {
     ambientMusic.Play();
@@ -205,27 +208,29 @@ public class DuelGameManager : MonoBehaviour {
     gameOver = true;
     timerController.StopTime();
     Debug.Log("GAME OVER " + gameOver);
-    // Draw();
-    // if code block is complete, trigger DRAW
+    StartCoroutine(GameOver());
+  }
+
+  IEnumerator GameOver() {
+    yield return new WaitForSeconds(3);
+    listenForGameOverInput = true;
   }
 
   void Update() {
-    if (Input.GetKeyDown(KeyCode.Escape)) {
+    if(Input.GetKeyDown(KeyCode.Escape)) {
       SceneManager.LoadSceneAsync(0);
     }
 
-    if(gameOver) {
-      if(Input.GetKeyDown(KeyCode.Space)) {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-      } else {
-        return;
-      }
+    if(listenForGameOverInput && Input.GetKeyDown(KeyCode.Space)) {
+      SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
+
+    if(gameOver) { return; }
     if(!roundStarted) return;
 
     if(timerController.timeRemaining == 0) {
       gameOver = true;
-      KillTyper(); // Make execution sequence here
+      KillTyper();
     }
 
     if(Input.anyKeyDown) {
@@ -256,8 +261,6 @@ public class DuelGameManager : MonoBehaviour {
     	if (Input.inputString == targetLetter) {
     		if (Input.inputString == "\n") {
           // TODO: DEAL WITH NEW LINES
-    		// 	PlayReloadSound();
-    		// 	ShotHit();
           CorrectLetter();
     		} else {
     			CorrectLetter();
@@ -269,10 +272,6 @@ public class DuelGameManager : MonoBehaviour {
     	}
     return;
   }
-
-  //If out of time, let other player execute typer :)
-  // SHOW FAIL
-  // trigger fire opportunity for Firer
 
   void CorrectLetter() {
     AddCurrentLetterToTyperDisplayBlock(currentLetter.GetComponent<Text>().text);
@@ -291,12 +290,10 @@ public class DuelGameManager : MonoBehaviour {
 
   private void KillTyper() {
     StartCoroutine("PlayDeathSequence", currentTyperPlayerId);
-    Debug.Log("killed typer!");
   }
 
   private void KillFirer() {
     StartCoroutine("PlayDeathSequence", GetFirerPlayerId());
-    Debug.Log("Killed firer");
   }
 
   IEnumerator PlayDeathSequence(int playerId) {
@@ -305,6 +302,7 @@ public class DuelGameManager : MonoBehaviour {
     duelAudioManager.PlayBell();
     deathIndicatorControllers[playerId].ShowDeathScreen();
     var otherPlayer = playerId == 0 ? 1 : 0;
+    HideCodeOnTyperUI(currentTyperPlayerId);
     winIndicatorControllers[otherPlayer].ShowWinText();
     EndGame();
   }
