@@ -323,7 +323,7 @@ public class DuelGameManager : MonoBehaviour {
   IEnumerator DisplayOpportunityToFire(int playerId) {
     CheckWhoFired(playerId);
     DisplayFireText(playerId, true);
-    yield return new WaitForSeconds(.2f); // TODO: optimize display time here
+    yield return new WaitForSeconds(.1f); // TODO: optimize display time here
     ResetFiringOpportunities();
     DisplayFireText(playerId, false);
   }
