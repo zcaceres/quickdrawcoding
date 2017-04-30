@@ -214,7 +214,13 @@ public class DuelGameManager : MonoBehaviour {
       SceneManager.LoadSceneAsync(0);
     }
 
-    if(gameOver) return;
+    if(gameOver) {
+      if(Input.GetKeyDown(KeyCode.Space)) {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+      } else {
+        return;
+      }
+    }
     if(!roundStarted) return;
 
     if(timerController.timeRemaining == 0) {
