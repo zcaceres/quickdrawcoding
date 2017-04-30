@@ -8,6 +8,8 @@ using UnityEngine.SceneManagement;
 using EZCameraShake;
 
 public class DuelGameManager : MonoBehaviour {
+  private const float PROBABILITY_OF_FIRE_OPPORTUNITY = 0.6f;
+  private const int DURATION_OF_TURN = 6;
   public int letterPointer = 0;
 	public int lettersDestroyed = 0;
   private int currentTyperPlayerId = 0;
@@ -21,7 +23,7 @@ public class DuelGameManager : MonoBehaviour {
 
   // CODEBLOCK
   public string codeBlock;
-  private TextManager textManager;
+  private DuelTextManager textManager;
   public GameObject currentLetter;
   public string[] currentCodeBlock;
   public GameObject UITextBlock;
@@ -46,6 +48,7 @@ public class DuelGameManager : MonoBehaviour {
 
 
   void Awake() {
+    textManager = GetComponent<DuelTextManager>();
     typerDisplayController = UITextBlock.GetComponent<TyperDisplayController>();
     typerCurrentLettersController = GameObject.Find("CurrentLettersDisplay").GetComponent<TyperCurrentLettersController>();
     typerTransforms = typerCurrentLettersController.roundLetterTransforms;
@@ -57,7 +60,7 @@ public class DuelGameManager : MonoBehaviour {
     roundStarted = false;
     // GetCodeBlockFromFile();
     // Get large sample without newlines for demo!
-    codeBlock = "private void void void void void void void void void void void void void void void void void void "; // textManager.GetCleanCodeFileAsString();
+    codeBlock = textManager.GetCleanCodeFileAsString(); //"private void void void void void void void void void void void void void void void void void void ";
     currentCodeBlock = SplitCodeblockIntoLetters();
     allRounds = SetUpDuel(currentCodeBlock);
     StartCoroutine(GetReady());
@@ -123,7 +126,7 @@ public class DuelGameManager : MonoBehaviour {
 
   void StartRound() {
     roundStarted = true;
-    timerController.ResetTimerAndStart(8);
+    timerController.ResetTimerAndStart(DURATION_OF_TURN);
   }
 
   void EndRound() {
@@ -142,7 +145,7 @@ public class DuelGameManager : MonoBehaviour {
     SetCurrentTyperPlayerId();
     roleIndicatorControllers[currentTyperPlayerId].ShowPrepareToType();
     roleIndicatorControllers[GetFirerPlayerId()].ShowPrepareToFire();
-    yield return new WaitForSeconds(3);
+    yield return new WaitForSeconds(5);
     roleIndicatorControllers[currentTyperPlayerId].HideRoleText();
     roleIndicatorControllers[GetFirerPlayerId()].HideRoleText();
     DisplayCodeOnTyperUI(currentTyperPlayerId);
@@ -214,6 +217,10 @@ public class DuelGameManager : MonoBehaviour {
   }
 
   void Update() {
+    if (Input.GetKeyDown(KeyCode.Escape)) {
+      SceneManager.LoadSceneAsync(0);
+    }
+
     if(gameOver) return;
     if(!roundStarted) return;
 
@@ -221,10 +228,6 @@ public class DuelGameManager : MonoBehaviour {
       gameOver = true;
       KillTyper(); // Make execution sequence here
     }
-
-    // if (Input.GetKeyDown(KeyCode.Escape)) {
-    //   SceneManager.LoadSceneAsync(0);
-    // }
 
     if(Input.anyKeyDown) {
       CheckMouseInput();
@@ -253,16 +256,17 @@ public class DuelGameManager : MonoBehaviour {
     	var targetLetter = currentCodeBlock[letterPointer];
     	if (Input.inputString == targetLetter) {
     		if (Input.inputString == "\n") {
+          // TODO: DEAL WITH NEW LINES
     		// 	PlayReloadSound();
     		// 	ShotHit();
           CorrectLetter();
     		} else {
-    		// 	PlayShotShakeAnim();
-    		// 	PlayShotHitSound();
     			CorrectLetter();
     		}
     	} else {
-    		IncorrectLetter();
+        if(UnityEngine.Random.Range(0.0f, 1.0f) <= PROBABILITY_OF_FIRE_OPPORTUNITY) {
+          IncorrectLetter();
+        }
     	}
     return;
   }
@@ -272,8 +276,6 @@ public class DuelGameManager : MonoBehaviour {
   // trigger fire opportunity for Firer
 
   void CorrectLetter() {
-    // scoreController.AddPoint();
-    // currentLetter.GetComponent<GenerateHitOrMiss>().GenerateHitPrefab();
     AddCurrentLetterToTyperDisplayBlock(currentLetter.GetComponent<Text>().text);
     if (reloadNotifier.isDisplayed()) reloadNotifier.HideReload(); // Makes sure Reload is toggled off after hitting a space
     Destroy(currentLetter);
