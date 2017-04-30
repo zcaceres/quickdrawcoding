@@ -297,6 +297,7 @@ public class DuelGameManager : MonoBehaviour {
   }
 
   IEnumerator PlayDeathSequence(int playerId) {
+    ambientMusic.Stop();
     duelAudioManager.PlayGunshot();
     yield return new WaitForSeconds(.2f);
     duelAudioManager.PlayBell();
