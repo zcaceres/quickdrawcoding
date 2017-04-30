@@ -58,8 +58,6 @@ public class DuelGameManager : MonoBehaviour {
 
   void Start() {
     roundStarted = false;
-    // GetCodeBlockFromFile();
-    // Get large sample without newlines for demo!
     codeBlock = textManager.GetCleanCodeFileAsString(); //"private void void void void void void void void void void void void void void void void void void ";
     currentCodeBlock = SplitCodeblockIntoLetters();
     allRounds = SetUpDuel(currentCodeBlock);
@@ -70,7 +68,7 @@ public class DuelGameManager : MonoBehaviour {
     ambientMusic.Play();
     roleIndicatorControllers[currentTyperPlayerId].ShowPrepareToType();
     roleIndicatorControllers[GetFirerPlayerId()].ShowPrepareToFire();
-    yield return new WaitForSeconds(4);
+    yield return new WaitForSeconds(5);
     roleIndicatorControllers[currentTyperPlayerId].HideRoleText();
     roleIndicatorControllers[GetFirerPlayerId()].HideRoleText();
     yield return new WaitForSeconds(2);
@@ -161,11 +159,6 @@ public class DuelGameManager : MonoBehaviour {
     return currentTyperPlayerId == 0 ? 1 : 0;
   }
 
-  private void DisplayPlayerRoles() {
-    // Announce Typer Text at top of Typer's UI
-    // Announce Firerer Text at top of Firer's UI
-  }
-
   private void InstantiateLetters(List<string> round) {
     var i = 0;
     foreach (string s in round) {
@@ -182,7 +175,7 @@ public class DuelGameManager : MonoBehaviour {
     textComponent.color = Color.red;
     textComponent.fontSize = 38;
     if (textComponent.text == " ") {
-      textComponent.text = " "; // TODO: Change to a better character
+      textComponent.text = " ";
     }
     else if (textComponent.text == "\n") {
       Debug.Log("NEWLINE CHAR!");
