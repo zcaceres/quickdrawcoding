@@ -193,6 +193,7 @@ public class DuelGameManager : MonoBehaviour {
     UITextBlock.transform.SetParent(panelToDisplayCode.transform, false);
     panelToDisplayCode.SetActive(true);
     panelToDisplayCode.GetComponentInChildren<Image>().enabled = true;
+    panelToDisplayCode.transform.Find("TypingBackground").GetComponent<Image>().enabled = true;
     typerCurrentLettersController.transform.SetParent(panelToDisplayCode.transform, false);
     typerCurrentLettersController.gameObject.SetActive(true);
   }
@@ -201,6 +202,7 @@ public class DuelGameManager : MonoBehaviour {
     var panelToDisplayCode = playerUIPanels[playerId];
     typerCurrentLettersController.gameObject.SetActive(false);
     panelToDisplayCode.GetComponentInChildren<Image>().enabled = false;
+    panelToDisplayCode.transform.Find("TypingBackground").GetComponent<Image>().enabled = false;
     panelToDisplayCode.SetActive(false);
   }
 
