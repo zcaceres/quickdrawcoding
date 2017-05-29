@@ -1,0 +1,37 @@
+private:
+  friend class fork_executor;
+
+  struct function_base
+  {
+    std::shared_ptr<std::size_t> work_count_;
+    void (*execute_)(std::shared_ptr<function_base>& p);
+  };
+
+  bool execute_next(std::unique_lock<std::mutex>& lock)
+  {
+    if (queue_.empty())
+      return false;
+    auto p(queue_.front());
+    queue_.pop();
+    lock.unlock();
+    execute(lock, p);
+    return true;
+  }
+
+  void execute(std::unique_lock<std::mutex>& lock,
+      std::shared_ptr<function_base>& p)
+  {
+    std::shared_ptr<std::size_t> work_count(std::move(p->work_count_));
+    try
+    {
+      p->execute_(p);
+      lock.lock();
+      do_work_finished(work_count);
+    }
+    catch (...)
+    {
+      lock.lock();
+      do_work_finished(work_count);
+      throw;
+    }
+  }

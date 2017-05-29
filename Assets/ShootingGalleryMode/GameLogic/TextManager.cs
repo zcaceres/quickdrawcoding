@@ -6,17 +6,16 @@ public class TextManager : MonoBehaviour {
 	public TextAsset[] codeFiles;
 	private string codeFileContents;
 
-	// Must use awake so script references are available for Game Manager before called in its Start(); 
+	// Must use awake so script references are available for Game Manager before called in its Start();
 	void Awake () {
 		codeFileContents = SelectCodeFileAsText();
 	}
 
 	private string SelectCodeFileAsText() {
-		return codeFiles[0].text;
+		return codeFiles[Random.Range(0, codeFiles.Length)].text;
 	}
 
 	public string GetCleanCodeFileAsString() {
-		Debug.Log("Returned from clean coe file as string");
 		return codeFileContents;
 	}
 

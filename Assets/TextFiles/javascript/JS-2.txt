@@ -1,0 +1,29 @@
+var fs = require('fs');
+var path = require('path');
+var execFileSync = require('child_process').execFileSync;
+
+var cwd = null;
+function exec(command, args) {
+  console.error('>', [command].concat(args));
+  var options = {};
+
+function exec(command, args) {
+  console.log('> ' + [command].concat(args).join(' '));
+  var options = {};
+  return execFileSync(command, args, options).toString();
+}
+
+Object.keys(config).forEach(key => {
+  const patterns = config[key].patterns;
+  const options = config[key].options;
+  const ignore = config[key].ignore;
+
+  const globPattern = patterns.length > 1
+    ? `{${patterns.join(',')}}`
+    : `${patterns.join(',')}`;
+  const files = glob.sync(globPattern, {ignore});
+
+  const args = Object.keys(defaultOptions).map(
+    k => `--${k}=${(options && options[k]) || defaultOptions[k]}`
+  );
+  args.push(`--${shouldWrite ? 'write' : 'l'}`);

@@ -1,0 +1,35 @@
+var sizes = []struct {
+	name string
+	n    int
+}{
+	{"1e4", 1e4},
+	{"1e5", 1e5},
+	{"1e6", 1e6},
+}
+
+func doBench(b *testing.B, f func(b *testing.B, buf []byte, level, n int)) {
+	for _, suite := range suites {
+		buf, err := ioutil.ReadFile(suite.file)
+		if err != nil {
+			b.Fatal(err)
+		}
+		if len(buf) == 0 {
+			b.Fatalf("test file %q has no data", suite.file)
+		}
+		for _, l := range levelTests {
+			for _, s := range sizes {
+				b.Run(suite.name+"/"+l.name+"/"+s.name, func(b *testing.B) {
+					f(b, buf, l.level, s.n)
+				})
+			}
+		}
+	}
+
+	func (b *Reader) reset(buf []byte, r io.Reader) {
+		*b = Reader{
+			buf:          buf,
+			rd:           r,
+			lastByte:     -1,
+			lastRuneSize: -1,
+		}
+	}

@@ -1,0 +1,34 @@
+const shouldWrite = process.argv[2] === 'write';
+const isWindows = process.platform === 'win32';
+const prettier = isWindows ? 'prettier.cmd' : 'prettier';
+const prettierCmd = path.resolve(
+  __dirname,
+  '../../node_modules/.bin/' + prettier
+);
+const defaultOptions = {
+  'bracket-spacing': 'false',
+  'single-quote': 'true',
+  'jsx-bracket-same-line': 'true',
+  'trailing-comma': 'all',
+  'print-width': 80,
+};
+const config = {
+  default: {
+    patterns: ['src/**/*.js'],
+    ignore: ['**/third_party/**', '**/node_modules/**'],
+  },
+  scripts: {
+    patterns: ['scripts/**/*.js'],
+    ignore: ['**/bench/**'],
+    options: {
+      'trailing-comma': 'es5',
+    },
+  },
+};
+
+warning(
+  !ieCompatibilityMode,
+  'Internet Explorer is running in compatibility mode; please add the ' +
+    'following tag to your HTML to prevent this from happening: ' +
+    '<meta http-equiv="X-UA-Compatible" content="IE=edge" />',
+);

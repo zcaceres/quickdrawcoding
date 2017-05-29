@@ -1,0 +1,37 @@
+max_distance* max_distance_max_vertical_coordinate(max_distance* this)
+{
+     size_t size = 0;
+     size_t len = box.size(&box)/2;
+     pair* col = malloc(len*sizeof(pair));
+     for (size_t i = 0; i != 2*len; i += 2)
+     {
+          size_t j;
+          int q = box.at(&box, i);
+          int p = box.at(&box, i+1);
+          for (j = 0; j != size; ++j)
+          {
+               if (col[j].first == p)
+                   break;
+          }
+          int* m = &col[j].first;
+          int* n = &col[j].second;
+          if ( j == size )
+          {
+               *m = p;
+               *n = q;
+               ++size;
+          }
+          else
+          {
+               if ( *n < q )
+                    *n = q;
+          }
+     }
+     for (size_t i = 0; i != size; ++i)
+     {
+          this->max.push_back(&this->max, col[i].second);
+          this->max.push_back(&this->max, col[i].first);
+     }
+     delete_all(col);
+     return this;
+}

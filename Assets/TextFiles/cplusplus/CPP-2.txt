@@ -1,0 +1,33 @@
+class MessageImpl : public Message {
+ public:
+  ~MessageImpl () {
+    if (free_rkmessage_)
+      rd_kafka_message_destroy(const_cast<rd_kafka_message_t *>(rkmessage_));
+    if (key_)
+            delete key_;
+  };
+
+  MessageImpl (RdKafka::Topic *topic, rd_kafka_message_t *rkmessage):
+  topic_(topic), rkmessage_(rkmessage), free_rkmessage_(true), key_(NULL) {}
+
+  MessageImpl (RdKafka::Topic *topic, rd_kafka_message_t *rkmessage,
+               bool dofree):
+  topic_(topic), rkmessage_(rkmessage), free_rkmessage_(dofree), key_(NULL) { }
+
+  MessageImpl (RdKafka::Topic *topic, const rd_kafka_message_t *rkmessage):
+  topic_(topic), rkmessage_(rkmessage), free_rkmessage_(false), key_(NULL) { }
+
+  MessageImpl (rd_kafka_message_t *rkmessage):
+  topic_(NULL), rkmessage_(rkmessage), free_rkmessage_(true), key_(NULL) {
+    if (rkmessage->rkt) {
+      /* Possibly NULL */
+      topic_ = static_cast<Topic *>(rd_kafka_topic_opaque(rkmessage->rkt));
+    }
+  }
+
+  MessageImpl (RdKafka::Topic *topic, RdKafka::ErrorCode err):
+  topic_(topic), free_rkmessage_(false), key_(NULL) {
+    rkmessage_ = &rkmessage_err_;
+    memset(&rkmessage_err_, 0, sizeof(rkmessage_err_));
+    rkmessage_err_.err = static_cast<rd_kafka_resp_err_t>(err);
+  }

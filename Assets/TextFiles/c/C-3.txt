@@ -1,0 +1,42 @@
+int get_sig()
+{
+    return __sync_fetch_and_add(&sig, 0);
+}
+
+int set_sig(int value)
+{
+    return __sync_lock_test_and_set(&sig, value);
+}
+
+void restore_terminal_settings()
+{
+     tcsetattr(0, TCSANOW, &oldt);
+}
+
+void disable_waiting_for_enter()
+{
+     struct termios newt;
+     tcgetattr(0, &oldt);
+     newt = oldt;
+     newt.c_lflag &= ~(ICANON | ECHO);
+     tcsetattr(0, TCSANOW, &newt);
+     atexit(restore_terminal_settings);
+}
+
+void* wait(void* n)
+{
+      usleep(1000* *(int*)n);
+      return NULL;
+}
+
+void runleave(int n)
+{
+     if ( n == 0 )
+          printf("%s\n", gmover);
+     else
+     {
+        if ( n == 1 )
+             set_sig(22);
+        printf("\e[?25h\e[36;4H\n");
+     }
+}

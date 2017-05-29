@@ -1,0 +1,36 @@
+def LCS(s1, s2):
+    m = len(s1)
+    n = len(s2)
+
+    arr = [[0 for i in range(n+1)]for j in range(m+1)]
+
+    for i in range(1,m+1):
+        for j in range(1,n+1):
+            if s1[i-1] == s2[j-1]:
+                arr[i][j] = arr[i-1][j-1]+1
+            else:
+                arr[i][j] = max(arr[i-1][j], arr[i][j-1])
+    return arr[m][n]
+
+
+class Fibonacci:
+
+    def __init__(self, N=None):
+        self.fib_array = []
+        if N:
+            N = int(N)
+            self.fib_array.append(0)
+            self.fib_array.append(1)
+            for i in range(2, N + 1):
+                self.fib_array.append(self.fib_array[i - 1] + self.fib_array[i - 2])
+        elif N == 0:
+            self.fib_array.append(0)
+
+    def get(self, sequence_no=None):
+        if sequence_no != None:
+            if sequence_no < len(self.fib_array):
+                return print(self.fib_array[:sequence_no + 1])
+            else:
+                print("Out of bound.")
+        else:
+            print("Please specify a value"

@@ -1,0 +1,37 @@
+func (b *Reader) fill() {
+	if b.r > 0 {
+		copy(b.buf, b.buf[b.r:b.w])
+		b.w -= b.r
+		b.r = 0
+	}
+
+	if b.w >= len(b.buf) {
+		panic("bufio: tried to fill full buffer")
+	}
+
+	for i := maxConsecutiveEmptyReads; i > 0; i-- {
+		n, err := b.rd.Read(b.buf[b.w:])
+		if n < 0 {
+			panic(errNegativeRead)
+		}
+		b.w += n
+		if err != nil {
+			b.err = err
+			return
+		}
+		if n > 0 {
+			return
+		}
+	}
+	b.err = io.ErrNoProgress
+}
+
+func (b *Reader) readErr() error {
+	err := b.err
+	b.err = nil
+	return err
+}
+
+func NewReadWriter(r *Reader, w *Writer) *ReadWriter {
+	return &ReadWriter{r, w}
+}

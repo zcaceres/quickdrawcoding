@@ -110,14 +110,13 @@ public class GameManager : MonoBehaviour {
 	}
 
 
-	/* GALLERY GALLERY GALLERY GALLERY GALLERY GALLERY GALLERY GALLERY GALLERY GALLERY  */
+	/* GALLERY */
 
 	private void RetrieveRandomCodeblock() {
 		// search library of code to retrieve a component
 	}
 
 	private string[] SplitCodeblockIntoLetters() {
-		Debug.Log("inside split code block into letters");
 		string[] chars = new string[codeBlock.Length];
 		for (var i = 0; i < codeBlock.Length; i++) {
 			chars[i] = codeBlock[i].ToString();
@@ -155,7 +154,7 @@ public class GameManager : MonoBehaviour {
 	private IEnumerator Defeat() {
 		StopMusic();
 		timerController.StopTime();
-		PlayBellToll();
+		PlayBellTollSound();
 		streakNotifier.DisplayTextOnTopOfScreen("DEFEAT", 5);
 		yield return new WaitForSecondsRealtime(4);
 		streakNotifier.DisplayTextOnTopOfScreen("Press Escape to Try Again", 5);
@@ -187,17 +186,6 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
-	private void InstantiateLetters(List<string> round) {
-		var i = 0;
-		foreach (string s in round) {
-			var letter = UnityEngine.Object.Instantiate(letterPrefab, galleryTransforms[i++]);
-			letter.GetComponent<TextMesh>().text = s;
-			lettersForRound.Add(letter);
-		}
-		currentLetter = lettersForRound[0];
-		SetCurrentLetterColor(currentLetter);
-	}
-
 	public void StartRound() {
 		roundStarted = true;
 		timerController.ResetTimerAndStart(8);
@@ -215,6 +203,19 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
+	/* UI */
+
+	void InstantiateLetters(List<string> round) {
+		var i = 0;
+		foreach (string s in round) {
+			var letter = UnityEngine.Object.Instantiate(letterPrefab, galleryTransforms[i++]);
+			letter.GetComponent<TextMesh>().text = s;
+			lettersForRound.Add(letter);
+		}
+		currentLetter = lettersForRound[0];
+		SetCurrentLetterColor(currentLetter);
+	}
+
 	void SetCurrentLetterColor(GameObject letter) {
 		var textMesh = letter.GetComponent<TextMesh>();
 		textMesh.color = Color.red;
@@ -225,7 +226,6 @@ public class GameManager : MonoBehaviour {
 		else if (textMesh.text == "\n") {
 			reloadNotifier.DisplayReload();
 		}
-		// set current letter to lerp up and down a little!
 	}
 
 	void RevealNextWave() {
@@ -240,6 +240,14 @@ public class GameManager : MonoBehaviour {
 			if (lettersForRound.Count() > i)
 				lettersForRound[i].GetComponent<MeshRenderer>().enabled = true;
 		}
+	}
+
+	void SnapCameraToNextLetter() {
+		if (currentLetter == null) return; // protects against snapping to null letter after galery is over
+		mainCamera.transform.parent.transform.rotation =
+			Quaternion.Slerp(mainCamera.transform.parent.transform.rotation,
+				Quaternion.LookRotation(currentLetter.transform.position - mainCamera.transform.parent.transform.position),
+				CAMERA_ROTATION_SPEED*Time.deltaTime); // Must refer to PARENT of mainCamera for shake to work!!
 	}
 
   /* INPUT INPUT INPUT INPUT INPUT INPUT INPUT INPUT INPUT INPUT INPUT INPUT */
@@ -259,27 +267,6 @@ public class GameManager : MonoBehaviour {
 				ShotMissed();
 			}
 		return;
-	}
-
-	void PlayMusic() {
-		ambientMusicPlayer.Play();
-	}
-
-	void StopMusic() {
-		ambientMusicPlayer.Stop();
-	}
-
-	void PlayReloadSound() {
-		reloadSoundPlayer.Play();
-	}
-
-	void PlayBellToll() {
-		bellTollSoundPlayer.Play();
-	}
-
-	void PlayShotShakeAnim() {
-		cameraShaker.Shake(EZCameraShake.CameraShakePresets.Bump);
-		// muzzleFlasher.TriggerFlash(); COME BACK TO THIS LATER...
 	}
 
 	void ShotMissed() {
@@ -311,11 +298,34 @@ public class GameManager : MonoBehaviour {
 	}
 
 	void AddLetterToUI(string letter) {
-		if(letter == "SPACE") { // Prevents SPACE from appearing in top code block UI
+		// Prevents SPACE from appearing in top code block UI
+		if(letter == "SPACE") {
 			UICodeDisplay.text += " ";
 		} else {
 			UICodeDisplay.text += letter;
 		}
+	}
+
+	private void PlayStreak() {
+		streakNotifier.DisplayStreakText();
+	}
+
+	/* SOUND */
+
+	void PlayMusic() {
+		ambientMusicPlayer.Play();
+	}
+
+	void StopMusic() {
+		ambientMusicPlayer.Stop();
+	}
+
+	void PlayReloadSound() {
+		reloadSoundPlayer.Play();
+	}
+
+	void PlayBellTollSound() {
+		bellTollSoundPlayer.Play();
 	}
 
 	void PlayShotHitSound() {
@@ -328,19 +338,14 @@ public class GameManager : MonoBehaviour {
 		missGunshotSoundPlayer.Play();
 	}
 
-	void SnapCameraToNextLetter() {
-		if (currentLetter == null) return; // protects against snapping to null letter after galery is over
-		mainCamera.transform.parent.transform.rotation =
-			Quaternion.Slerp(mainCamera.transform.parent.transform.rotation,
-				Quaternion.LookRotation(currentLetter.transform.position - mainCamera.transform.parent.transform.position),
-				CAMERA_ROTATION_SPEED*Time.deltaTime); // Must refer to PARENT of mainCamera for shake to work!!
+	/* ANIMATION */
+
+	void PlayShotShakeAnim() {
+		cameraShaker.Shake(EZCameraShake.CameraShakePresets.Bump);
 	}
 
-	private void PlayStreak() {
-		streakNotifier.DisplayStreakText();
-	}
+	/* SET UP */
 
-	/* SET UP SET UP SET UP SET UP SET UP SET UP SET UP SET UP SET UP SET UP SET UP SET UP */
 	void SetUpComponents() {
 		mainCamera = GameObject.FindWithTag("MainCamera");
 		muzzleFlasher = mainCamera.GetComponentInChildren<MuzzleFlash>();

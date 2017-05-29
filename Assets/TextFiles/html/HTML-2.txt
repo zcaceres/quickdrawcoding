@@ -1,0 +1,34 @@
+<header>
+  <a href="" title="Site title"><h1 class="other-class">Site title</h1></a>
+  <nav>
+    <ul>
+      <li> <a href="#" title="Home">Home</a> </li>
+      <li> <a href="#" title="About">About</a> </li>
+      <li> <a href="#" title="Sign Up">Sign Up</a> </li>
+      <li> <a href="#" title="Contact">Contact</a> </li>
+      <li> <a href="#" title="Careers">Careers</a> </li>
+    </ul>
+  </nav>
+</header>
+
+<section>
+  <h1 class="other-class">Headings &amp; Copy</h1>
+  <h1 class="other-class">First Header h1</h1>
+  <p class="test-class">
+  </p>
+  <h2>Second header h2</h2>
+  <p class="test-class">
+  </p>
+  <h3>Third header h3</h3>
+  <p class="test-class">
+  </p>
+  <h4>Fourth header h4</h4>
+  <p class="test-class">
+  </p>
+  <h5>Fifth header h5</h5>
+  <p class="test-class">
+  </p>
+  <h6>Sixth header h6</h6>
+  <p class="test-class">
+  </p>
+</section>

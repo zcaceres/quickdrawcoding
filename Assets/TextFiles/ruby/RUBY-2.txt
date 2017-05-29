@@ -1,0 +1,40 @@
+def initialize(objs)
+    syms = {}
+    winapis = {}
+    syms["ruby_sysinit_real"] = "ruby_sysinit"
+    each_export(objs) do |internal, export|
+      syms[internal] = export
+      winapis[$1] = internal if /^_?(rb_w32_\w+)(?:@\d+)?$/ =~ internal
+    end
+    incdir = File.join(File.dirname(File.dirname(__FILE__)), "include/ruby")
+    read_substitution(incdir+"/win32.h", syms, winapis)
+    read_substitution(incdir+"/subst.h", syms, winapis)
+    syms["rb_w32_vsnprintf"] ||= "ruby_vsnprintf"
+    syms["rb_w32_snprintf"] ||= "ruby_snprintf"
+    @syms = syms
+  end
+
+  def read_substitution(header, syms, winapis)
+    IO.foreach(header) do |line|
+      if /^#define (\w+)\((.*?)\)\s+(?:\(void\))?(rb_w32_\w+)\((.*?)\)\s*$/ =~ line and
+          $2.delete(" ") == $4.delete(" ")
+        export, internal = $1, $3
+        if syms[internal] or internal = winapis[internal]
+          syms[forwarding(internal, export)] = internal
+        end
+      end
+    end
+  end
+
+  def exports(name = $name, library = $library, description = $description)
+    exports = []
+    if name
+      exports << "Name " + name
+    elsif library
+      exports << "Library " + library
+    end
+    exports << "Description " + description.dump if description
+    exports << "VERSION #{RbConfig::CONFIG['MAJOR']}.#{RbConfig::CONFIG['MINOR']}"
+    exports << "EXPORTS" << symbols()
+    exports
+  end

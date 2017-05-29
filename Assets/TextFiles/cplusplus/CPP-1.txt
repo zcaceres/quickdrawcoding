@@ -1,0 +1,32 @@
+#include "rdkafkacpp_int.h"
+
+void RdKafka::consume_cb_trampoline(rd_kafka_message_t *msg, void *opaque) {
+  RdKafka::HandleImpl *handle = static_cast<RdKafka::HandleImpl *>(opaque);
+  RdKafka::Topic* topic = static_cast<Topic *>(rd_kafka_topic_opaque(msg->rkt));
+
+  RdKafka::MessageImpl message(topic, msg, false /*don't free*/);
+
+  handle->consume_cb_->consume_cb(message, opaque);
+}
+
+void RdKafka::log_cb_trampoline (const rd_kafka_t *rk, int level,
+                                 const char *fac, const char *buf) {
+  if (!rk) {
+    rd_kafka_log_print(rk, level, fac, buf);
+    return;
+  }
+
+  void *opaque = rd_kafka_opaque(rk);
+  RdKafka::HandleImpl *handle = static_cast<RdKafka::HandleImpl *>(opaque);
+
+  if (!handle->event_cb_) {
+    rd_kafka_log_print(rk, level, fac, buf);
+    return;
+  }
+
+  RdKafka::EventImpl event(RdKafka::Event::EVENT_LOG,
+   RdKafka::ERR_NO_ERROR, static_cast<RdKafka::Event::Severity>(level),
+   fac, buf);
+
+  handle->event_cb_->event_cb(event);
+}

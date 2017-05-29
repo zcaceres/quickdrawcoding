@@ -1,0 +1,35 @@
+def rearrange(bitString32):
+  if len(bitString32) != 32:
+    raise ValueError("Need length 32")
+  newString = ""
+  for i in [3,2,1,0]:
+    newString += bitString32[8*i:8*i+8]
+  return newString
+
+def reformatHex(i):
+  hexrep = format(i,'08x')
+  thing = ""
+  for i in [3,2,1,0]:
+    thing += hexrep[2*i:2*i+2]
+  return thing
+
+def pad(bitString):
+  startLength = len(bitString)
+  bitString += '1'
+  while len(bitString) % 512 != 448:
+    bitString += '0'
+  lastPart = format(startLength,'064b')
+  bitString += rearrange(lastPart[32:]) + rearrange(lastPart[:32])
+  return bitString
+
+def findMin(arr):
+  n = len(arr)
+  s = sum(arr)
+
+  dp = [[False for x in range(s+1)]for y in range(n+1)]
+
+  for i in range(1, n+1):
+      dp[i][0] = True
+
+  for i in range(1, s+1):
+      dp[0][i] = False

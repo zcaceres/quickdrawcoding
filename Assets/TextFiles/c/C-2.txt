@@ -1,0 +1,49 @@
+int main(int argc, char* argv[])
+{
+    if ( get_argv(argc, argv) )
+         exit(0);
+
+    srand(time(NULL));
+
+    vector_init(&box);
+    vector_init(&locus);
+
+    piece pg;
+    get_time time;
+    init_piece(&pg);
+    init_time(&time);
+
+    pthread_t t0, t1;
+    pthread_create(&t0, NULL, get_time_current, &time);
+    pthread_create(&t1, NULL, piece_persig, &pg);
+
+    pthread_detach(t0);
+    pthread_detach(t1);
+
+    pg.getsig(&pg);
+
+    pg.delete(&pg);
+    box.delete(&box);
+    locus.delete(&locus);
+    return 0;
+}
+
+int get_argv(int argc, string* argv)
+{
+    wthm = 2*width+modw;
+    dist = modw+wthm+3;
+    lower = height+toph;
+    if ( argc > 2 )
+    {
+         runlevel = atoi(argv[1]);
+         prelevel = atoi(argv[2]);
+         if ( argc > 3 )
+         {
+              speedlevel = atoi(argv[3]);
+              if ( argc > 4 )
+              {
+                   width = atoi(argv[4]);
+                   if ( argc > 5 )
+                        height = atoi(argv[5]);
+              }
+         }

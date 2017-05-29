@@ -1,0 +1,38 @@
+var expectedFeatures = [
+  // shims
+  Array.isArray,
+  Array.prototype.every,
+  Array.prototype.forEach,
+  Array.prototype.indexOf,
+  Array.prototype.map,
+  Date.now,
+  Function.prototype.bind,
+  Object.keys,
+  String.prototype.trim,
+];
+
+for (var i = 0; i < expectedFeatures.length; i++) {
+  if (!expectedFeatures[i]) {
+    warning(
+      false,
+      'One or more ES5 shims expected by React are not available: ' +
+        'https://fb.me/react-warning-polyfills',
+    );
+    break;
+  }
+}
+}
+}
+
+if (__DEV__) {
+var ReactInstrumentation = require('ReactInstrumentation');
+var ReactDOMUnknownPropertyHook = require('ReactDOMUnknownPropertyHook');
+var ReactDOMNullInputValuePropHook = require('ReactDOMNullInputValuePropHook');
+var ReactDOMInvalidARIAHook = require('ReactDOMInvalidARIAHook');
+
+ReactInstrumentation.debugTool.addHook(ReactDOMUnknownPropertyHook);
+ReactInstrumentation.debugTool.addHook(ReactDOMNullInputValuePropHook);
+ReactInstrumentation.debugTool.addHook(ReactDOMInvalidARIAHook);
+}
+
+module.exports = ReactDOM;

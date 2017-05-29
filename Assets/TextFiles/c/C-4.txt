@@ -1,0 +1,41 @@
+void vector_reserve(vector* this, size_t n)
+{
+     this->v_capacity = n;
+     int* new_vec = malloc(n*sizeof(int));
+     size_t s = n > this->v_size ? this->v_size : n;
+     memcpy(new_vec, this->vec, s*sizeof(int));
+     delete_all(this->vec);
+     this->vec = new_vec;
+}
+
+void vector_resize(vector* this, size_t n)
+{
+     this->reserve(this, n);
+     this->v_size = n;
+}
+
+void vector_assign(vector* this, size_t len, int k)
+{
+     if ( this->v_capacity < len )
+          this->reserve(this, 2*len+1);
+     for (size_t i = 0; i!=len; ++i)
+          this->set(this, i, k);
+     this->v_size = len;
+}
+
+size_t vector_size(const vector* this)
+{
+       return this->v_size;
+}
+
+size_t vector_capacity(const vector* this)
+{
+       return this->v_capacity;
+}
+
+void vector_push_back(vector* this, int k)
+{
+      if ( this->v_size >= this->v_capacity )
+           this->reserve(this, 2*this->v_capacity+1);
+      this->vec[this->v_size++] = k;
+}

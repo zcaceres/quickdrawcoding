@@ -83,15 +83,32 @@
      <Compile Include="Assets\ThirdParty\Game Jam Template\Scripts\StartOptions.cs" />
      <Compile Include="Assets\Utils\SnapRotationToPlayer.cs" />
      <Compile Include="Assets\Utils\TimerController.cs" />
-     <None Include="Assets\TextFiles\seedThree.txt" />
+     <None Include="Assets\TextFiles\cplusplus\CPP-1.txt" />
+     <None Include="Assets\TextFiles\python\PYTHON-2.txt" />
+     <None Include="Assets\TextFiles\javascript\JS-3.txt" />
+     <None Include="Assets\TextFiles\cplusplus\CPP-4.txt" />
+     <None Include="Assets\TextFiles\python\PYTHON-5.txt" />
+     <None Include="Assets\TextFiles\cplusplus\CPP-5.txt" />
      <None Include="Assets\Fonts\READ ME.txt" />
-     <None Include="Assets\TextFiles\seedOne.txt" />
-     <None Include="Assets\TextFiles\seedTwo.txt" />
+     <None Include="Assets\TextFiles\javascript\JS-2.txt" />
+     <None Include="Assets\TextFiles\go\GO-5.txt" />
+     <None Include="Assets\TextFiles\go\GO-3.txt" />
+     <None Include="Assets\TextFiles\javascript\JS-4.txt" />
      <None Include="Assets\ThirdParty\Game Jam Template\Fonts\OpenSans\License!.txt" />
+     <None Include="Assets\TextFiles\go\GO-4.txt" />
+     <None Include="Assets\TextFiles\javascript\JS-5.txt" />
+     <None Include="Assets\TextFiles\go\GO-2.txt" />
      <None Include="Assets\Fonts\LICENSE-readme-first.txt" />
-     <None Include="Assets\Plugins\RavingBots.MultiInput.xml" />
-     <None Include="Assets\TextFiles\seedFour.txt" />
+     <None Include="Assets\TextFiles\python\PYTHON-3.txt" />
+     <None Include="Assets\TextFiles\cplusplus\CPP-2.txt" />
+     <None Include="Assets\TextFiles\python\PYTHON-4.txt" />
+     <None Include="Assets\TextFiles\cplusplus\CPP-3.txt" />
+     <None Include="Assets\TextFiles\javascript\JS-1.txt" />
+     <None Include="Assets\TextFiles\html\HTML-1.txt" />
+     <None Include="Assets\TextFiles\python\PYTHON-1.txt" />
+     <None Include="Assets\TextFiles\html\HTML-2.txt" />
      <None Include="Assets\ThirdParty\Game Jam Template\GameJamTemplateReadMe.txt" />
+     <None Include="Assets\TextFiles\go\GO-1.txt" />
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
@@ -112,12 +129,6 @@
  </Reference>
  <Reference Include="UnityEngine.VR">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UnityVR/RuntimeEditor/UnityEngine.VR.dll</HintPath>
- </Reference>
- <Reference Include="RavingBots.MultiInput">
- <HintPath>/Users/zachcaceres/Documents/GitHub/Fullstack/Stackathon/QuickDrawJavascript/Assets/Plugins/RavingBots.MultiInput.dll</HintPath>
- </Reference>
- <Reference Include="RavingBots.MultiInput.Editor">
- <HintPath>/Users/zachcaceres/Documents/GitHub/Fullstack/Stackathon/QuickDrawJavascript/Assets/Plugins/RavingBots.MultiInput.Editor.dll</HintPath>
  </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,0 +1,32 @@
+def icons.find(path)
+  if File.directory?(path)
+    Dir.open(File.expand_path(path)) do |d|
+      d.grep(/\.ico$/i) {|i| self[$`] = i}
+    end
+  else
+    self[File.basename(path, '.ico')] = path
+  end
+  self
+end
+
+if ARGV.empty?
+  icons.find('.')
+else
+  ARGV.each {|i| icons.find(i)}
+end
+
+ruby_icon = rubyw_icon = nil
+[$ruby_name, 'ruby'].find do |i|
+  if i = icons[i]
+    ruby_icon = "1 ICON DISCARDABLE "+i.dump+"\n"
+  end
+end
+[$rubyw_name, 'rubyw'].find do |i|
+  if i = icons[i]
+    rubyw_icon = "1 ICON DISCARDABLE "+i.dump+"\n"
+  end
+end
+dll_icons = []
+icons.keys.sort.each do |i|
+  dll_icons << "#{dll_icons.size + 1} ICON DISCARDABLE "+icons[i].dump+"\n"
+end

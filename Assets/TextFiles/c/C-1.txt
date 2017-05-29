@@ -1,0 +1,40 @@
+typedef struct
+{
+        void (*draw[3])();
+} board;
+
+typedef struct
+{
+        int first;
+        int second;
+} pair;
+
+typedef struct vector
+{
+        void (*clear)(struct vector*);
+        void (*delete)(struct vector*);
+        size_t (*size)(const struct vector*);
+        void (*push_back)(struct vector*, int);
+        void (*resize)(struct vector*, size_t);
+        int (*at)(const struct vector*, size_t);
+        void (*reserve)(struct vector*, size_t);
+        size_t (*capacity)(const struct vector*);
+        void (*set)(struct vector*, size_t, int);
+        void (*assign)(struct vector*, size_t, int);
+        void (*copy)(struct vector*, const struct vector*);
+
+        int* vec;
+        size_t v_size, v_capacity;
+
+} vector;
+
+struct vector box, locus;
+
+typedef struct get_time
+{
+        void* (*current)(void*);
+        void (*set_time)(struct get_time*, int*, int*, int, size_t);
+
+        string* time;
+
+} get_time;

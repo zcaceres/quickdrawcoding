@@ -1,0 +1,34 @@
+def getBlock(bitString):
+	currPos = 0
+	while currPos < len(bitString):
+		currPart = bitString[currPos:currPos+512]
+		mySplits = []
+		for i in range(16):
+			mySplits.append(int(rearrange(currPart[32*i:32*i+32]),2))
+		yield mySplits
+		currPos += 512
+def not32(i):
+	i_str = format(i,'032b')
+	new_str = ''
+	for c in i_str:
+		new_str += '1' if c=='0' else '0'
+	return int(new_str,2)
+
+def sum32(a,b):
+	return (a + b) % 2**32
+
+def leftrot32(i,s):
+	return (i << s) ^ (i >> (32-s))
+
+def md5me(testString):
+	bs =''
+	for i in testString:
+		bs += format(ord(i),'08b')
+	bs = pad(bs)
+
+	tvals = [int(2**32 * abs(math.sin(i+1))) for i in range(64)]
+
+	a0 = 0x67452301
+	b0 = 0xefcdab89
+	c0 = 0x98badcfe
+	d0 = 0x10325476

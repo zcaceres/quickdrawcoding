@@ -1,0 +1,45 @@
+prepareUpdate(
+  domElement: Instance,
+  type: string,
+  oldProps: Props,
+  newProps: Props,
+  rootContainerInstance: Container,
+  hostContext: HostContext,
+): null | Array<mixed> {
+  if (__DEV__) {
+    const hostContextDev = ((hostContext: any): HostContextDev);
+    if (
+      typeof newProps.children !== typeof oldProps.children &&
+      (typeof newProps.children === 'string' ||
+        typeof newProps.children === 'number')
+    ) {
+      const string = '' + newProps.children;
+      const ownAncestorInfo = updatedAncestorInfo(
+        hostContextDev.ancestorInfo,
+        type,
+        null,
+      );
+      validateDOMNesting(null, string, null, ownAncestorInfo);
+    }
+  }
+  return diffProperties(
+    domElement,
+    type,
+    oldProps,
+    newProps,
+    rootContainerInstance,
+  );
+},
+
+commitMount(
+  domElement: Instance,
+  type: string,
+  newProps: Props,
+  internalInstanceHandle: Object,
+): void {
+  ((domElement: any):
+    | HTMLButtonElement
+    | HTMLInputElement
+    | HTMLSelectElement
+    | HTMLTextAreaElement).focus();
+},

@@ -1,8 +1,0 @@
-var fs = require('fs');
-var path = require('path');
-var execFileSync = require('child_process').execFileSync;
-
-var cwd = null;
-function exec(command, args) {
-  console.error('>', [command].concat(args));
-  var options = {};

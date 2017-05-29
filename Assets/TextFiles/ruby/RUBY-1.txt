@@ -1,0 +1,34 @@
+$name = $library = $description = nil
+
+module RbConfig
+  autoload :CONFIG, "./rbconfig"
+end
+
+class Exports
+  PrivateNames = /(?:Init_|ruby_static_id_|.*_threadptr_|DllMain\b)/
+
+  @@subclass = []
+  def self.inherited(klass)
+    @@subclass << [/#{klass.name.sub(/.*::/, '').downcase}/i, klass]
+  end
+
+  def self.create(*args, &block)
+    platform = RUBY_PLATFORM
+    pat, klass = @@subclass.find {|p, k| p =~ platform}
+    unless klass
+      raise ArgumentError, "unsupported platform: #{platform}"
+    end
+    klass.new(*args, &block)
+  end
+
+  def self.extract(objs, *rest)
+    create(objs).exports(*rest)
+  end
+
+  def self.output(output = $output, &block)
+    if output
+      open(output, 'wb', &block)
+    else
+      yield STDOUT
+    end
+  end
