@@ -12,7 +12,9 @@ Type the letters as they appear. Go as fast as you can. Each time you miss, you 
 - Spaces will prompt you when they appear.
 - Reload on newlines ('\n') by pressing ENTER!
 
-### Duel
+### Coming Soon: A New Duel Mode!
+> Note: A basic duel mode was written for the hackathon, but was removed because the gameplay proved too confusing for players.
+
 For two players. Played on the same computer. One player types the code that appears. The other player controls the mouse.
 
 When the typing player makes a mistake, a small opportunity will appear for the mouse-controlling player to click and FIRE! If the mouse-controlling player clicks outside of that window, the typing player can press the spacebar to FIRE!
