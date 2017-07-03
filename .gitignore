@@ -4,7 +4,6 @@
 /[Bb]uild/
 /[Bb]uilds/
 /Assets/ThirdParty
-/Assets/ThirdParty.meta
 /Assets/AssetStoreTools*
 
 *.DS_Store
@@ -24,11 +23,8 @@ ExportedObj/
 
 *.aup
 *.au
-*.au.meta
-
 
 # Unity3D generated meta files
-*.pidb.meta
 
 # Unity3D Generated File On Crash Reports
 sysinfo.txt
