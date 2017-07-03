@@ -19,7 +19,7 @@ For two players. Played on the same computer. One player types the code that app
 
 When the typing player makes a mistake, a small opportunity will appear for the mouse-controlling player to click and FIRE! If the mouse-controlling player clicks outside of that window, the typing player can press the spacebar to FIRE!
 
-Player alternate after each code block.
+Players alternate after each code block.
 
 > Created by Zachary Caceres for Stackathon, 2017
 Read more about my stuff [here](www.zachcaceres.com).
