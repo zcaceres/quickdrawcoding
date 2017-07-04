@@ -10,6 +10,7 @@ using EZCameraShake;
 public class GameManager : MonoBehaviour {
 	public int letterPointer = 0;
 	public int lettersDestroyed = 0;
+	private int streakCounter = 0;
 	private float accuracy;
 	private const int CAMERA_ROTATION_SPEED = 5;
 	private const float PLAYER_MOVEMENT_SPEED = 2f;
@@ -55,7 +56,6 @@ public class GameManager : MonoBehaviour {
 	void Start () {
 		SetUpComponents();
 		codeBlock = textManager.GetCleanCodeFileAsString(); //"private void void void ";
-		RetrieveRandomCodeblock();
 		currentCodeBlock = SplitCodeblockIntoLetters();
 		allRounds = SetUpGallery(currentCodeBlock);
 		StartCoroutine(GetReady());
@@ -111,10 +111,6 @@ public class GameManager : MonoBehaviour {
 
 
 	/* GALLERY */
-
-	private void RetrieveRandomCodeblock() {
-		// search library of code to retrieve a component
-	}
 
 	private string[] SplitCodeblockIntoLetters() {
 		string[] chars = new string[codeBlock.Length];
@@ -231,7 +227,7 @@ public class GameManager : MonoBehaviour {
 
 	void RevealNextWave() {
 		RenderLetters();
-		PlayStreak();
+		// PlayStreak();
 		timerController.ResetTimerAndStart(8); // Resets timer for new 'streak'
 		firingPositionManager.ToggleNextPosition();
 	}
@@ -274,6 +270,8 @@ public class GameManager : MonoBehaviour {
 		PlayShotShakeAnim();
 		PlayShotMissedSound();
 		scoreController.RemovePoint();
+		streakCounter = 0;
+		Debug.Log("streak counter: " + streakCounter);
 		currentLetter.GetComponent<GenerateHitOrMiss>().GenerateMissPrefab();
 		// stop streak
 	}
@@ -286,8 +284,11 @@ public class GameManager : MonoBehaviour {
 		Destroy(currentLetter);
 		letterPointer++;
 		lettersDestroyed++;
+		streakCounter++;
+		Debug.Log("streak counter: " + streakCounter);
 		lettersForRound.RemoveAt(0);
 		if(lettersForRound.Count() != 0) {
+			if(streakCounter % 14 == 0) PlayStreak();
 			currentLetter = lettersForRound.First();
 			SetCurrentLetterColor(currentLetter);
 			if (lettersDestroyed % 14 == 0) {

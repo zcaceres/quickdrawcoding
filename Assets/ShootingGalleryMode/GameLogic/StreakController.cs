@@ -15,7 +15,6 @@ public class StreakController : MonoBehaviour {
 
 	public void DisplayStreakText() {
 		streakText.text = SelectStreakText(GetValidAudioIndex());
-		Debug.Log("selected streak audio " + GetValidAudioIndex());
 		currentStreakAudioIndex++;
 		StartCoroutine(FlashMessage());
 	}
