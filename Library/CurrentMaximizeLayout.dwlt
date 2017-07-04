@@ -20,10 +20,10 @@ MonoBehaviour:
     y: 30
     width: 1280
     height: 750
-  m_MinSize: {x: 683, y: 492}
-  m_MaxSize: {x: 14004, y: 14042}
+  m_MinSize: {x: 683, y: 321}
+  m_MaxSize: {x: 12008, y: 8021}
   vertical: 0
-  controlID: 27485
+  controlID: 28115
 --- !u!114 &2
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -120,10 +120,10 @@ MonoBehaviour:
     y: 0
     width: 921
     height: 750
-  m_MinSize: {x: 406, y: 492}
-  m_MaxSize: {x: 10002, y: 14042}
+  m_MinSize: {x: 406, y: 321}
+  m_MaxSize: {x: 8006, y: 8021}
   vertical: 1
-  controlID: 27486
+  controlID: 28116
 --- !u!114 &4
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -147,7 +147,7 @@ MonoBehaviour:
   m_MinSize: {x: 406, y: 221}
   m_MaxSize: {x: 8006, y: 4021}
   vertical: 0
-  controlID: 27487
+  controlID: 28052
 --- !u!114 &5
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -200,9 +200,9 @@ MonoBehaviour:
     width: 200
     height: 422
   m_TreeViewState:
-    scrollPos: {x: 0, y: 186.00037}
-    m_SelectedIDs: 964cfbff
-    m_LastClickedID: -308074
+    scrollPos: {x: 0, y: 86.00037}
+    m_SelectedIDs: 
+    m_LastClickedID: 0
     m_ExpandedIDs: 604cfbff6a4cfbff844cfbff984cfbff3499fdff3899fdfff8d0feff1cf1ffff70f1ffffe4f3ffff38faffff0000000068330000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -371,14 +371,14 @@ MonoBehaviour:
     y: 443
     width: 921
     height: 307
-  m_MinSize: {x: 232, y: 271}
-  m_MaxSize: {x: 10002, y: 10021}
-  m_ActualView: {fileID: 11}
+  m_MinSize: {x: 100, y: 100}
+  m_MaxSize: {x: 4000, y: 4000}
+  m_ActualView: {fileID: 12}
   m_Panes:
   - {fileID: 11}
   - {fileID: 12}
-  m_Selected: 0
-  m_LastSelected: 1
+  m_Selected: 1
+  m_LastSelected: 0
 --- !u!114 &11
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -416,18 +416,18 @@ MonoBehaviour:
     m_ShowAllHits: 0
     m_SearchArea: 0
     m_Folders:
-    - Assets/Utils
+    - Assets/Audio/AudioFiles/Audacity Projects
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Utils
+  - Assets/Audio/AudioFiles/Audacity Projects
   m_LastFoldersGridSize: -1
   m_LastProjectPath: /Users/zachcaceres/Documents/quickdrawcoding
   m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 151}
-    m_SelectedIDs: c4270000
-    m_LastClickedID: 10180
+    scrollPos: {x: 0, y: 0}
+    m_SelectedIDs: 3a270000
+    m_LastClickedID: 10042
     m_ExpandedIDs: 00000000762600008c270000b427000008280000ae2800002031000022310000243100002631000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -589,7 +589,7 @@ MonoBehaviour:
     y: 49
     width: 357
     height: 729
-  m_ScrollPosition: {x: 0, y: 161.95508}
+  m_ScrollPosition: {x: 0, y: 0}
   m_InspectorMode: 0
   m_PreviewResizer:
     m_CachedPref: 160
