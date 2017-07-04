@@ -38,9 +38,16 @@ public class DifficultyManager : MonoBehaviour {
 		isActive = false;
 	}
 
-	void SetLanguagePreference(string language)
+	public void SetLanguagePreference(string language)
 	{
+		PlayerPrefs.SetString("language", language);
+		Debug.Log("set player prefs to " + language);
+	}
 
+	public void SetDifficultyPreference(string difficulty)
+	{
+		PlayerPrefs.SetString("difficulty", difficulty);
+		Debug.Log("set player difficulty to " + difficulty);
 	}
 
 }
