@@ -222,8 +222,9 @@ public class GameManager : MonoBehaviour {
 		textMesh.characterSize = .13f;
 		if (textMesh.text == " ") {
 			textMesh.text = "SPACE";
-		}
-		else if (textMesh.text == "\n") {
+		} else if (textMesh.text == "	") {
+			textMesh.text = "TAB";
+		} else if (textMesh.text == "\n") {
 			reloadNotifier.DisplayReload();
 		}
 	}
@@ -298,9 +299,11 @@ public class GameManager : MonoBehaviour {
 	}
 
 	void AddLetterToUI(string letter) {
-		// Prevents SPACE from appearing in top code block UI
+		// Prevents SPACE and TAB from appearing in top code block UI
 		if(letter == "SPACE") {
 			UICodeDisplay.text += " ";
+		} else if(letter == "TAB") {
+			UICodeDisplay.text += "	";
 		} else {
 			UICodeDisplay.text += letter;
 		}
