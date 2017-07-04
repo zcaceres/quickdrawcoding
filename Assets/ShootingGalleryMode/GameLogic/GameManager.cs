@@ -36,6 +36,7 @@ public class GameManager : MonoBehaviour {
 	public GameObject mainCamera;
 	private Text UICodeDisplay;
 	private TimerController timerController;
+	private StreakController streakDisplay;
 
 	// SFX
 	private AudioSource reloadSoundPlayer;
@@ -271,9 +272,8 @@ public class GameManager : MonoBehaviour {
 		PlayShotMissedSound();
 		scoreController.RemovePoint();
 		streakCounter = 0;
-		Debug.Log("streak counter: " + streakCounter);
+		streakDisplay.RenderStreakValue(streakCounter);
 		currentLetter.GetComponent<GenerateHitOrMiss>().GenerateMissPrefab();
-		// stop streak
 	}
 
 	void ShotHit() {
@@ -285,7 +285,7 @@ public class GameManager : MonoBehaviour {
 		letterPointer++;
 		lettersDestroyed++;
 		streakCounter++;
-		Debug.Log("streak counter: " + streakCounter);
+		streakDisplay.RenderStreakValue(streakCounter);
 		lettersForRound.RemoveAt(0);
 		if(lettersForRound.Count() != 0) {
 			if(streakCounter % 14 == 0) PlayStreak();
@@ -365,6 +365,7 @@ public class GameManager : MonoBehaviour {
 		streakNotifier = GameObject.Find("Canvas/TopNotification/StartingPoint").GetComponent<StreakController>();
 		scoreController = GameObject.Find("Canvas/ScoreTracker").GetComponent<ScoreController>();
 		timerController = GameObject.Find("Canvas/Timer").GetComponent<TimerController>();
+		streakDisplay = GameObject.Find("Canvas/StreakTracker").GetComponent<StreakController>();
 	}
 
 }

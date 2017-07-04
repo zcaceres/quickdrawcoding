@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class ScoreController : MonoBehaviour {
 	private Text scoreDisplay;
+	private StreakController streakDisplay;
 	private int score;
 
 	void Start () {

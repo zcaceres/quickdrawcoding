@@ -5,11 +5,13 @@ using UnityEngine.UI;
 
 public class StreakController : MonoBehaviour {
 	private Text streakText;
+	private Text streakDisplay;
 	private AnnouncementManager announcer;
 	private int currentStreakAudioIndex = 0;
 
 	public void Start () {
 		streakText = gameObject.GetComponentInChildren<Text>();
+		streakDisplay = GameObject.Find("StreakTracker").GetComponent<Text>();
 		announcer = GameObject.FindWithTag("MainCamera").GetComponentInChildren<AnnouncementManager>();
 	}
 
@@ -17,6 +19,10 @@ public class StreakController : MonoBehaviour {
 		streakText.text = SelectStreakText(GetValidAudioIndex());
 		currentStreakAudioIndex++;
 		StartCoroutine(FlashMessage());
+	}
+
+	public void RenderStreakValue(int score) {
+		streakDisplay.text = score.ToString();
 	}
 
 	public void DisplayTextOnTopOfScreen(string text, int duration) {
