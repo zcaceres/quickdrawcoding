@@ -3,27 +3,43 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class StartButton : MonoBehaviour {
-	private GameObject LanguageButtons;
-	private GameObject Title;
-	private GameObject MainMenu;
+	private static GameObject LanguageButtons;
+	private static GameObject Title;
+	private static GameObject MainMenu;
+	private static DifficultyManager difficultyManager;
+	private static bool isActive = false;
 
 	void Awake()
 	{
 		LanguageButtons = gameObject.transform.Find("MenuPanel/LanguageButtons").gameObject;
 		Title = gameObject.transform.Find("MenuPanel/Title").gameObject;
 		MainMenu = gameObject.transform.Find("MenuPanel/MenuButtons").gameObject;
+		difficultyManager = GetComponent<DifficultyManager>();
+		isActive = false;
+	}
+
+	public void GoToLanguages()
+	{
+		ShowLanguageMenu();
+		HideMainMenu();
+	}
+
+	public void GoToMainMenu()
+	{
+		ShowMainMenu();
+		HideLanguageMenu();
 	}
 
 	public void ShowLanguageMenu()
 	{
 		LanguageButtons.SetActive(true);
-		HideMainMenu();
+		isActive = true;
 	}
 
-	void HideLanguageMenu()
+	public void HideLanguageMenu()
 	{
 		LanguageButtons.SetActive(false);
-		ShowMainMenu();
+		isActive = false;
 	}
 
 	void ShowMainMenu()

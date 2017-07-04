@@ -81,7 +81,7 @@
      <Compile Include="Assets\ThirdParty\Game Jam Template\Scripts\SetAudioLevels.cs" />
      <Compile Include="Assets\ThirdParty\Game Jam Template\Scripts\ShowPanels.cs" />
      <Compile Include="Assets\ThirdParty\Game Jam Template\Scripts\StartOptions.cs" />
-     <Compile Include="Assets\Utils\LanguageManager.cs" />
+     <Compile Include="Assets\Utils\DifficultyManager.cs" />
      <Compile Include="Assets\Utils\SnapRotationToPlayer.cs" />
      <Compile Include="Assets\Utils\StartButton.cs" />
      <Compile Include="Assets\Utils\TimerController.cs" />
