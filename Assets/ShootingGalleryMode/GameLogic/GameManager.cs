@@ -153,9 +153,8 @@ public class GameManager : MonoBehaviour {
 		timerController.StopTime();
 		PlayBellTollSound();
 		streakNotifier.DisplayTextOnTopOfScreen("DEFEAT", 5);
-		yield return new WaitForSecondsRealtime(4);
-		streakNotifier.DisplayTextOnTopOfScreen("Press Escape to Try Again", 5);
-		yield return new WaitForSecondsRealtime(5);
+		yield return new WaitForSecondsRealtime(2);
+		SceneManager.LoadSceneAsync(0);
 	}
 
 	private IEnumerator EndGallery() {
@@ -185,7 +184,7 @@ public class GameManager : MonoBehaviour {
 
 	public void StartRound() {
 		roundStarted = true;
-		timerController.ResetTimerAndStart(8);
+		timerController.ResetTimerAndStart();
 		RenderLetters();
 	}
 
@@ -229,7 +228,7 @@ public class GameManager : MonoBehaviour {
 	void RevealNextWave() {
 		RenderLetters();
 		// PlayStreak();
-		timerController.ResetTimerAndStart(8); // Resets timer for new 'streak'
+		timerController.ResetTimerAndStart(); // Resets timer for new 'streak'
 		firingPositionManager.ToggleNextPosition();
 	}
 

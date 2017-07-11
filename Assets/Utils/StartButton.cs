@@ -54,10 +54,6 @@ public class StartButton : MonoBehaviour {
 		MainMenu.SetActive(false);
 	}
 
-	void SetLanguagePreference(string languagePref)
-	{
-
-	}
 
 
 }

@@ -5,7 +5,11 @@ using UnityEngine.UI;
 
 public class TimerController : MonoBehaviour {
 	Text timerText;
+	private const int DURATION_FOR_HARD = 8;
+	private const int DURATION_FOR_MEDIUM = 12;
+	private const int DURATION_FOR_EASY = 15;
 	public int timeRemaining;
+
 
 	void Awake() {
 		timeRemaining = 10;
@@ -20,10 +24,25 @@ public class TimerController : MonoBehaviour {
 		StartCoroutine("Countdown", duration);
 	}
 
-	public void ResetTimerAndStart(int duration) {
+	public void ResetTimerAndStart() {
 		ClearTime();
+		var duration =  GetRoundTimeFromDifficulty(PlayerPrefs.GetString("difficulty"));
 		timeRemaining = duration;
 		StartTime(duration);
+	}
+
+	public int GetRoundTimeFromDifficulty(string difficulty)
+	{
+		switch(difficulty) {
+			case "easy":
+				return DURATION_FOR_EASY;
+			case "medium":
+				return DURATION_FOR_MEDIUM;
+			case "hard":
+				return DURATION_FOR_HARD;
+			default:
+				return 12;
+		}
 	}
 
 	public void ClearTime () {

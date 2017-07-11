@@ -127,7 +127,7 @@ public class DuelGameManager : MonoBehaviour {
 
   void StartRound() {
     roundStarted = true;
-    timerController.ResetTimerAndStart(DURATION_OF_TURN);
+    timerController.ResetTimerAndStart();
   }
 
   void EndRound() {
