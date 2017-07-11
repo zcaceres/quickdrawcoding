@@ -8,6 +8,9 @@ public class ReloadController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		reloadText = gameObject.GetComponent<Text>();
+		if (reloadText.enabled == true) {
+			HideReload();
+		}
 	}
 
 	public void DisplayReload () {
