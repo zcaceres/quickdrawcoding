@@ -1,9 +1,9 @@
 # QuickdrawJS
 ## A Wild-West Adventure through Javascript
 
-QuickdrawJS: the world's first Wild West adventure about typing code accurately!
+![quickdraw coding screenshot](quickdrawcoding.png)
 
-<!-- TODO ANIMATED GIF -->
+QuickdrawJS: the world's first Wild West adventure about typing code accurately!
 
 ## TWO MODES
 ### Shooting Gallery
