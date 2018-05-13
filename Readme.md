@@ -1,4 +1,4 @@
-# QuickdrawJS
+# QuickdrawJS :gun:
 ## A Wild-West Adventure through Javascript
 
 ![quickdraw coding screenshot](quickdrawcoding.png)
